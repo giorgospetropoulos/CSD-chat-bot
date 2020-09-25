@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/courseReminderTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:text="TextView" />
+
+        <TextView
+        android:id="@+id/courseReminderDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="45dp"
+        android:textSize="15dp"
+        android:text="TextView" />
+
+        <TextView
+            android:id="@+id/courseReminderDateAndTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/courseReminderPriority"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/deleteCourseReminder"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="55dp"
+        android:layout_gravity="right"
+        app:srcCompat="@drawable/bin"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/editCourseReminder"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="30dp"
+        android:layout_gravity="right"
+        app:srcCompat="@drawable/edit"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/addCourseReminder"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="5dp"
+        android:layout_gravity="right"
+        app:srcCompat="@drawable/plus"
+        android:visibility="gone"/>
+
+</FrameLayout>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.csdbot">
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/logo"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/logo"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".activities.AddPostgraduateCourseActivity"></activity>
+        <activity android:name=".activities.AddUndergraduateCourseActivity" />
+        <activity android:name=".activities.EditPostCourseActivity" />
+        <activity android:name=".activities.EditCourseActivity" />
+        <activity android:name=".activities.SetAdminActivity" />
+        <activity android:name=".activities.CourseReminderActivity" />
+        <activity android:name=".activities.ReminderActivity" />
+        <activity
+            android:name=".activities.EmailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.AddPostGraduateCourseReminderActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.PostGraduateCourseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.PostGraduateCoursesListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.PostOrUnderGraduateActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.AddCourseReminderActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.SetTeacherActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.AddContactActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.ContactsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.RegisterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.EditCourseReminderActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.CourseMainPageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.SearchResultsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.CoursePageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.OtherDeptsCoursesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.ElecticCoursesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.MainCoursesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.EditReminderActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.RemindersListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.ChangePasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.UpdateProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.ProfileDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.ProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.ForgotPasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.AddReminderActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.CalendarActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.RemindersActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.MyCoursesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.CoursesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.HomeActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.MainActivity"
+            android:screenOrientation="portrait" />
+
+        <receiver
+            android:name=".AlarmReceiver"
+            android:enabled="true"
+            android:exported="true" />
+    </application>
+
+</manifest>

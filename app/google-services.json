@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "368733916034",
+    "firebase_url": "https://csd-chatbot.firebaseio.com",
+    "project_id": "csd-chatbot",
+    "storage_bucket": "csd-chatbot.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:368733916034:android:e03ad584c7427320b95d9b",
+        "android_client_info": {
+          "package_name": "com.example.csdbot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "368733916034-mvvimelq7vp4nmk15s38c5lobkebiob0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWLXHq0K5WwtMLRk1CxkBht9shNJ7uLAA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "368733916034-mvvimelq7vp4nmk15s38c5lobkebiob0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

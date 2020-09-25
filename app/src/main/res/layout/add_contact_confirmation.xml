@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="300dp"
+    android:layout_height="100dp"
+    android:layout_margin="10dp">
+    <TextView
+        android:id="@+id/contactConfirmation"
+        android:paddingTop="5dp"
+        android:paddingLeft="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+
+        <Button
+            android:id="@+id/addContactConfirmationBtn"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rnd_btn"
+            android:layout_marginRight="10dp"
+            android:textColor="#ffffff"
+            android:text="Add" />
+
+        <Button
+            android:id="@+id/addContactCancelationBtn"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Cancel" />
+    </LinearLayout>
+</LinearLayout>

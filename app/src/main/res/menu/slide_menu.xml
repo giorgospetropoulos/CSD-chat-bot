@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="Home" />
+
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_profile"
+            android:title="Profile" />
+
+    </group>
+
+
+    <item android:title="Profile">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_courses"
+                    android:icon="@drawable/courses"
+                    android:title="My Courses" />
+
+                <item
+                    android:id="@+id/nav_reminders"
+                    android:icon="@drawable/reminders"
+                    android:title="My Reminders" />
+                <item
+                    android:id="@+id/nav_contacts"
+                    android:icon="@drawable/ic_contact"
+                    android:title="My Contacts" />
+            </group>
+        </menu>
+    </item>
+    <item android:title="Log Out">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_log_out"
+                    android:icon="@drawable/ic_log_out"
+                    android:title="Log Out" />
+            </group>
+        </menu>
+    </item>
+
+
+</menu>
