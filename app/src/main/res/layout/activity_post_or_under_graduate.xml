@@ -21,9 +21,7 @@
     </com.google.android.material.navigation.NavigationView>
 
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".activities.CoursesActivity">
@@ -49,7 +47,7 @@
                 android:layout_height="100dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/rnd_btn"
-                android:text="Undergraduate Courses"
+                android:text="@string/undergaduateCourses"
                 android:textColor="#ffffff" />
 
             <Button
@@ -58,7 +56,7 @@
                 android:layout_height="100dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/rnd_btn"
-                android:text="Postgraduate Courses"
+                android:text="@string/postgraduateCourses"
                 android:textColor="#ffffff" />
         </LinearLayout>
     </RelativeLayout>

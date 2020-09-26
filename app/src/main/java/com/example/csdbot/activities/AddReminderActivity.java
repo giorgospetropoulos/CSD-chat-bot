@@ -41,6 +41,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Objects;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -151,8 +152,9 @@ public class AddReminderActivity extends AppCompatActivity implements Navigation
         findViewById(R.id.linearLayoutAddReminder).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                v.performClick();
                 InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(), 0);
                 return true;
             }
         });
@@ -212,9 +214,11 @@ public class AddReminderActivity extends AppCompatActivity implements Navigation
                     reminderMin = minuteNumberPicker.getValue();
                 }
                 if (reminderHour >= 10 ){
-                    selectTime.setText( reminderHour + ":" );
+                    String hour = reminderHour + ":";
+                    selectTime.setText( hour );
                 } else {
-                    selectTime.setText( "0" + reminderHour + ":" );
+                    String hour = "0" + reminderHour + ":";
+                    selectTime.setText( hour );
                 }
                 if (reminderMin >= 10 ){
                     String time = selectTime.getText().toString()  + reminderMin;
@@ -237,7 +241,7 @@ public class AddReminderActivity extends AppCompatActivity implements Navigation
         priorityGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                selectedButton = (RadioButton) findViewById(checkedId);
+                selectedButton = findViewById(checkedId);
                 selectPriority.setText(selectedButton.getText().toString());
                 priorityGroup.setVisibility(View.GONE);
             }

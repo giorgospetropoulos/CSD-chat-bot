@@ -25,16 +25,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import java.util.ArrayList;
 
 public class PostGraduateCoursesListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ListView lv;
-    private ArrayList<PostGraduateCourse> coursesList = new ArrayList<PostGraduateCourse>();
     private ArrayAdapter<PostGraduateCourse> adapter;
-
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseHelper myDB;
     private ProgressDialog loading;
 
@@ -67,11 +63,11 @@ public class PostGraduateCoursesListActivity extends AppCompatActivity implement
         /* Find the activity's views
          *      lv: The ListView of the the Postgraduate Courses
          */
-        lv = (ListView) findViewById(R.id.postgraduateCoursesLV);
+        lv = findViewById(R.id.postgraduateCoursesLV);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
         // Connect to the database and retrieve the postgraduate courses
@@ -79,7 +75,9 @@ public class PostGraduateCoursesListActivity extends AppCompatActivity implement
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
-                adapter = new PostGraduateCourseListAdapter(PostGraduateCoursesListActivity.this, R.layout.courses_list_item, myDB.getPostGraduateCourseList());
+                if (myDB != null) {
+                    adapter = new PostGraduateCourseListAdapter(PostGraduateCoursesListActivity.this, R.layout.courses_list_item, myDB.getPostGraduateCourseList());
+                }
                 lv.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
                 loading.dismiss();
@@ -96,7 +94,10 @@ public class PostGraduateCoursesListActivity extends AppCompatActivity implement
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 PostGraduateCourse temp = adapter.getItem(position);
-                String tempName = temp.getName_en();
+                String tempName = null;
+                if (temp != null) {
+                    tempName = temp.getName_en();
+                }
                 Intent intent = new Intent(PostGraduateCoursesListActivity.this, PostGraduateCourseActivity.class);
                 intent.putExtra("Course Name", tempName);
                 startActivity(intent);

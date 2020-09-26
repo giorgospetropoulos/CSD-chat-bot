@@ -21,7 +21,6 @@ import java.util.List;
 public class CourseListAdapter extends ArrayAdapter<Course> {
     private int layout;
     private List<Course> courseList;
-    private  Context mContext;
 
 
 
@@ -29,13 +28,11 @@ public class CourseListAdapter extends ArrayAdapter<Course> {
         super(context, resource, objects);
         layout = resource;
         courseList = objects;
-        mContext = context;
-
     }
 
     @Override
     public View getView( final int position, View convertView, ViewGroup parent) {
-        CourseViewHolder mainViewholder = null;
+        CourseViewHolder mainViewholder;
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(layout, parent, false);
@@ -55,24 +52,31 @@ public class CourseListAdapter extends ArrayAdapter<Course> {
             viewHolder.ects = (TextView) convertView.findViewById(R.id.courseECTS);
 
             // Set the course's data
-            viewHolder.name.setText(courseList.get(position).getCode_en() + " " + courseList.get(position).getName_en());
+            String name = courseList.get(position).getCode_en() +
+                    " " + courseList.get(position).getName_en();
+            viewHolder.name.setText(name);
             if (courseList.get(position).getArea_name_en() != null ){
                 if ( courseList.get(position).getArea_name_en().equals("Core Courses")){
-                    viewHolder.area.setText("Area: " + courseList.get(position).getArea_name_en());
+                    String area = "Area: " + courseList.get(position).getArea_name_en();
+                    viewHolder.area.setText(area);
                 } else {
-                    viewHolder.area.setText("Area: " +
+                    String area = "Area: " +
                             courseList.get(position).getArea_code_en() +
                             " - " +
-                            courseList.get(position).getArea_name_en());
+                            courseList.get(position).getArea_name_en();
+                    viewHolder.area.setText(area);
                 }
             } else {
-                viewHolder.area.setText("Area: -");
+                String area = "Area: -";
+                viewHolder.area.setText(area);
             }
 
             if ( courseList.get(position).getTeacher() != null){
-                viewHolder.teacher.setText("Teacher: " + courseList.get(position).getTeacher());
+                String teacher = "Teacher: " + courseList.get(position).getTeacher();
+                viewHolder.teacher.setText(teacher);
             }  else {
-                viewHolder.teacher.setText("Teacher: -");
+                String teacher = "Teacher: -";
+                viewHolder.teacher.setText(teacher);
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 if (courseList.get(position).getDescription_en().length() >= 100) {
@@ -87,7 +91,8 @@ public class CourseListAdapter extends ArrayAdapter<Course> {
                     viewHolder.description.setText(Html.fromHtml("Description: " + courseList.get(position).getDescription_en()));
                 }
             }
-            viewHolder.ects.setText("ECTS: " + courseList.get(position).getECTS());
+            String ECTS = "ECTS: " + courseList.get(position).getECTS();
+            viewHolder.ects.setText(ECTS);
             convertView.setTag(viewHolder);
         } else {
             mainViewholder = (CourseViewHolder) convertView.getTag();
@@ -106,15 +111,20 @@ public class CourseListAdapter extends ArrayAdapter<Course> {
             mainViewholder.ects = (TextView) convertView.findViewById(R.id.courseECTS);
 
             // Set the course's data
-            mainViewholder.name.setText(courseList.get(position).getCode_en() + " " + courseList.get(position).getName_en());
-            mainViewholder.area.setText("Area: " +
+            String name = courseList.get(position).getCode_en() +
+                    " " + courseList.get(position).getName_en();
+            mainViewholder.name.setText(name);
+            String area = "Area: " +
                     courseList.get(position).getArea_code_en() +
                     " - " +
-                    courseList.get(position).getArea_name_en());
+                    courseList.get(position).getArea_name_en();
+            mainViewholder.area.setText(area);
             if ( courseList.get(position).getTeacher() != null){
-                mainViewholder.teacher.setText("Teacher: " + courseList.get(position).getTeacher());
+                String teacher = "Teacher: " + courseList.get(position).getTeacher();
+                mainViewholder.teacher.setText(teacher);
             }  else {
-                mainViewholder.teacher.setText("Teacher: -");
+                String teacher = "Teacher: -";
+                mainViewholder.teacher.setText(teacher);
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 if (courseList.get(position).getDescription_en().length() >= 100) {
@@ -129,7 +139,8 @@ public class CourseListAdapter extends ArrayAdapter<Course> {
                     mainViewholder.description.setText(Html.fromHtml("Description: " + courseList.get(position).getDescription_en()));
                 }
             }
-            mainViewholder.ects.setText("ECTS: " + courseList.get(position).getECTS());
+            String ECTS = "ECTS: " + courseList.get(position).getECTS();
+            mainViewholder.ects.setText(ECTS);
         }
         return convertView;
     }

@@ -22,7 +22,6 @@ import com.google.firebase.auth.FirebaseAuth;
 public class ChangePasswordActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private EditText passwordEmail;
-    private Button resetPassword;
     private FirebaseAuth firebaseAuth;
 
     // ---------- Slide Menu --------------
@@ -54,8 +53,8 @@ public class ChangePasswordActivity extends AppCompatActivity implements Navigat
          *      passwordEmail: The email of the user
          *      resetPassword: The Button to reset the password
          */
-        passwordEmail = (EditText) findViewById(R.id.email_change_password);
-        resetPassword = (Button) findViewById(R.id.changePassword);
+        passwordEmail = findViewById(R.id.email_change_password);
+        Button resetPassword = findViewById(R.id.changePassword);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();

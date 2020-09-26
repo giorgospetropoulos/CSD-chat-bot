@@ -34,11 +34,7 @@ public class ContactsListAdapter extends ArrayAdapter<User> {
 
     private int layout;
     private List<User> contacts;
-    private Context mContext;
-    private FirebaseStorage firebaseStorage;
-    private StorageReference storageReference;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseHelper myDB;
     private User user;
     private Dialog deleteConfirmatonDialog;
@@ -48,20 +44,19 @@ public class ContactsListAdapter extends ArrayAdapter<User> {
         super(context, resource, objects);
         contacts = objects;
         layout = resource;
-        mContext = context;
     }
 
 
     @NonNull
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        ContactViewHolder mainViewHolder = null;
+        ContactViewHolder mainViewHolder;
 
         // Initialize firebase components
-        firebaseStorage = FirebaseStorage.getInstance();
-        storageReference = firebaseStorage.getReference();
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference storageReference = firebaseStorage.getReference();
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
         // Connect to the database and retrieve the user's data
@@ -69,7 +64,9 @@ public class ContactsListAdapter extends ArrayAdapter<User> {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
-                user = myDB.getUserByUID(firebaseAuth.getUid());
+                if (myDB != null) {
+                    user = myDB.getUserByUID(firebaseAuth.getUid());
+                }
             }
 
             @Override
@@ -128,9 +125,10 @@ public class ContactsListAdapter extends ArrayAdapter<User> {
                     deleteConfirmatonDialog = new Dialog(getContext());
                     deleteConfirmatonDialog.setContentView(R.layout.delete_contact_confirmation);
                     deleteContactTitle = (TextView) deleteConfirmatonDialog.findViewById(R.id.deleteContactConfirmation);
-                    deleteContactTitle.setText("Are you sure you wish to delete " +
+                    String title = "Are you sure you wish to delete " +
                             contacts.get(position).getName() +
-                            " from your contacts?");
+                            " from your contacts?";
+                    deleteContactTitle.setText(title);
                     deleteContactBtn = (Button) deleteConfirmatonDialog.findViewById(R.id.deleteContactConfirmationBtn);
                     cancelBtn = (Button) deleteConfirmatonDialog.findViewById(R.id.deleteContactCancelationBtn);
                     deleteContactBtn.setOnClickListener(new View.OnClickListener() {

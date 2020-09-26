@@ -39,7 +39,6 @@ public class RemindersListActivity extends AppCompatActivity implements Navigati
     private ArrayList<Reminder> myReminders;
     private ArrayAdapter<Reminder> adapter;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseHelper myDB;
     private ProgressDialog loading;
 
@@ -80,7 +79,7 @@ public class RemindersListActivity extends AppCompatActivity implements Navigati
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
         // Connect to the database and retrieve the user's reminders
@@ -88,8 +87,11 @@ public class RemindersListActivity extends AppCompatActivity implements Navigati
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
-                User profileUser = myDB.getUserByUID(firebaseAuth.getUid());
-                myReminders = profileUser.getUser_reminders();
+                User profileUser = null;
+                if (myDB != null) {
+                    profileUser = myDB.getUserByUID(firebaseAuth.getUid());
+                    myReminders = profileUser.getUser_reminders();
+                }
                 adapter = new RemindersListAdapter(RemindersListActivity.this, R.layout.reminders_list_item, profileUser.getUser_reminders());
 
                 if ( !myReminders.isEmpty()){
@@ -117,23 +119,26 @@ public class RemindersListActivity extends AppCompatActivity implements Navigati
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Reminder temp = adapter.getItem(position);
                 Intent intent = new Intent(RemindersListActivity.this, ReminderActivity.class);
-                intent.putExtra("Reminder Name", temp.getName());
-                intent.putExtra("Reminder Desc", temp.getDescription());
-                intent.putExtra("remID", temp.getId());
-                switch (temp.getReminder_priority()){
-                    case low:
-                        intent.putExtra("Reminder Priority", "low");
-                        break;
-                    case mid:
-                        intent.putExtra("Reminder Priority", "mid");
-                        break;
-                    case high:
-                        intent.putExtra("Reminder Priority", "high");
-                        break;
-                    default:
-                        intent.putExtra("Reminder Priority", "none");
-                        break;
+                if (temp != null) {
+                    intent.putExtra("Reminder Name", temp.getName());
+                    intent.putExtra("Reminder Desc", temp.getDescription());
+                    intent.putExtra("remID", temp.getId());
+                    switch (temp.getReminder_priority()){
+                        case low:
+                            intent.putExtra("Reminder Priority", "low");
+                            break;
+                        case mid:
+                            intent.putExtra("Reminder Priority", "mid");
+                            break;
+                        case high:
+                            intent.putExtra("Reminder Priority", "high");
+                            break;
+                        default:
+                            intent.putExtra("Reminder Priority", "none");
+                            break;
+                    }
                 }
+
                 startActivity(intent);
             }
         });

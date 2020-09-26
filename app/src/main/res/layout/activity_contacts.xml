@@ -43,7 +43,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:gravity="center"
-            android:text="You have no contacts in your contacts list."
+            android:text="@string/noContacts"
             android:visibility="gone" />
 
         <ImageView
@@ -51,14 +51,9 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:contentDescription="@string/button"
             android:visibility="gone"
             app:srcCompat="@drawable/ic_sad" />
-
-
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:ignore="MissingConstraints" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -79,12 +74,10 @@
                 android:id="@+id/addContact"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
                 android:layout_margin="10dp"
+                android:contentDescription="@string/button"
                 app:srcCompat="@drawable/plus" />
         </LinearLayout>
-        />
-
-
     </LinearLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

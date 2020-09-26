@@ -36,12 +36,11 @@ import java.util.Collections;
 
 public class CourseReminderActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private TextView reminderName, reminderDesc, reminderPriority, reminderTime;
+    private TextView reminderName, reminderTime;
     private Button editReminder, addReminder;
-    private Dialog editDialog, cancelDialog, addDialog;
+    private Dialog editDialog, addDialog;
     private DatabaseHelper myDB;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private Course course;
     private PostGraduateCourse post_course;
     private User profileUser;
@@ -78,36 +77,41 @@ public class CourseReminderActivity extends AppCompatActivity implements Navigat
          *      editReminder: Edit Reminder Button
          *      addReminder: Add Reminder to User's Reminders Button
          */
-        reminderName = (TextView) findViewById(R.id.courseReminderPageName);
-        reminderDesc = (TextView) findViewById(R.id.courseReminderPageDesc);
-        reminderTime = (TextView) findViewById(R.id.courseReminderPageTime);
-        reminderPriority = (TextView) findViewById(R.id.courseReminderPagePriority);
-        editReminder = (Button) findViewById(R.id.editCourseReminderBtn);
-        addReminder = (Button) findViewById(R.id.addCourseReminderBtn);
+        reminderName = findViewById(R.id.courseReminderPageName);
+        TextView reminderDesc = findViewById(R.id.courseReminderPageDesc);
+        reminderTime = findViewById(R.id.courseReminderPageTime);
+        TextView reminderPriority = findViewById(R.id.courseReminderPagePriority);
+        editReminder = findViewById(R.id.editCourseReminderBtn);
+        addReminder = findViewById(R.id.addCourseReminderBtn);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
         // Set the data of the reminder
         reminderName.setText(getIntent().getStringExtra("Reminder Name"));
         reminderDesc.setText(getIntent().getStringExtra("Reminder Desc"));
-        switch (getIntent().getStringExtra("Reminder Priority")) {
+        String prio = getIntent().getStringExtra("Reminder Priority");
+        switch ( prio ) {
             case "low":
-                reminderPriority.setText(" Low");
+                String low = " Low";
+                reminderPriority.setText(low);
                 reminderPriority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.low_priority,0, 0, 0);
                 break;
             case "mid":
-                reminderPriority.setText(" Medium");
+                String mid = " Medium";
+                reminderPriority.setText(mid);
                 reminderPriority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.medium_priority,0, 0, 0);
                 break;
             case "high":
-                reminderPriority.setText(" High");
+                String high = " High";
+                reminderPriority.setText(high);
                 reminderPriority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.high_priority,0, 0, 0);
                 break;
             default:
-                reminderPriority.setText(" Low");
+                String def = " Low";
+                reminderPriority.setText(def);
                 reminderPriority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.low_priority,0, 0, 0);
                 break;
         }
@@ -117,7 +121,9 @@ public class CourseReminderActivity extends AppCompatActivity implements Navigat
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
-                profileUser = myDB.getUserByUID(firebaseAuth.getUid());
+                if (myDB != null) {
+                    profileUser = myDB.getUserByUID(firebaseAuth.getUid());
+                }
                 Reminder tempRem;
                 if ( profileUser.hasReminderByID(getIntent().getIntExtra("remID", 0))){
                     addReminder.setVisibility(View.GONE);
@@ -125,39 +131,51 @@ public class CourseReminderActivity extends AppCompatActivity implements Navigat
                 if ( getIntent().getStringExtra("Post").equals("true") ){
                     post_course = myDB.getPostGraduateCourseByName( getIntent().getStringExtra("Course Name"));
                     tempRem = post_course.getCourseReminder(post_course.getCourseReminderPosition(reminderName.getText().toString()));
-                    reminderTime.setText(tempRem.getDay() + "/" +
+                    String remTime = tempRem.getDay() + "/" +
                             tempRem.getMonth() + "/" +
                             tempRem.getYear() + " - " +
-                            tempRem.getHour() +":");
+                            tempRem.getHour() +":";
+                    reminderTime.setText(remTime);
                     if ( tempRem.getMin() < 10 ){
-                        reminderTime.setText(reminderTime.getText().toString() + "0" + tempRem.getMin());
+                        String remTime2 = reminderTime.getText().toString() + "0" + tempRem.getMin();
+                        reminderTime.setText(remTime2);
                     } else {
-                        reminderTime.setText(reminderTime.getText().toString() + tempRem.getMin());
+                        String remTime2 = reminderTime.getText().toString() + tempRem.getMin();
+                        reminderTime.setText(remTime2);
                     }
 
                 } else {
                     course = myDB.getCourseByName( getIntent().getStringExtra("Course Name"));
                     tempRem = course.getCourseReminder(course.getCourseReminderPosition(reminderName.getText().toString()));
-                    reminderTime.setText(tempRem.getDay() + "/" +
+                    String remTime =tempRem.getDay() + "/" +
                             tempRem.getMonth() + "/" +
-                            tempRem.getYear() + " - ");
+                            tempRem.getYear() + " - ";
+                    reminderTime.setText(remTime);
                     if ( tempRem.getHour() < 10 ){
-                        reminderTime.setText(reminderTime.getText().toString() + "0" + tempRem.getHour() + ":");
+                        String remTime2 = reminderTime.getText().toString() + "0" + tempRem.getHour() + ":";
+                        reminderTime.setText(remTime2);
                     } else {
-                        reminderTime.setText(reminderTime.getText().toString() + tempRem.getHour() + ":");
+                        String remTime2 = reminderTime.getText().toString() + tempRem.getHour() + ":";
+                        reminderTime.setText(remTime2);
                     }
                     if ( tempRem.getMin() < 10 ){
-                        reminderTime.setText(reminderTime.getText().toString() + "0" + tempRem.getMin());
+                        String remTime2 = reminderTime.getText().toString() + "0" + tempRem.getMin();
+                        reminderTime.setText(remTime2);
                     } else {
-                        reminderTime.setText(reminderTime.getText().toString() + tempRem.getMin());
+                        String remTime2 = reminderTime.getText().toString() + tempRem.getMin();
+                        reminderTime.setText(remTime2);
                     }
                 }
                 if ( getIntent().getStringExtra("Post").equals("true") ){
-                    if ( firebaseAuth.getUid() == post_course.getTeacherUID() || profileUser.isAdmin() || profileUser.getName().equals("admin") ){
+                    if ( firebaseAuth.getUid() == post_course.getTeacherUID() ||
+                            profileUser.isAdmin() ||
+                            profileUser.getName().equals("admin") ){
                         editReminder.setVisibility(View.VISIBLE);
                     }
                 } else {
-                    if ( firebaseAuth.getUid() == course.getTeacherUID() || profileUser.isAdmin() || profileUser.getName().equals("admin") ){
+                    if ( firebaseAuth.getUid() == course.getTeacherUID() ||
+                            profileUser.isAdmin() ||
+                            profileUser.getName().equals("admin") ){
                         editReminder.setVisibility(View.VISIBLE);
                     }
                 }
@@ -180,9 +198,11 @@ public class CourseReminderActivity extends AppCompatActivity implements Navigat
                 editDialog = new Dialog(CourseReminderActivity.this);
                 editDialog.setContentView(R.layout.edit_reminder_confirmation);
 
-                editPopUpTitle = (TextView) editDialog.findViewById(R.id.popUpTitle);
-                editPopUpTitle.setText("Are you sure you wish to edit reminder \"" + getIntent().getStringExtra("Reminder Name") + "\"?");
-                edit = (Button) editDialog.findViewById(R.id.edit_confirmation_btn);
+                editPopUpTitle = editDialog.findViewById(R.id.popUpTitle);
+                String title = "Are you sure you wish to edit reminder \""
+                        + getIntent().getStringExtra("Reminder Name") + "\"?";
+                editPopUpTitle.setText(title);
+                edit = editDialog.findViewById(R.id.edit_confirmation_btn);
                 edit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -200,7 +220,7 @@ public class CourseReminderActivity extends AppCompatActivity implements Navigat
                         editDialog.dismiss();
                     }
                 });
-                cancel = (Button) editDialog.findViewById(R.id.cancel_edit);
+                cancel =  editDialog.findViewById(R.id.cancel_edit);
                 cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -219,11 +239,12 @@ public class CourseReminderActivity extends AppCompatActivity implements Navigat
                 Button add, cancel;
                 addDialog = new Dialog(CourseReminderActivity.this);
                 addDialog.setContentView(R.layout.add_course_reminder_confirmation);
-                addPopUpTitle = (TextView) addDialog.findViewById(R.id.popUpAddTitle);
-                addPopUpTitle.setText("Are you sure you wish to add reminder \"" +
+                addPopUpTitle = addDialog.findViewById(R.id.popUpAddTitle);
+                String title = "Are you sure you wish to add reminder \"" +
                         reminderName.getText().toString() +
-                        "\" to your reminders?");
-                add = (Button) addDialog.findViewById(R.id.add_confirmation_btn);
+                        "\" to your reminders?";
+                addPopUpTitle.setText(title);
+                add = addDialog.findViewById(R.id.add_confirmation_btn);
                 add.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -242,7 +263,7 @@ public class CourseReminderActivity extends AppCompatActivity implements Navigat
                         addDialog.dismiss();
                     }
                 });
-                cancel = (Button) addDialog.findViewById(R.id.cancel_add);
+                cancel = addDialog.findViewById(R.id.cancel_add);
                 cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

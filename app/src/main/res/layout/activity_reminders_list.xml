@@ -21,9 +21,7 @@
     </com.google.android.material.navigation.NavigationView>
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -50,7 +48,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:gravity="center"
-                android:text="You have no reminders set yet."
+                android:text="@string/noRemindersSet"
                 android:visibility="gone" />
 
             <ImageView
@@ -59,7 +57,8 @@
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:visibility="gone"
-                app:srcCompat="@drawable/ic_sad" />
+                app:srcCompat="@drawable/ic_sad"
+                android:contentDescription="@string/button" />
 
             <ListView
                 android:id="@+id/lv_reminders"

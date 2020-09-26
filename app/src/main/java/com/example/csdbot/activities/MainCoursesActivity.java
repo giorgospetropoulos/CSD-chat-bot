@@ -36,7 +36,6 @@ public class MainCoursesActivity extends AppCompatActivity implements Navigation
     private ArrayList<Course> coursesList = new ArrayList<Course>();
     private ArrayAdapter<Course> adapter;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseHelper myDB;
     private ProgressDialog loading;
 
@@ -70,11 +69,11 @@ public class MainCoursesActivity extends AppCompatActivity implements Navigation
         /* Find the activity's views
          *      lv: The ListView of the Main Courses
          */
-        lv = (ListView) findViewById(R.id.coursesLV);
+        lv = findViewById(R.id.coursesLV);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
         // Connect to the database and retrieve all main courses
@@ -105,7 +104,10 @@ public class MainCoursesActivity extends AppCompatActivity implements Navigation
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Course temp = adapter.getItem(position);
-                String tempName = temp.getName_en();
+                String tempName = null;
+                if (temp != null) {
+                    tempName = temp.getName_en();
+                }
                 Intent intent = new Intent(MainCoursesActivity.this, CoursePageActivity.class);
                 intent.putExtra("Course Name", tempName);
                 startActivity(intent);

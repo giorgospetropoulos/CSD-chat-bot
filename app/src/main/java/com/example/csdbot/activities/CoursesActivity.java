@@ -20,7 +20,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class CoursesActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private Button mainCourses, electicCourses, otherDeptsCourses;
     private FirebaseAuth firebaseAuth;
 
     // ---------- Slide Menu --------------
@@ -52,9 +51,9 @@ public class CoursesActivity extends AppCompatActivity implements NavigationView
          *      electicCourses: Go to Electic Courses Activity
          *      otherDeptsCourses: Go to Courses from Other Departments Activity
          */
-        mainCourses = (Button) findViewById(R.id.mainCourses);
-        electicCourses = (Button) findViewById(R.id.electicCourses);
-        otherDeptsCourses = (Button) findViewById(R.id.other_dept);
+        Button mainCourses = findViewById(R.id.mainCourses);
+        Button electicCourses = findViewById(R.id.electicCourses);
+        Button otherDeptsCourses = findViewById(R.id.other_dept);
 
 
         // Initialize firebase components

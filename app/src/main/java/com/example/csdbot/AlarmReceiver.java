@@ -51,7 +51,10 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
 
         Drawable drawable= ContextCompat.getDrawable(context,R.drawable.logo);
-        Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
+        Bitmap bitmap = null;
+        if (drawable != null) {
+            bitmap = ((BitmapDrawable)drawable).getBitmap();
+        }
 
         NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
         bigText.bigText(message);

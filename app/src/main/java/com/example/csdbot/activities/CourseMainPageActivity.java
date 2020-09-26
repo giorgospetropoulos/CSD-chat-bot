@@ -32,7 +32,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import java.util.ArrayList;
 import java.util.Collections;
 
 public class CourseMainPageActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -41,9 +40,7 @@ public class CourseMainPageActivity extends AppCompatActivity implements Navigat
     private ImageView noReminders;
     private Button enroll, disenroll, add, setTeacher, addAll, editCourse;
     private ListView lv;
-    private ArrayList<Course> coursesList = new ArrayList<Course>();
     private ArrayAdapter<Reminder> adapter;
-    private FirebaseDatabase firebaseDatabase;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference, userCourseListReference, courseReference;
     private User user;
@@ -89,19 +86,19 @@ public class CourseMainPageActivity extends AppCompatActivity implements Navigat
          *      addAll: Add All Course Reminders to My Reminders Button
          *      editCourse: Edit Course Button
          */
-        noReminders = (ImageView) findViewById(R.id.noCourseReminders);
-        noRemindersText = (TextView) findViewById(R.id.noCourseRemindersText);
-        lv = (ListView) findViewById(R.id.courseRemindersLV);
-        enroll = (Button) findViewById(R.id.courseMainPageEnroll);
-        disenroll = (Button) findViewById(R.id.courseMainPageDisenroll);
-        add = (Button) findViewById(R.id.addNewCourseReminder);
-        setTeacher = (Button) findViewById(R.id.setTeacher);
-        addAll = (Button) findViewById(R.id.courseMainPageAddAll);
-        editCourse = (Button) findViewById(R.id.editCourseBtn);
+        noReminders = findViewById(R.id.noCourseReminders);
+        noRemindersText = findViewById(R.id.noCourseRemindersText);
+        lv = findViewById(R.id.courseRemindersLV);
+        enroll = findViewById(R.id.courseMainPageEnroll);
+        disenroll = findViewById(R.id.courseMainPageDisenroll);
+        add = findViewById(R.id.addNewCourseReminder);
+        setTeacher = findViewById(R.id.setTeacher);
+        addAll = findViewById(R.id.courseMainPageAddAll);
+        editCourse = findViewById(R.id.editCourseBtn);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Database");
 
         // Get Course's name
@@ -113,25 +110,28 @@ public class CourseMainPageActivity extends AppCompatActivity implements Navigat
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Reminder temp = adapter.getItem(position);
                 Intent intent = new Intent(CourseMainPageActivity.this, CourseReminderActivity.class);
-                intent.putExtra("remID", temp.getId());
-                intent.putExtra("Post",getIntent().getStringExtra("Post"));
-                intent.putExtra("Reminder Name", temp.getName());
-                intent.putExtra("Reminder Desc", temp.getDescription());
-                intent.putExtra("Course Name", getIntent().getStringExtra("Course Name"));
-                switch (temp.getReminder_priority()){
-                    case low:
-                        intent.putExtra("Reminder Priority", "low");
-                        break;
-                    case mid:
-                        intent.putExtra("Reminder Priority", "mid");
-                        break;
-                    case high:
-                        intent.putExtra("Reminder Priority", "high");
-                        break;
-                    default:
-                        intent.putExtra("Reminder Priority", "none");
-                        break;
+                if (temp != null) {
+                    intent.putExtra("remID", temp.getId());
+                    intent.putExtra("Post",getIntent().getStringExtra("Post"));
+                    intent.putExtra("Reminder Name", temp.getName());
+                    intent.putExtra("Reminder Desc", temp.getDescription());
+                    intent.putExtra("Course Name", getIntent().getStringExtra("Course Name"));
+                    switch (temp.getReminder_priority()){
+                        case low:
+                            intent.putExtra("Reminder Priority", "low");
+                            break;
+                        case mid:
+                            intent.putExtra("Reminder Priority", "mid");
+                            break;
+                        case high:
+                            intent.putExtra("Reminder Priority", "high");
+                            break;
+                        default:
+                            intent.putExtra("Reminder Priority", "none");
+                            break;
+                    }
                 }
+
                 startActivity(intent);
             }
         });
@@ -141,32 +141,37 @@ public class CourseMainPageActivity extends AppCompatActivity implements Navigat
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
-                user = myDB.getUserByUID(firebaseAuth.getUid());
+                if (myDB != null) {
+                    user = myDB.getUserByUID(firebaseAuth.getUid());
+                }
 
                 // Check if course is Postgraduate or Undergaduate
                 // and retrieve the appropriate data
-                if ( getIntent().getStringExtra("Post").equals("false") ){
-                    courseToAdd = myDB.getCourseByName(courseName);
-                    if ( courseToAdd.getCourseReminders().isEmpty() ){
-                        noReminders.setVisibility(View.VISIBLE);
-                        noRemindersText.setVisibility(View.VISIBLE);
+                if ( getIntent().hasExtra("Post")){
+                    if ( getIntent().getStringExtra("Post").equals("false") ){
+                        courseToAdd = myDB.getCourseByName(courseName);
+                        if ( courseToAdd.getCourseReminders().isEmpty() ){
+                            noReminders.setVisibility(View.VISIBLE);
+                            noRemindersText.setVisibility(View.VISIBLE);
+                        } else {
+                            noReminders.setVisibility(View.GONE);
+                            noRemindersText.setVisibility(View.GONE);
+                        }
+                        adapter = new CourseReminderListAdapter(CourseMainPageActivity.this, R.layout.course_reminder_list_item, courseToAdd.getCourseReminders());
                     } else {
-                        noReminders.setVisibility(View.GONE);
-                        noRemindersText.setVisibility(View.GONE);
-                    }
-                    adapter = new CourseReminderListAdapter(CourseMainPageActivity.this, R.layout.course_reminder_list_item, courseToAdd.getCourseReminders());
-                } else {
-                    postCourseToAdd = myDB.getPostGraduateCourseByName(courseName);
-                    if ( postCourseToAdd.getCourseReminders().isEmpty() ){
-                        noReminders.setVisibility(View.VISIBLE);
-                        noRemindersText.setVisibility(View.VISIBLE);
-                    } else {
-                        noReminders.setVisibility(View.GONE);
-                        noRemindersText.setVisibility(View.GONE);
-                    }
-                    adapter = new CourseReminderListAdapter(CourseMainPageActivity.this, R.layout.course_reminder_list_item, postCourseToAdd.getCourseReminders());
+                        postCourseToAdd = myDB.getPostGraduateCourseByName(courseName);
+                        if ( postCourseToAdd.getCourseReminders().isEmpty() ){
+                            noReminders.setVisibility(View.VISIBLE);
+                            noRemindersText.setVisibility(View.VISIBLE);
+                        } else {
+                            noReminders.setVisibility(View.GONE);
+                            noRemindersText.setVisibility(View.GONE);
+                        }
+                        adapter = new CourseReminderListAdapter(CourseMainPageActivity.this, R.layout.course_reminder_list_item, postCourseToAdd.getCourseReminders());
 
+                    }
                 }
+
                 lv.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
 
@@ -208,11 +213,15 @@ public class CourseMainPageActivity extends AppCompatActivity implements Navigat
                         Button addAllRems, cancelAddAll;
                         addAllDialog = new Dialog(CourseMainPageActivity.this);
                         addAllDialog.setContentView(R.layout.add_all_reminders_confirmation);
-                        addAllTitle = (TextView) addAllDialog.findViewById(R.id.addAllConfirmationTitle);
-                        addAllTitle.setText("Are you sure you wish to add all the reminders of " + courseName + " to your reminders? \n\n" +
-                                "You will not be enrolled to the course with this action. If you wish to enroll to the course, click the Enroll button.");
-                        addAllRems = (Button) addAllDialog.findViewById(R.id.addAllBtn);
-                        cancelAddAll = (Button) addAllDialog.findViewById(R.id.cancelAddAll);
+                        addAllTitle = addAllDialog.findViewById(R.id.addAllConfirmationTitle);
+                        String title = "Are you sure you wish to add all the reminders of "
+                                + courseName
+                                + " to your reminders? \n\n"
+                                + "You will not be enrolled to the course with this action. " +
+                                "If you wish to enroll to the course, click the Enroll button.";
+                        addAllTitle.setText(title);
+                        addAllRems = addAllDialog.findViewById(R.id.addAllBtn);
+                        cancelAddAll = addAllDialog.findViewById(R.id.cancelAddAll);
 
                         addAllRems.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -292,9 +301,13 @@ public class CourseMainPageActivity extends AppCompatActivity implements Navigat
                         enrollDialog = new Dialog(CourseMainPageActivity.this);
                         enrollDialog.setContentView(R.layout.enroll_confirmation);
 
-                        enrollPopUpTitle = (TextView) enrollDialog.findViewById(R.id.enrollPopUpTitle);
-                        enrollPopUpTitle.setText("Are you sure you wish to enroll to \"" + getIntent().getStringExtra("Course Name") +"\"? All course reminders will be added to your reminders and you will be notified about future reminders as well.");
-                        enroll_btn = (Button) enrollDialog.findViewById(R.id.enroll_confirmation_btn);
+                        enrollPopUpTitle = enrollDialog.findViewById(R.id.enrollPopUpTitle);
+                        String title = "Are you sure you wish to enroll to \""
+                                + getIntent().getStringExtra("Course Name")
+                                +"\"? All course reminders will be added to your reminders" +
+                                " and you will be notified about future reminders as well.";
+                        enrollPopUpTitle.setText(title);
+                        enroll_btn = enrollDialog.findViewById(R.id.enroll_confirmation_btn);
 
                         enroll_btn.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -337,7 +350,7 @@ public class CourseMainPageActivity extends AppCompatActivity implements Navigat
                             }
                         });
 
-                        cancel_enroll = (Button) enrollDialog.findViewById(R.id.cancel_enroll);
+                        cancel_enroll = enrollDialog.findViewById(R.id.cancel_enroll);
                         cancel_enroll.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -360,9 +373,12 @@ public class CourseMainPageActivity extends AppCompatActivity implements Navigat
                         disenrollDialog = new Dialog(CourseMainPageActivity.this);
                         disenrollDialog.setContentView(R.layout.disenroll_confirmation);
 
-                        disenrollPopUpTitle = (TextView) disenrollDialog.findViewById(R.id.disenrollPopUpTitle);
-                        disenrollPopUpTitle.setText("Are you sure you wish to disenroll from \"" + getIntent().getStringExtra("Course Name") +"\"? You will not be notified for any new reminders. ");
-                        disenroll_btn = (Button) disenrollDialog.findViewById(R.id.disenroll_confirmation_btn);
+                        disenrollPopUpTitle = disenrollDialog.findViewById(R.id.disenrollPopUpTitle);
+                        String title = "Are you sure you wish to disenroll from \""
+                                + getIntent().getStringExtra("Course Name")
+                                +"\"? You will not be notified for any new reminders.";
+                        disenrollPopUpTitle.setText(title);
+                        disenroll_btn = disenrollDialog.findViewById(R.id.disenroll_confirmation_btn);
 
                         disenroll_btn.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -391,7 +407,7 @@ public class CourseMainPageActivity extends AppCompatActivity implements Navigat
                             }
                         });
 
-                        cancel_disenroll = (Button) disenrollDialog.findViewById(R.id.cancel_disenroll);
+                        cancel_disenroll = disenrollDialog.findViewById(R.id.cancel_disenroll);
                         cancel_disenroll.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {

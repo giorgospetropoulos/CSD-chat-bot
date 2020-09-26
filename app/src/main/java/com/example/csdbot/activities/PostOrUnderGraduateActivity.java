@@ -17,7 +17,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class PostOrUnderGraduateActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private Button post, under;
     private FirebaseAuth firebaseAuth;
 
     // ---------- Slide Menu --------------
@@ -48,8 +47,8 @@ public class PostOrUnderGraduateActivity extends AppCompatActivity implements Na
          *      under: Go to Undergraduate Courses Button
          *      post: Go to Postgraduate Courses Button
          */
-        under = (Button) findViewById(R.id.undergraduateCourses);
-        post = (Button) findViewById(R.id.postgraduateCourses);
+        Button under = findViewById(R.id.undergraduateCourses);
+        Button post = findViewById(R.id.postgraduateCourses);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();

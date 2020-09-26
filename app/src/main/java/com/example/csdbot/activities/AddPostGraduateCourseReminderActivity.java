@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -16,6 +17,8 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -33,6 +36,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Collections;
+import java.util.Objects;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 public class AddPostGraduateCourseReminderActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private EditText selectName, selectDescription;
@@ -45,7 +52,6 @@ public class AddPostGraduateCourseReminderActivity extends AppCompatActivity imp
     private Button addRem;
     private int reminderDay, reminderMonth, reminderYear, reminderHour, reminderMin;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private PostGraduateCourse course;
     private DatabaseHelper myDB;
 
@@ -84,21 +90,33 @@ public class AddPostGraduateCourseReminderActivity extends AppCompatActivity imp
          *      timePicker: The TimePicker for the selection of the reminder's time
          *      priorityGroup: The RadioGroup for the selection of the reminder's priority
          *      addRem: The Button to add the reminder
+         *      timeNumberPicker: The layout containing the number pickers for time
+         *      hourNumberPicker: The Reminder's Hour NumberPicker
+         *      minuteNumberPicker: The Reminder's Minute NumberPicker
          */
-        selectName = (EditText) findViewById(R.id.post_courseReminderName);
-        selectDescription = (EditText) findViewById(R.id.post_courseReminderDescription);
-        selectDate = (TextView) findViewById(R.id.post_courseReminderDate);
-        selectTime = (TextView) findViewById(R.id.post_selectCourseReminderTime);
-        checkBtn = (ImageView) findViewById(R.id.post_courseReminderCheckButton);
-        selectPriority = (TextView) findViewById(R.id.post_CourseReminderPriority);
-        calendar = (CalendarView) findViewById(R.id.post_calendarViewAddCourseReminder);
-        timePicker = (TimePicker) findViewById(R.id.post_courseReminderTimePicker);
-        priorityGroup = (RadioGroup) findViewById(R.id.post_courseReminderPriorityGroup);
-        addRem = (Button) findViewById(R.id.post_addNewCourseRem);
+        selectName = findViewById(R.id.post_courseReminderName);
+        selectDescription = findViewById(R.id.post_courseReminderDescription);
+        selectDate =  findViewById(R.id.post_courseReminderDate);
+        selectTime = findViewById(R.id.post_selectCourseReminderTime);
+        checkBtn = findViewById(R.id.post_courseReminderCheckButton);
+        selectPriority = findViewById(R.id.post_CourseReminderPriority);
+        calendar = findViewById(R.id.post_calendarViewAddCourseReminder);
+        timePicker = findViewById(R.id.post_courseReminderTimePicker);
+        priorityGroup = findViewById(R.id.post_courseReminderPriorityGroup);
+        addRem = findViewById(R.id.post_addNewCourseRem);
+        final LinearLayout timeNumberPicker = findViewById(R.id.addCourseReminderNumberPicker);
+        final NumberPicker hourNumberPicker = findViewById(R.id.addCourseReminderHourPicker);
+        final NumberPicker minuteNumberPicker = findViewById(R.id.addCourseReminderMinutesPicker);
+
+        // Set minimum and maximum values for the number pickers
+        hourNumberPicker.setMaxValue(23);
+        hourNumberPicker.setMinValue(0);
+        minuteNumberPicker.setMaxValue(59);
+        minuteNumberPicker.setMinValue(0);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
         // Set the visibility of the (temporarily) not-needed components
@@ -112,14 +130,17 @@ public class AddPostGraduateCourseReminderActivity extends AppCompatActivity imp
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
-                course = myDB.getPostGraduateCourseByName(getIntent().getStringExtra("Course Name"));
+                if (myDB != null) {
+                    course = myDB.getPostGraduateCourseByName(getIntent().getStringExtra("Course Name"));
+                }
 
                 // Hide keyboard if the user taps out of it
                 findViewById(R.id.post_linearLayoutAddCourseReminder).setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
+                        v.performClick();
                         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                        imm.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(), 0);
                         return true;
                     }
                 });
@@ -131,7 +152,8 @@ public class AddPostGraduateCourseReminderActivity extends AppCompatActivity imp
                         reminderDay = dayOfMonth;
                         reminderMonth = month + 1;
                         reminderYear = year;
-                        selectDate.setText(String.valueOf(dayOfMonth) + "/" + String.valueOf(month + 1) + "/" + String.valueOf(year));
+                        String date = dayOfMonth + "/" + (month + 1) + "/" + year;
+                        selectDate.setText(date);
                         calendar.setVisibility(View.GONE);
                     }
                 });
@@ -140,18 +162,14 @@ public class AddPostGraduateCourseReminderActivity extends AppCompatActivity imp
                 selectDate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        calendar.setVisibility(calendar.isShown()
-                                ? View.GONE
-                                : View.VISIBLE);
-                        timePicker.setVisibility(timePicker.isShown()
-                                ? View.GONE
-                                : View.GONE);
-                        checkBtn.setVisibility(checkBtn.isShown()
-                                ? View.GONE
-                                : View.GONE);
-                        priorityGroup.setVisibility(priorityGroup.isShown()
-                                ? View.GONE
-                                : View.GONE);
+                        calendar.setVisibility(VISIBLE);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            timePicker.setVisibility(GONE);
+                        } else {
+                            timeNumberPicker.setVisibility(GONE);
+                        }
+                        checkBtn.setVisibility(GONE);
+                        priorityGroup.setVisibility(GONE);
                     }
                 });
 
@@ -159,18 +177,14 @@ public class AddPostGraduateCourseReminderActivity extends AppCompatActivity imp
                 selectTime.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        calendar.setVisibility(calendar.isShown()
-                                ? View.GONE
-                                : View.GONE);
-                        timePicker.setVisibility(timePicker.isShown()
-                                ? View.GONE
-                                : View.VISIBLE);
-                        checkBtn.setVisibility(checkBtn.isShown()
-                                ? View.GONE
-                                : View.VISIBLE);
-                        priorityGroup.setVisibility(priorityGroup.isShown()
-                                ? View.GONE
-                                : View.GONE);
+                        calendar.setVisibility(GONE);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            timePicker.setVisibility(VISIBLE);
+                        } else {
+                            timeNumberPicker.setVisibility(VISIBLE);
+                        }
+                        checkBtn.setVisibility(VISIBLE);
+                        priorityGroup.setVisibility(GONE);
                     }
                 });
 
@@ -178,19 +192,35 @@ public class AddPostGraduateCourseReminderActivity extends AppCompatActivity imp
                 checkBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        reminderHour = timePicker.getHour();
-                        reminderMin = timePicker.getMinute();
-                        if (reminderHour >= 10 ){
-                            selectTime.setText( String.valueOf(reminderHour) + ":" );
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            reminderHour = timePicker.getHour();
+                            reminderMin = timePicker.getMinute();
                         } else {
-                            selectTime.setText( "0" + String.valueOf(reminderHour) + ":" );
+                            reminderHour = hourNumberPicker.getValue();
+                            reminderMin = minuteNumberPicker.getValue();
                         }
-                        if (reminderMin >= 10 ){
-                            selectTime.setText( selectTime.getText().toString() + String.valueOf(reminderMin));
+
+                        if (reminderHour >= 10 ){
+                            String hour = reminderHour + ":";
+                            selectTime.setText( hour );
                         } else {
-                            selectTime.setText( selectTime.getText().toString() + "0" + String.valueOf(reminderMin));
-                        }                        timePicker.setVisibility(View.GONE);
-                        checkBtn.setVisibility(View.GONE);
+                            String hour = "0" + reminderHour + ":";
+                            selectTime.setText( hour );
+                        }
+
+                        if (reminderMin >= 10 ){
+                            String time = selectTime.getText().toString()  + reminderMin;
+                            selectTime.setText(time);
+                        } else {
+                            String time = selectTime.getText().toString() + "0" + reminderMin;
+                            selectTime.setText(time);
+                        }
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            timePicker.setVisibility(GONE);
+                        } else {
+                            timeNumberPicker.setVisibility(GONE);
+                        }
+                        checkBtn.setVisibility(GONE);
                     }
                 });
 
@@ -198,7 +228,7 @@ public class AddPostGraduateCourseReminderActivity extends AppCompatActivity imp
                 priorityGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(RadioGroup group, int checkedId) {
-                        selectedButton = (RadioButton) findViewById(checkedId);
+                        selectedButton = findViewById(checkedId);
                         selectPriority.setText(selectedButton.getText().toString());
                         priorityGroup.setVisibility(View.GONE);
                     }
@@ -208,18 +238,14 @@ public class AddPostGraduateCourseReminderActivity extends AppCompatActivity imp
                 selectPriority.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        calendar.setVisibility(calendar.isShown()
-                                ? View.GONE
-                                : View.GONE);
-                        timePicker.setVisibility(timePicker.isShown()
-                                ? View.GONE
-                                : View.GONE);
-                        checkBtn.setVisibility(checkBtn.isShown()
-                                ? View.GONE
-                                : View.GONE);
-                        priorityGroup.setVisibility(priorityGroup.isShown()
-                                ? View.GONE
-                                : View.VISIBLE);
+                        calendar.setVisibility(GONE);
+                        timePicker.setVisibility(GONE);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            timePicker.setVisibility(GONE);
+                        } else {
+                            timeNumberPicker.setVisibility(GONE);
+                        }
+                        priorityGroup.setVisibility(VISIBLE);
                     }
                 });
 

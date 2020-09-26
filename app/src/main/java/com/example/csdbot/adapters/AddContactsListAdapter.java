@@ -38,10 +38,7 @@ public class AddContactsListAdapter extends ArrayAdapter<User> {
     private Context mContext;
     private DatabaseHelper myDB;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private User profileUser;
-    private FirebaseStorage firebaseStorage;
-    private StorageReference storageReference;
     private Dialog addConfirmatonDialog;
     private ProgressDialog loading;
 
@@ -62,14 +59,14 @@ public class AddContactsListAdapter extends ArrayAdapter<User> {
     @NonNull
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        ContactViewHolder mainViewHolder = null;
+        ContactViewHolder mainViewHolder;
         final ContactViewHolder viewHolder = new ContactViewHolder();
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        firebaseStorage = FirebaseStorage.getInstance();
-        storageReference = firebaseStorage.getReference();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference storageReference = firebaseStorage.getReference();
         final DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
         // Connect to the database and retrieve the user's data
@@ -77,7 +74,9 @@ public class AddContactsListAdapter extends ArrayAdapter<User> {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
-                profileUser = myDB.getUserByUID(firebaseAuth.getUid());
+                if (myDB != null) {
+                    profileUser = myDB.getUserByUID(firebaseAuth.getUid());
+                }
 
                 // Check if user is already a friend with current user
                 // and if he is hide the add contact button
@@ -124,9 +123,10 @@ public class AddContactsListAdapter extends ArrayAdapter<User> {
                     addConfirmatonDialog = new Dialog(getContext());
                     addConfirmatonDialog.setContentView(R.layout.add_contact_confirmation);
                     addContactTitle = (TextView) addConfirmatonDialog.findViewById(R.id.contactConfirmation);
-                    addContactTitle.setText("Are you sure you wish to add " +
+                    String title = "Are you sure you wish to add " +
                             contacts.get(position).getName() +
-                            "to your contacts?");
+                            "to your contacts?";
+                    addContactTitle.setText(title);
 
                     addContactBtn = (Button) addConfirmatonDialog.findViewById(R.id.addContactConfirmationBtn);
                     cancelBtn = (Button) addConfirmatonDialog.findViewById(R.id.addContactCancelationBtn);
@@ -183,9 +183,10 @@ public class AddContactsListAdapter extends ArrayAdapter<User> {
                     addConfirmatonDialog = new Dialog(getContext());
                     addConfirmatonDialog.setContentView(R.layout.add_contact_confirmation);
                     addContactTitle = (TextView) addConfirmatonDialog.findViewById(R.id.contactConfirmation);
-                    addContactTitle.setText("Are you sure you wish to add " +
+                    String title = "Are you sure you wish to add " +
                             contacts.get(position).getName() +
-                            "to your contacts?");
+                            "to your contacts?";
+                    addContactTitle.setText(title);
 
                     addContactBtn = (Button) addConfirmatonDialog.findViewById(R.id.addContactConfirmationBtn);
                     cancelBtn = (Button) addConfirmatonDialog.findViewById(R.id.addContactCancelationBtn);

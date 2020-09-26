@@ -40,7 +40,6 @@ import java.util.HashSet;
 public class SearchResultsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ListView course_lv, reminder_lv;
-    private Button courses_btn, reminders_btn;
     private TextView mainTitle, itemsFound;
     private ArrayList<Course> courseList = new ArrayList<Course>();
     private ArrayAdapter<Course> courseAdapter;
@@ -48,11 +47,8 @@ public class SearchResultsActivity extends AppCompatActivity implements Navigati
     private ArrayAdapter<Reminder> reminderAdapter;
     private DatabaseHelper myDB;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference myRef;
     private User user;
     private String query;
-    private int items = 0;
     private ProgressDialog loading;
 
     // ---------- Slide Menu --------------
@@ -92,7 +88,7 @@ public class SearchResultsActivity extends AppCompatActivity implements Navigati
         // --------- Search Engine -------------
         try {
             stopWords = new HashSet<String>();
-            String stop = "";
+            String stop;
             isEn = getResources().getAssets().open("stopwordsEn.txt");
             isGr = getResources().getAssets().open("stopwordsGr.txt");
             readerEn = new BufferedReader(new InputStreamReader(isEn));
@@ -118,8 +114,8 @@ public class SearchResultsActivity extends AppCompatActivity implements Navigati
          *      mainTitle: Search Result Title
          *
          */
-        courses_btn = (Button) findViewById(R.id.search_courses_btn);
-        reminders_btn = (Button) findViewById(R.id.search_reminders_btn);
+        Button courses_btn = (Button) findViewById(R.id.search_courses_btn);
+        Button reminders_btn = (Button) findViewById(R.id.search_reminders_btn);
         itemsFound = (TextView) findViewById(R.id.itemsFound);
         course_lv = (ListView) findViewById(R.id.course_list);
         reminder_lv = (ListView) findViewById(R.id.reminder_list);
@@ -130,15 +126,17 @@ public class SearchResultsActivity extends AppCompatActivity implements Navigati
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = firebaseDatabase.getReference("Database");
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = firebaseDatabase.getReference("Database");
 
         // Connect to the database and search for the query given
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
-                user = myDB.getUserByUID(firebaseAuth.getUid());
+                if (myDB != null) {
+                    user = myDB.getUserByUID(firebaseAuth.getUid());
+                }
                 String[] seperatedQuery = query.split(" ");
                 for( int i = 0 ; i < seperatedQuery.length ; i++ ){
                     if ( !stopWords.contains(seperatedQuery[i]) ){
@@ -146,8 +144,10 @@ public class SearchResultsActivity extends AppCompatActivity implements Navigati
                         reminderList.addAll(user.searchInReminders(seperatedQuery[i]));
                     }
                 }
-                mainTitle.setText("Your results for searching \"" + query + "\"");
-                itemsFound.setText( Integer.toString(courseList.size() + reminderList.size()) );
+                String title = "Your results for searching \"" + query + "\"";
+                mainTitle.setText(title);
+                String noOfItemsFound = Integer.toString(courseList.size() + reminderList.size());
+                itemsFound.setText( noOfItemsFound );
                 itemsFound.setVisibility(View.VISIBLE);
 
                 courseAdapter = new CourseListAdapter(SearchResultsActivity.this, R.layout.courses_list_item, courseList);
@@ -190,7 +190,10 @@ public class SearchResultsActivity extends AppCompatActivity implements Navigati
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Course temp = courseAdapter.getItem(position);
-                String tempName = temp.getName_en();
+                String tempName = null;
+                if (temp != null) {
+                    tempName = temp.getName_en();
+                }
                 Intent intent = new Intent(SearchResultsActivity.this, CoursePageActivity.class);
                 intent.putExtra("Course Name", tempName);
                 startActivity(intent);

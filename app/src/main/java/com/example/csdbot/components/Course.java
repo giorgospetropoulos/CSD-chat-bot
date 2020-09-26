@@ -12,6 +12,10 @@ public class Course {
     private String ECTS;
 
 
+    /**
+     *      Constructors
+     */
+
     public Course(){
 
     }
@@ -50,6 +54,38 @@ public class Course {
         this.description_en = description;
         this.ECTS = ECTS;
     }
+
+
+    /**
+     *      Sort Courses by code
+     */
+    public static Comparator<Course> CourseComparator = new Comparator<Course>() {
+        @Override
+        public int compare(Course c1, Course c2) {
+            return c1.getCode_en().compareTo(c2.getCode_en());
+        }
+    };
+
+    /**
+     * Get the reminder's position in the list given its name
+     * @param name the name of the reminder
+     * @return the position of the reminder
+     */
+    public int getCourseReminderPosition(String name){
+        int i = 0;
+        for( Reminder temp: courseReminders){
+            if ( temp.getName().equals(name) ){
+                return i;
+            }
+            i++;
+        }
+        return i;
+    }
+
+
+    /*
+     *      Getters and Setters
+     */
 
     public String getName_en() {
         return name_en;
@@ -148,12 +184,7 @@ public class Course {
         this.code_en = code_en;
     }
 
-    public static Comparator<Course> CourseComparator = new Comparator<Course>() {
-        @Override
-        public int compare(Course c1, Course c2) {
-            return c1.getCode_en().compareTo(c2.getCode_en());
-        }
-    };
+
 
     public String getUrl() {
         return url;
@@ -211,16 +242,7 @@ public class Course {
         this.area_name_gr = area_name_gr;
     }
 
-    public int getCourseReminderPosition(String name){
-        int i = 0;
-        for( Reminder temp: courseReminders){
-            if ( temp.getName().equals(name) ){
-                return i;
-            }
-            i++;
-        }
-        return i;
-    }
+
 
     @Override
     public String toString(){

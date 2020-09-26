@@ -6,9 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,9 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
-    private Button login_btn;
     private EditText username,password;
-    private  TextView signUp_btn, forgotPassword;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progress;
 
@@ -44,11 +39,11 @@ public class MainActivity extends AppCompatActivity {
          *      signUp_btn: The Sign Up Button
          *      forgotPassword: The Forgot Password Button
          */
-        username = (EditText) findViewById(R.id.username);
-        password = (EditText) findViewById(R.id.password);
-        login_btn = (Button) findViewById(R.id.login);
-        signUp_btn = (TextView) findViewById(R.id.signUp);
-        forgotPassword = (TextView) findViewById(R.id.forgotPassword);
+        username = findViewById(R.id.username);
+        password = findViewById(R.id.password);
+        Button login_btn = findViewById(R.id.login);
+        TextView signUp_btn = findViewById(R.id.signUp);
+        TextView forgotPassword = findViewById(R.id.forgotPassword);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
@@ -116,7 +111,10 @@ public class MainActivity extends AppCompatActivity {
     // Check if email is verified
     private void checkEmailVerification() {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        boolean emailFlag = firebaseUser.isEmailVerified();
+        boolean emailFlag = false;
+        if (firebaseUser != null) {
+            emailFlag = firebaseUser.isEmailVerified();
+        }
         if ( emailFlag ) {
             finish();
             Intent intent = new Intent(this, HomeActivity.class);

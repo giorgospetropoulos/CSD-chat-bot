@@ -44,23 +44,24 @@
 
             <TextView
                 android:id="@+id/calendarTitle"
-                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:text="" />
 
             <sun.bob.mcalendarview.MCalendarView
-                android:layout_width="match_parent"
-                android:layout_height="350dp"
                 android:id="@+id/calendarView"
-                />
+                android:layout_width="match_parent"
+                android:layout_height="350dp" />
 
             <ImageView
                 android:id="@+id/addReminder"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginLeft="170dp"
+                android:layout_marginStart="170dp"
+                android:layout_marginEnd="170dp"
                 android:layout_marginBottom="5dp"
+                android:contentDescription="@string/button"
                 app:srcCompat="@drawable/plus" />
 
             <ListView

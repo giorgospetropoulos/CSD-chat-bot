@@ -21,9 +21,7 @@
     </com.google.android.material.navigation.NavigationView>
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -52,7 +50,7 @@
                 android:layout_marginBottom="20dp"
                 app:srcCompat="@drawable/user"
                 android:scaleType="fitXY"
-                android:foreground="@drawable/circle"/>
+                android:contentDescription="@string/button" />
 
             <EditText
                 android:id="@+id/updateName"
@@ -60,15 +58,16 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 android:ems="10"
-                android:hint="Name"
-                android:inputType="textPersonName" />
+                android:hint="@string/nameHint"
+                android:inputType="textPersonName"
+                android:autofillHints="@string/nameHint" />
 
             <Button
                 android:id="@+id/save_btn"
                 android:layout_width="70dp"
                 android:layout_height="35dp"
                 android:background="@drawable/rnd_btn"
-                android:text="Save"
+                android:text="@string/saveBtn"
                 android:textColor="#ffffff" />
         </LinearLayout>
 

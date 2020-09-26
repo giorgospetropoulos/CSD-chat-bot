@@ -30,9 +30,8 @@ import com.google.firebase.database.ValueEventListener;
 
 public class PostGraduateCourseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private TextView CourseCode, CourseName, CourseTeacher, CourseDesc, CourseField, CourseECTS, CourseURL;
-    private Button goToMainCoursePage, deleteCourse;
+    private Button deleteCourse;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseHelper myDB;
     private PostGraduateCourse course;
     private User user;
@@ -74,19 +73,19 @@ public class PostGraduateCourseActivity extends AppCompatActivity implements Nav
          *      CourseECTS: The course's ECTS
          *      CourseURL: The course's Url
          */
-        goToMainCoursePage = (Button) findViewById(R.id.postCourseMainPageButton);
-        deleteCourse = (Button) findViewById(R.id.deletePostCourse);
-        CourseCode = (TextView) findViewById(R.id.postCoursePageCode);
-        CourseName = (TextView) findViewById(R.id.postCoursePageName);
-        CourseTeacher = (TextView) findViewById(R.id.postCoursePageTeacher);
-        CourseDesc = (TextView) findViewById(R.id.postCoursePageDesc);
-        CourseField = (TextView) findViewById(R.id.postCoursePageField);
-        CourseURL = (TextView) findViewById(R.id.postCoursePageURL);
-        CourseECTS = (TextView) findViewById(R.id.postCoursePageECTS);
+        Button goToMainCoursePage = findViewById(R.id.postCourseMainPageButton);
+        deleteCourse = findViewById(R.id.deletePostCourse);
+        CourseCode = findViewById(R.id.postCoursePageCode);
+        CourseName = findViewById(R.id.postCoursePageName);
+        CourseTeacher = findViewById(R.id.postCoursePageTeacher);
+        CourseDesc = findViewById(R.id.postCoursePageDesc);
+        CourseField = findViewById(R.id.postCoursePageField);
+        CourseURL = findViewById(R.id.postCoursePageURL);
+        CourseECTS = findViewById(R.id.postCoursePageECTS);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = firebaseDatabase.getReference("Database");
 
         // Connect to the database, retrieve the course's data
@@ -95,8 +94,10 @@ public class PostGraduateCourseActivity extends AppCompatActivity implements Nav
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
-                user = myDB.getUserByUID(firebaseAuth.getUid());
-                course = myDB.getPostGraduateCourseByName(getIntent().getStringExtra("Course Name"));
+                if (myDB != null) {
+                    user = myDB.getUserByUID(firebaseAuth.getUid());
+                    course = myDB.getPostGraduateCourseByName(getIntent().getStringExtra("Course Name"));
+                }
                 if ( course == null ){
                     course  = new PostGraduateCourse("",
                             "Something went wrong...",
@@ -172,9 +173,11 @@ public class PostGraduateCourseActivity extends AppCompatActivity implements Nav
                 Button delete, cancel;
                 deleteDialog = new Dialog(PostGraduateCourseActivity.this);
                 deleteDialog.setContentView(R.layout.delete_reminder_confirmation);
-                deletePopUpTitle = (TextView) deleteDialog.findViewById(R.id.popUpDelTitle);
-                deletePopUpTitle.setText("Are you sure you wish to delete course \""  + course.getName_en() +"\" ?");
-                delete = (Button) deleteDialog.findViewById(R.id.delete_confirmation_btn);
+                deletePopUpTitle = deleteDialog.findViewById(R.id.popUpDelTitle);
+                String title = "Are you sure you wish to delete course \""  +
+                        course.getName_en() +"\" ?";
+                deletePopUpTitle.setText(title);
+                delete = deleteDialog.findViewById(R.id.delete_confirmation_btn);
                 delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -185,7 +188,7 @@ public class PostGraduateCourseActivity extends AppCompatActivity implements Nav
                         startActivity(intent);
                     }
                 });
-                cancel = (Button) deleteDialog.findViewById(R.id.cancel_delete_reminder);
+                cancel = deleteDialog.findViewById(R.id.cancel_delete_reminder);
                 cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

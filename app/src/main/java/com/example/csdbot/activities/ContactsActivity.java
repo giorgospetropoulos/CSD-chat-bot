@@ -32,12 +32,11 @@ import java.util.ArrayList;
 public class ContactsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ListView contacts_lv;
-    private ImageView add_contact, sad_face;
+    private ImageView sad_face;
     private TextView noContacts;
     private ArrayList<User> contacts;
     private ArrayAdapter<User> adapter;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseHelper myDB;
     private ProgressDialog loading;
 
@@ -75,14 +74,14 @@ public class ContactsActivity extends AppCompatActivity implements NavigationVie
          *      sad_face: ImageView if the user has no contacts
          *      noContacts: TextView if the user has no contacts
          */
-        add_contact = (ImageView) findViewById(R.id.addContact);
-        contacts_lv = (ListView) findViewById(R.id.contacts_lv);
-        sad_face = (ImageView) findViewById(R.id.sad_face_contacts);
-        noContacts = (TextView) findViewById(R.id.noContactsText);
+        ImageView add_contact = findViewById(R.id.addContact);
+        contacts_lv = findViewById(R.id.contacts_lv);
+        sad_face = findViewById(R.id.sad_face_contacts);
+        noContacts = findViewById(R.id.noContactsText);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
         // Start Activity to Add New Contact
@@ -99,8 +98,12 @@ public class ContactsActivity extends AppCompatActivity implements NavigationVie
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
-                User profileUser = myDB.getUserByUID(firebaseAuth.getUid());
-                contacts = profileUser.getUser_friendlist();
+                User profileUser ;
+                if (myDB != null) {
+                    profileUser = myDB.getUserByUID(firebaseAuth.getUid());
+                    contacts = profileUser.getUser_friendlist();
+                }
+
                 adapter = new ContactsListAdapter(ContactsActivity.this, R.layout.contacts_list_item, contacts);
 
                 // Check if the user has an empty contacts list

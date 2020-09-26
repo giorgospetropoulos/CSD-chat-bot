@@ -35,7 +35,6 @@ public class OtherDeptsCoursesActivity extends AppCompatActivity implements Navi
     private ArrayList<Course> coursesList = new ArrayList<Course>();
     private ArrayAdapter<Course> adapter;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseHelper myDB;
     private ProgressDialog loading;
 
@@ -68,11 +67,11 @@ public class OtherDeptsCoursesActivity extends AppCompatActivity implements Navi
         /* Find the activity's views
          *      lv: The ListView of the Other Departments' Courses
          */
-        lv = (ListView) findViewById(R.id.otherDeptsCoursesList);
+        lv = findViewById(R.id.otherDeptsCoursesList);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
         // Connect to the database and retrieve all courses from other departments
@@ -103,7 +102,10 @@ public class OtherDeptsCoursesActivity extends AppCompatActivity implements Navi
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Course temp = adapter.getItem(position);
-                String tempName = temp.getName_en();
+                String tempName = null;
+                if (temp != null) {
+                    tempName = temp.getName_en();
+                }
                 Intent intent = new Intent(OtherDeptsCoursesActivity.this, CoursePageActivity.class);
                 intent.putExtra("Course Name", tempName);
                 startActivity(intent);

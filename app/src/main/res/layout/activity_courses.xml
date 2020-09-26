@@ -6,8 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:openDrawer="start"
-    tools:context=".activities.CoursesActivity">
+    tools:context=".activities.CoursesActivity"
+    tools:openDrawer="start">
 
 
     <com.google.android.material.navigation.NavigationView
@@ -23,13 +23,11 @@
 
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".activities.CoursesActivity">
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -40,42 +38,42 @@
             app:navigationIcon="@drawable/ic_menu" />
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
 
 
-        <Button
-            android:id="@+id/mainCourses"
-            android:layout_width="307dp"
-            android:layout_height="33dp"
-            android:layout_marginTop="-200dp"
-            android:layout_marginBottom="20dp"
-            android:textColor="#ffffff"
-            android:background="@drawable/rnd_btn"
-            android:text="Main Courses" />
+            <Button
+                android:id="@+id/mainCourses"
+                android:layout_width="307dp"
+                android:layout_height="33dp"
+                android:layout_marginTop="-200dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/rnd_btn"
+                android:text="@string/mainCourses"
+                android:textColor="#ffffff" />
 
-        <Button
-            android:id="@+id/electicCourses"
-            android:layout_width="307dp"
-            android:layout_height="33dp"
-            android:layout_marginBottom="20dp"
-            android:textColor="#ffffff"
-            android:background="@drawable/rnd_btn"
-            android:text="Electic Courses" />
+            <Button
+                android:id="@+id/electicCourses"
+                android:layout_width="307dp"
+                android:layout_height="33dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/rnd_btn"
+                android:text="@string/electiCourses"
+                android:textColor="#ffffff" />
 
-        <Button
-            android:id="@+id/other_dept"
-            android:layout_width="307dp"
-            android:layout_height="33dp"
-            android:layout_marginBottom="20dp"
-            android:textColor="#ffffff"
-            android:background="@drawable/rnd_btn"
-            android:text="Courses from other Departments" />
+            <Button
+                android:id="@+id/other_dept"
+                android:layout_width="307dp"
+                android:layout_height="33dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/rnd_btn"
+                android:text="@string/otherDeptCourses"
+                android:textColor="#ffffff" />
 
-    </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>

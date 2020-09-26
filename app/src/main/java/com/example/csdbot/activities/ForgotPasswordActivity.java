@@ -17,7 +17,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
     private EditText passwordEmail;
-    private Button resetPassword;
     private FirebaseAuth firebaseAuth;
 
     @Override
@@ -29,8 +28,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
          *      passwordEmail: The email of the user
          *      resetPassword: The Button to reset the password
          */
-        passwordEmail = (EditText) findViewById(R.id.email_forgot);
-        resetPassword = (Button) findViewById(R.id.resetPassword);
+        passwordEmail = findViewById(R.id.email_forgot);
+        Button resetPassword = findViewById(R.id.resetPassword);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();

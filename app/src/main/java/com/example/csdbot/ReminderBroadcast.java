@@ -3,12 +3,9 @@ package com.example.csdbot;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-
-import com.example.csdbot.components.Course;
 import com.example.csdbot.components.DatabaseHelper;
 import com.example.csdbot.components.Reminder;
 import com.example.csdbot.components.User;
@@ -18,18 +15,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.Calendar;
 
 public class ReminderBroadcast extends BroadcastReceiver {
 
-    private FirebaseDatabase firebaseDatabase;
     private FirebaseAuth firebaseAuth;
-    private DatabaseReference databaseReference, userCourseListReference, courseReference;
     private User user;
     private DatabaseHelper myDB;
     private Reminder rem;
-    private Course courseToAdd;
 
 
 
@@ -37,16 +30,18 @@ public class ReminderBroadcast extends BroadcastReceiver {
     public void onReceive(final Context context, final Intent intent) {
 
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
-        databaseReference = firebaseDatabase.getReference("Database");
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
 
-                user = myDB.getUserByUID(firebaseAuth.getUid());
+                if (myDB != null) {
+                    user = myDB.getUserByUID(firebaseAuth.getUid());
+                }
                 rem = user.getReminderByID( Integer.parseInt(intent.getStringExtra("remID")) );
 
                 Calendar c = Calendar.getInstance();

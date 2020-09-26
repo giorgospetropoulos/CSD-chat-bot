@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
 
     <LinearLayout
@@ -14,30 +15,30 @@
             android:id="@+id/courseReminderTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:text="TextView" />
+            android:layout_gravity="start"
+            android:text=""
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <TextView
-        android:id="@+id/courseReminderDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="45dp"
-        android:textSize="15dp"
-        android:text="TextView" />
+            android:id="@+id/courseReminderDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="45dp"
+            android:text=""
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/courseReminderDateAndTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="" />
 
         <TextView
             android:id="@+id/courseReminderPriority"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="" />
 
     </LinearLayout>
 
@@ -45,30 +46,33 @@
         android:id="@+id/deleteCourseReminder"
         android:layout_width="20dp"
         android:layout_height="20dp"
+        android:layout_gravity="end"
         android:layout_marginTop="25dp"
-        android:layout_marginRight="55dp"
-        android:layout_gravity="right"
-        app:srcCompat="@drawable/bin"
-        android:visibility="gone"/>
+        android:layout_marginEnd="55dp"
+        android:contentDescription="@string/button"
+        android:visibility="gone"
+        app:srcCompat="@drawable/bin" />
 
     <ImageView
         android:id="@+id/editCourseReminder"
         android:layout_width="20dp"
         android:layout_height="20dp"
+        android:layout_gravity="end"
         android:layout_marginTop="25dp"
-        android:layout_marginRight="30dp"
-        android:layout_gravity="right"
-        app:srcCompat="@drawable/edit"
-        android:visibility="gone"/>
+        android:layout_marginEnd="30dp"
+        android:contentDescription="@string/button"
+        android:visibility="gone"
+        app:srcCompat="@drawable/edit" />
 
     <ImageView
         android:id="@+id/addCourseReminder"
         android:layout_width="20dp"
         android:layout_height="20dp"
+        android:layout_gravity="end"
         android:layout_marginTop="25dp"
-        android:layout_marginRight="5dp"
-        android:layout_gravity="right"
-        app:srcCompat="@drawable/plus"
-        android:visibility="gone"/>
+        android:layout_marginEnd="5dp"
+        android:contentDescription="@string/button"
+        android:visibility="gone"
+        app:srcCompat="@drawable/plus" />
 
 </FrameLayout>

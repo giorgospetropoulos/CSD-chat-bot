@@ -35,7 +35,6 @@ public class SetTeacherActivity extends AppCompatActivity implements NavigationV
     private ArrayList<User> teacherList = new ArrayList<User>();
     private ArrayAdapter<User> adapter;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseHelper myDB;
     private Dialog setDialog;
 
@@ -71,7 +70,7 @@ public class SetTeacherActivity extends AppCompatActivity implements NavigationV
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
         // Connect to the database and retrieve the users list
@@ -81,6 +80,7 @@ public class SetTeacherActivity extends AppCompatActivity implements NavigationV
 
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
                 final Course course = myDB.getCourseByName(getIntent().getStringExtra("Course Name"));
+
                 teacherList = myDB.getUserList();
                 adapter = new UserListAdapter(SetTeacherActivity.this, R.layout.user_list_item, teacherList);
                 teachers_lv.setAdapter(adapter);
@@ -95,11 +95,12 @@ public class SetTeacherActivity extends AppCompatActivity implements NavigationV
                         setDialog = new Dialog(SetTeacherActivity.this);
                         setDialog.setContentView(R.layout.teacher_confirmation);
                         setTeacherTitle = setDialog.findViewById(R.id.teacherConfirmation);
-                        setTeacherTitle.setText("Are you sure you wish to assign user \""
+                        String title = "Are you sure you wish to assign user \""
                                 + teacherList.get(position).getName()
                                 + "\" as the teacher of "
                                 + course.getName_en()
-                                + "?");
+                                + "?";
+                        setTeacherTitle.setText(title);
                         setTeacherBtn = (Button) setDialog.findViewById(R.id.teacherConfirmationBtn);
                         cancelBtn = (Button) setDialog.findViewById(R.id.teacherCancelationBtn);
 

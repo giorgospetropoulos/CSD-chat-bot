@@ -26,11 +26,10 @@ import com.google.firebase.database.ValueEventListener;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private TextView userName, userPassword, userEmail, already;
-    private Button register_btn, continue_btn;
+    private TextView userName, userPassword, userEmail;
+    private Button register_btn;
     private FirebaseAuth firebaseAuth;
     private DatabaseHelper myDB;
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseReference myRef;
     private FirebaseUser firebaseUser;
     private boolean success = false;
@@ -50,15 +49,15 @@ public class RegisterActivity extends AppCompatActivity {
          *      already: Already a User button
          *      register_btn: Sign Up button
          */
-        userName = (TextView) findViewById(R.id.username_register);
-        userPassword = (TextView) findViewById(R.id.password_register);
-        userEmail = (TextView) findViewById(R.id.email_register);
-        already = (TextView) findViewById(R.id.already);
-        register_btn = (Button) findViewById(R.id.register_btn);
+        userName = findViewById(R.id.username_register);
+        userPassword = findViewById(R.id.password_register);
+        userEmail = findViewById(R.id.email_register);
+        TextView already = findViewById(R.id.already);
+        register_btn = findViewById(R.id.register_btn);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         myRef = firebaseDatabase.getReference("Database");
 
         sendingDialog = new ProgressDialog(RegisterActivity.this);
@@ -97,11 +96,12 @@ public class RegisterActivity extends AppCompatActivity {
                                                         final Button addContactBtn, cancelBtn;
                                                         verification = new Dialog(RegisterActivity.this);
                                                         verification.setContentView(R.layout.add_contact_confirmation);
-                                                        addContactTitle = (TextView) verification.findViewById(R.id.contactConfirmation);
+                                                        addContactTitle = verification.findViewById(R.id.contactConfirmation);
                                                         addContactTitle.setText("You signed up successfully. A verification email has been sent to your email.\nPlease check your junk folder as well.");
-                                                        addContactBtn = (Button) verification.findViewById(R.id.addContactConfirmationBtn);
-                                                        addContactBtn.setText("Continue");
-                                                        cancelBtn = (Button) verification.findViewById(R.id.addContactCancelationBtn);
+                                                        addContactBtn = verification.findViewById(R.id.addContactConfirmationBtn);
+                                                        String continuebtn = "Continue";
+                                                        addContactBtn.setText(continuebtn);
+                                                        cancelBtn = verification.findViewById(R.id.addContactCancelationBtn);
                                                         cancelBtn.setVisibility(View.GONE);
                                                         addContactBtn.setOnClickListener(new View.OnClickListener() {
                                                             @Override
@@ -162,12 +162,14 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
-                if( myDB.userExists(name)){
-                    Toast.makeText(getBaseContext(), "This username already exists. Please choose another one", Toast.LENGTH_SHORT).show();
-                } else if (name.isEmpty() || password.isEmpty() || email.isEmpty()) {
-                    Toast.makeText(getBaseContext(), "Please enter all the details", Toast.LENGTH_SHORT).show();
-                } else {
-                    success = true;
+                if (myDB != null) {
+                    if( myDB.userExists(name)){
+                        Toast.makeText(getBaseContext(), "This username already exists. Please choose another one", Toast.LENGTH_SHORT).show();
+                    } else if (name.isEmpty() || password.isEmpty() || email.isEmpty()) {
+                        Toast.makeText(getBaseContext(), "Please enter all the details", Toast.LENGTH_SHORT).show();
+                    } else {
+                        success = true;
+                    }
                 }
                 dialog.dismiss();
             }
@@ -178,7 +180,8 @@ public class RegisterActivity extends AppCompatActivity {
         });
         if ( success ){
             if (register_btn.getText().toString().equals("Validate") ){
-                register_btn.setText("Sign Up");
+                String signUp = "Sign Up";
+                register_btn.setText(signUp);
             }
         }
         return success;

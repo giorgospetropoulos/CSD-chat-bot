@@ -32,7 +32,6 @@ public class ElecticCoursesActivity extends AppCompatActivity implements Navigat
     private ArrayList<Course> coursesList = new ArrayList<Course>();
     private ArrayAdapter<Course> adapter;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseHelper myDB;
     private ProgressDialog loading;
 
@@ -65,11 +64,11 @@ public class ElecticCoursesActivity extends AppCompatActivity implements Navigat
         /* Find the activity's views
          *      lv: The ListView of the Electic Courses
          */
-        lv = (ListView) findViewById(R.id.electicCoursesList);
+        lv = findViewById(R.id.electicCoursesList);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
         // Connect to the database and retrieve all electic courses
@@ -106,7 +105,10 @@ public class ElecticCoursesActivity extends AppCompatActivity implements Navigat
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Course temp = adapter.getItem(position);
-                String tempName = temp.getName_en();
+                String tempName = null;
+                if (temp != null) {
+                    tempName = temp.getName_en();
+                }
                 Intent intent = new Intent(ElecticCoursesActivity.this, CoursePageActivity.class);
                 intent.putExtra("Course Name", tempName);
                 startActivity(intent);

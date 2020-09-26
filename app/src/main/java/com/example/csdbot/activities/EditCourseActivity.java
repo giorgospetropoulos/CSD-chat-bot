@@ -30,14 +30,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
 public class EditCourseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private TextView code, description, area, ects, couseName;
     private RadioGroup areaCodes;
     private RadioButton core, E1, E2, E3, E4, E5, E6, E7, E8, E9, EE;
     private EditText codeET, descriptionET, ectsET;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private User profileUser;
     private Course course;
     private DatabaseHelper myDB;
@@ -69,11 +69,8 @@ public class EditCourseActivity extends AppCompatActivity implements NavigationV
 
         /* Find the activity's views
          *      couseName: The name course
-         *      code: The code's TextView
          *      codeET: The code's EditText
-         *      description: The Description's TextView
          *      descriptionET: The description's EditText
-         *      ects: The ECTS' TextView
          *      ectsET: The ECTS' EditText
          *      urlET: The url's EditText
          *      area: The area's TextView
@@ -82,34 +79,30 @@ public class EditCourseActivity extends AppCompatActivity implements NavigationV
          *      E5, E6, E7, E8, E9, EE: The RadioButton of each area of study
          *      save: The button to save the course
          */
-        couseName = (TextView) findViewById(R.id.editCoursePageTitle);
-        code = (TextView) findViewById(R.id.editCoursePageCodeTitle);
-        codeET = (EditText) findViewById(R.id.editCoursePageCode);
-        description = (TextView) findViewById(R.id.editCoursePageDescTitle);
-        descriptionET = (EditText) findViewById(R.id.editCoursePageDesc);
-        area = (TextView) findViewById(R.id.editCoursePageFieldTitle);
-        ects = (TextView) findViewById(R.id.editCoursePageECTSField);
-        ectsET = (EditText) findViewById(R.id.editCoursePageECTS);
-        areaCodes = (RadioGroup) findViewById(R.id.courseAreas);
-        core = (RadioButton) findViewById(R.id.coreCourses);
-        E1 = (RadioButton) findViewById(R.id.E1);
-        E2 = (RadioButton) findViewById(R.id.E2);
-        E3 = (RadioButton) findViewById(R.id.E3);
-        E4 = (RadioButton) findViewById(R.id.E4);
-        E5 = (RadioButton) findViewById(R.id.E5);
-        E6 = (RadioButton) findViewById(R.id.E6);
-        E7 = (RadioButton) findViewById(R.id.E7);
-        E8 = (RadioButton) findViewById(R.id.E8);
-        E9 = (RadioButton) findViewById(R.id.E9);
-        EE = (RadioButton) findViewById(R.id.EE);
-        save = (Button) findViewById(R.id.saveBtn_editCourse);
+        TextView couseName = findViewById(R.id.editCoursePageTitle);
+        codeET = findViewById(R.id.editCoursePageCode);
+        descriptionET = findViewById(R.id.editCoursePageDesc);
+        ectsET = findViewById(R.id.editCoursePageECTS);
+        areaCodes = findViewById(R.id.courseAreas);
+        core = findViewById(R.id.coreCourses);
+        E1 = findViewById(R.id.E1);
+        E2 = findViewById(R.id.E2);
+        E3 = findViewById(R.id.E3);
+        E4 = findViewById(R.id.E4);
+        E5 = findViewById(R.id.E5);
+        E6 = findViewById(R.id.E6);
+        E7 = findViewById(R.id.E7);
+        E8 = findViewById(R.id.E8);
+        E9 = findViewById(R.id.E9);
+        EE = findViewById(R.id.EE);
+        save = findViewById(R.id.saveBtn_editCourse);
 
         // Get and set the Course's name
         couseName.setText(getIntent().getStringExtra("Course Name"));
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
         // Connect to the database and retrieve the course's data
@@ -117,8 +110,10 @@ public class EditCourseActivity extends AppCompatActivity implements NavigationV
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
-                profileUser = myDB.getUserByUID(firebaseAuth.getUid());
-                course = myDB.getCourseByName(getIntent().getStringExtra("Course Name"));
+                if (myDB != null) {
+                    profileUser = myDB.getUserByUID(firebaseAuth.getUid());
+                    course = myDB.getCourseByName(getIntent().getStringExtra("Course Name"));
+                }
                 codeET.setText(course.getCode_en());
                 descriptionET.setText(course.getDescription_en());
                 if ( course.getArea_name_en().equals("Core Courses") ){
@@ -255,8 +250,9 @@ public class EditCourseActivity extends AppCompatActivity implements NavigationV
         findViewById(R.id.editCourseLL).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                v.performClick();
                 InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(), 0);
                 return true;
             }
         });

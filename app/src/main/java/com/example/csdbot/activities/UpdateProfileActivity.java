@@ -38,6 +38,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import java.io.IOException;
+import java.util.Objects;
 
 public class UpdateProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -45,8 +46,6 @@ public class UpdateProfileActivity extends AppCompatActivity implements Navigati
     private ImageView updateImage;
     private Button save_btn;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
-    private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
     private DatabaseHelper myDB;
     private static int PICK_IMAGE = 123;
@@ -62,7 +61,7 @@ public class UpdateProfileActivity extends AppCompatActivity implements Navigati
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if ( requestCode == PICK_IMAGE && resultCode == RESULT_OK && data.getData() != null ){
+        if (data != null && requestCode == PICK_IMAGE && resultCode == RESULT_OK && data.getData() != null) {
             imagePath = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imagePath);
@@ -103,8 +102,8 @@ public class UpdateProfileActivity extends AppCompatActivity implements Navigati
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        firebaseStorage = FirebaseStorage.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
         final DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
         loading = ProgressDialog.show(UpdateProfileActivity.this, "",
@@ -123,8 +122,9 @@ public class UpdateProfileActivity extends AppCompatActivity implements Navigati
                 findViewById(R.id.linearLayoutUpdateProfile).setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
+                        v.performClick();
                         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                        imm.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(), 0);
                         return true;
                     }
                 });

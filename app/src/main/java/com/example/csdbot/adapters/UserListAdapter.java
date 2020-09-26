@@ -9,16 +9,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.example.csdbot.components.DatabaseHelper;
 import com.example.csdbot.R;
 import com.example.csdbot.components.User;
 import com.example.csdbot.viewholders.UserViewHolder;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,23 +24,15 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
-
 import java.util.List;
 
 public class UserListAdapter extends ArrayAdapter<User> {
-    private int layout, pos;
+    private int layout;
     private List<User> userList;
     private DatabaseHelper myDB;
-    private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
-    private User profileUser;
-    private Context mContext;
-    private FirebaseStorage firebaseStorage;
-    private StorageReference storageReference;
 
     public UserListAdapter(@NonNull Context context, int resource, @NonNull List<User> objects) {
         super(context, resource, objects);
-        mContext = context;
         layout = resource;
         userList = objects;
     }
@@ -51,13 +40,11 @@ public class UserListAdapter extends ArrayAdapter<User> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        UserViewHolder mainViewholder = null;
 
         // Initialize firebase components
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        firebaseStorage = FirebaseStorage.getInstance();
-        storageReference = firebaseStorage.getReference();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference storageReference = firebaseStorage.getReference();
         final DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
         // Connect to the database and get users list
@@ -65,7 +52,9 @@ public class UserListAdapter extends ArrayAdapter<User> {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
-                userList = myDB.getUserList();
+                if (myDB != null) {
+                    userList = myDB.getUserList();
+                }
             }
 
             @Override
@@ -90,9 +79,11 @@ public class UserListAdapter extends ArrayAdapter<User> {
             // Set user's data
             viewHolder.userName.setText(userList.get(position).getName());
             if ( userList.get(position).isAdmin() ){
-                viewHolder.userName.setText(viewHolder.userName.getText().toString() + " (admin)");
+                String name = viewHolder.userName.getText().toString() + " (admin)";
+                viewHolder.userName.setText(name);
             }
-            viewHolder.userEmail.setText("Email: " + userList.get(position).getEmail());
+            String email = "Email: " + userList.get(position).getEmail();
+            viewHolder.userEmail.setText(email);
             storageReference.child(userList.get(position).getUID()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {

@@ -21,9 +21,7 @@
     </com.google.android.material.navigation.NavigationView>
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -51,7 +49,7 @@
                 android:layout_marginTop="-200dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/rnd_btn"
-                android:text="Add Reminder"
+                android:text="@string/addNewReminder"
                 android:textColor="#ffffff" />
 
             <Button
@@ -60,7 +58,7 @@
                 android:layout_height="33dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/rnd_btn"
-                android:text="Show All Reminders"
+                android:text="@string/showAllRemindersBtn"
                 android:textColor="#ffffff" />
 
             <Button
@@ -69,7 +67,7 @@
                 android:layout_height="33dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/rnd_btn"
-                android:text="Calendar"
+                android:text="@string/calendar"
                 android:textColor="#ffffff" />
         </LinearLayout>
 

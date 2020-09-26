@@ -15,7 +15,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/header"
-        android:visibility="gone"
         app:menu="@menu/slide_menu">
 
 
@@ -49,10 +48,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
+                android:autofillHints="@string/nameHint"
                 android:ems="10"
                 android:hint="@string/nameHint"
-                android:inputType="textPersonName"
-                android:autofillHints="@string/nameHint" />
+                android:inputType="textPersonName" />
 
 
             <EditText
@@ -60,11 +59,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
+                android:autofillHints="@string/descriptionHint"
                 android:ems="10"
                 android:gravity="start|top"
                 android:hint="@string/descriptionHint"
-                android:inputType="textMultiLine"
-                android:autofillHints="@string/descriptionHint" />
+                android:inputType="textMultiLine" />
 
             <TextView
                 android:id="@+id/courseReminderDate"
@@ -80,7 +79,7 @@
             <CalendarView
                 android:id="@+id/calendarViewAddCourseReminder"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/selectCourseReminderTime"
@@ -92,7 +91,6 @@
                 android:hint="@string/timeHint"
                 android:textAppearance="?android:attr/textAppearanceMediumInverse"
                 android:textColor="?attr/editTextColor" />
-
 
 
             <LinearLayout
@@ -112,7 +110,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:layout_weight="1"/>
+                        android:layout_weight="1" />
 
                     <NumberPicker
                         android:id="@+id/addCourseReminderMinutesPicker"
@@ -126,7 +124,7 @@
                     android:id="@+id/courseReminderTimePicker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <ImageView
                     android:id="@+id/courseReminderCheckButton"
@@ -134,9 +132,9 @@
                     android:layout_height="25dp"
                     android:layout_gravity="center"
                     android:layout_marginBottom="10dp"
-                    app:srcCompat="@drawable/check"
+                    android:contentDescription="@string/button"
                     android:visibility="gone"
-                    android:contentDescription="@string/button" />
+                    app:srcCompat="@drawable/check" />
 
 
             </LinearLayout>

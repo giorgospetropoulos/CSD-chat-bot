@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="100dp"
+    android:orientation="vertical"
     android:padding="25dp">
 
 
@@ -13,27 +12,28 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginBottom="5dp"
+        android:contentDescription="@string/button"
         app:srcCompat="@drawable/user" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="5dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="5dp">
 
         <TextView
             android:id="@+id/teacherName"
-            android:layout_marginLeft="75dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Username" />
+            android:layout_marginStart="75dp"
+            android:text="@string/username" />
 
         <TextView
             android:id="@+id/teacherEmail"
-            android:layout_marginLeft="75dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Email" />
+            android:layout_marginStart="75dp"
+            android:text="@string/emailHint" />
     </LinearLayout>
 
 </FrameLayout>

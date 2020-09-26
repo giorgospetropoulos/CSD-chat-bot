@@ -21,13 +21,11 @@
     </com.google.android.material.navigation.NavigationView>
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activities.AddContactActivity"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:context=".activities.AddContactActivity">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -45,10 +43,11 @@
 
             <EditText
                 android:id="@+id/searchContacts"
-                android:layout_margin="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Search Contacts..."
+                android:layout_margin="20dp"
+                android:autofillHints="@string/searchContactsHint"
+                android:hint="@string/searchContactsHint"
                 android:inputType="textPersonName" />
 
             <Button
@@ -58,7 +57,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:background="@drawable/rnd_btn"
-                android:text="Search"
+                android:text="@string/searchBtn"
                 android:textColor="#ffffff" />
 
             <ListView

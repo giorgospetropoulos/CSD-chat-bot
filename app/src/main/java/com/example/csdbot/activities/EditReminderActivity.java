@@ -19,6 +19,8 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -37,6 +39,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.Calendar;
+import java.util.Objects;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 public class EditReminderActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -47,10 +53,8 @@ public class EditReminderActivity extends AppCompatActivity implements Navigatio
     private ImageView checkBtn;
     private RadioGroup priorityGroup;
     private RadioButton selectedButton;
-    private Button save;
     private int priorityDay, priorityMonth, priorityYear, priorityHour, priorityMin, reminderNo;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseHelper myDB;
     private User profileUser;
     private Reminder tempRem;
@@ -91,23 +95,35 @@ public class EditReminderActivity extends AppCompatActivity implements Navigatio
          *      timePicker: The TimePicker for the selection of the reminder's time
          *      priorityGroup: The RadioGroup for the selection of the reminder's priority
          *      save: The Button to add the reminder
+         *      timeNumberPicker: The layout containing the number pickers for time
+         *      hourNumberPicker: The Reminder's Hour NumberPicker
+         *      minuteNumberPicker: The Reminder's Minute NumberPicker
          *      reminderNo: the position of the reminder inside the course's reminders list
          */
-        selectName = (EditText) findViewById(R.id.edit_reminderName);
-        selectDescription = (EditText) findViewById(R.id.edit_reminderDescription);
-        selectDate = (TextView) findViewById(R.id.edit_date);
-        selectTime = (TextView) findViewById(R.id.edit_time);
-        timePicker = (TimePicker) findViewById(R.id.edit_timePicker);
-        checkBtn = (ImageView) findViewById(R.id.edit_checkButton);
-        selectPriority = (TextView) findViewById(R.id.edit_priority);
-        calendar = (CalendarView) findViewById(R.id.calendarViewEditReminder);
-        priorityGroup = (RadioGroup) findViewById(R.id.edit_priorityGroup);
-        save = (Button) findViewById(R.id.edit_save);
+        selectName = findViewById(R.id.edit_reminderName);
+        selectDescription = findViewById(R.id.edit_reminderDescription);
+        selectDate = findViewById(R.id.edit_date);
+        selectTime = findViewById(R.id.edit_time);
+        timePicker = findViewById(R.id.edit_timePicker);
+        checkBtn = findViewById(R.id.edit_checkButton);
+        selectPriority = findViewById(R.id.edit_priority);
+        calendar = findViewById(R.id.calendarViewEditReminder);
+        priorityGroup = findViewById(R.id.edit_priorityGroup);
+        Button save = findViewById(R.id.edit_save);
+        final LinearLayout timeNumberPicker = findViewById(R.id.addReminderNumberPicker);
+        final NumberPicker hourNumberPicker = findViewById(R.id.addReminderHourPicker);
+        final NumberPicker minuteNumberPicker = findViewById(R.id.addReminderMinutesPicker);
         reminderNo = getIntent().getIntExtra("remPosition",0);
+
+        // Set minimum and maximum values for the number pickers
+        hourNumberPicker.setMaxValue(23);
+        hourNumberPicker.setMinValue(0);
+        minuteNumberPicker.setMaxValue(59);
+        minuteNumberPicker.setMinValue(0);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
         // Set the visibility of the (temporarily) not-needed components
@@ -121,12 +137,28 @@ public class EditReminderActivity extends AppCompatActivity implements Navigatio
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
-                profileUser = myDB.getUserByUID(firebaseAuth.getUid());
+                if (myDB != null) {
+                    profileUser = myDB.getUserByUID(firebaseAuth.getUid());
+                }
                 tempRem = profileUser.getUser_reminders().get(reminderNo);
                 selectName.setText(tempRem.getName());
                 selectDescription.setText(tempRem.getDescription());
-                selectDate.setText(tempRem.getDay() + "/" + tempRem.getMonth() + "/" + tempRem.getYear());
-                selectTime.setText(tempRem.getHour() + ":" + tempRem.getMin());
+                String date = tempRem.getDay() + "/" + tempRem.getMonth() + "/" + tempRem.getYear();
+                selectDate.setText(date);
+                if ( tempRem.getHour() < 10 ){
+                    String hour = "0" + tempRem.getHour() + ":";
+                    selectTime.setText( hour );
+                } else {
+                    String hour = tempRem.getHour() + ":";
+                    selectTime.setText( hour );
+                }
+                if ( tempRem.getMin() < 10 ){
+                    String min = selectTime.getText().toString() + "0" + tempRem.getMin();
+                    selectTime.setText(min);
+                } else {
+                    String min = selectTime.getText().toString() + tempRem.getMin();
+                    selectTime.setText(min);
+                }
                 priorityDay = tempRem.getDay();
                 priorityMonth = tempRem.getMonth();
                 priorityYear = tempRem.getYear();
@@ -134,16 +166,20 @@ public class EditReminderActivity extends AppCompatActivity implements Navigatio
                 priorityMin = tempRem.getMin();
                 switch (tempRem.getReminder_priority()) {
                     case low:
-                        selectPriority.setText("Low");
+                        String low = "Low";
+                        selectPriority.setText(low);
                         break;
                     case mid:
-                        selectPriority.setText("Medium");
+                        String mid = "Medium";
+                        selectPriority.setText(mid);
                         break;
                     case high:
-                        selectPriority.setText("High");
+                        String high = "High";
+                        selectPriority.setText(high);
                         break;
                     default:
-                        selectPriority.setText("Low");
+                        String def = "Low";
+                        selectPriority.setText(def);
                         break;
                 }
                 cancelAlarm(profileUser.getReminderPosition(tempRem.getName()));
@@ -160,8 +196,9 @@ public class EditReminderActivity extends AppCompatActivity implements Navigatio
         findViewById(R.id.linear_layout_edit_reminder).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                v.performClick();
                 InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(), 0);
                 return true;
             }
         });
@@ -173,7 +210,8 @@ public class EditReminderActivity extends AppCompatActivity implements Navigatio
                 priorityDay = dayOfMonth;
                 priorityMonth = month + 1;
                 priorityYear = year;
-                selectDate.setText(String.valueOf(dayOfMonth) + "/" + String.valueOf(month + 1) + "/" + String.valueOf(year));
+                String date = dayOfMonth + "/" + (month + 1) + "/" + year;
+                selectDate.setText(date);
                 calendar.setVisibility(View.GONE);
             }
         });
@@ -182,12 +220,14 @@ public class EditReminderActivity extends AppCompatActivity implements Navigatio
         selectDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calendar.setVisibility(View.VISIBLE);
-                timePicker.setVisibility(View.GONE);
+                calendar.setVisibility(VISIBLE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    timePicker.setVisibility(GONE);
+                } else {
+                    timeNumberPicker.setVisibility(GONE);
+                }
                 checkBtn.setVisibility(View.GONE);
                 priorityGroup.setVisibility(View.GONE);
-                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
             }
         });
 
@@ -196,8 +236,12 @@ public class EditReminderActivity extends AppCompatActivity implements Navigatio
             @Override
             public void onClick(View v) {
                 calendar.setVisibility(View.GONE);
-                timePicker.setVisibility(View.VISIBLE);
-                checkBtn.setVisibility(View.VISIBLE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    timePicker.setVisibility(VISIBLE);
+                } else {
+                    timeNumberPicker.setVisibility(VISIBLE);
+                }
+                checkBtn.setVisibility(VISIBLE);
                 priorityGroup.setVisibility(View.GONE);
             }
         });
@@ -206,19 +250,33 @@ public class EditReminderActivity extends AppCompatActivity implements Navigatio
         checkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                priorityHour = timePicker.getHour();
-                priorityMin = timePicker.getMinute();
-                if (priorityHour >= 10 ){
-                    selectTime.setText( String.valueOf(priorityHour) + ":" );
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    priorityHour = timePicker.getHour();
+                    priorityMin = timePicker.getMinute();
                 } else {
-                    selectTime.setText( "0" + String.valueOf(priorityHour) + ":" );
+                    priorityHour = hourNumberPicker.getValue();
+                    priorityMin = minuteNumberPicker.getValue();
+                }
+                if (priorityHour >= 10 ){
+                    String hour = priorityHour + ":";
+                    selectTime.setText( hour );
+                } else {
+                    String hour = "0" + priorityHour + ":";
+                    selectTime.setText( hour );
                 }
                 if (priorityMin >= 10 ){
-                    selectTime.setText( selectTime.getText().toString() + String.valueOf(priorityMin));
+                    String time = selectTime.getText().toString()  + priorityMin;
+                    selectTime.setText(time);
                 } else {
-                    selectTime.setText( selectTime.getText().toString() + "0" + String.valueOf(priorityMin));
+                    String time = selectTime.getText().toString() + "0" + priorityMin;
+                    selectTime.setText(time);
                 }
-                timePicker.setVisibility(View.GONE);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    timePicker.setVisibility(GONE);
+                } else {
+                    timeNumberPicker.setVisibility(GONE);
+                }
                 checkBtn.setVisibility(View.GONE);
             }
         });
@@ -238,11 +296,13 @@ public class EditReminderActivity extends AppCompatActivity implements Navigatio
             @Override
             public void onClick(View v) {
                 calendar.setVisibility(View.GONE);
-                timePicker.setVisibility(View.GONE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    timePicker.setVisibility(GONE);
+                } else {
+                    timeNumberPicker.setVisibility(GONE);
+                }
                 checkBtn.setVisibility(View.GONE);
-                priorityGroup.setVisibility(View.VISIBLE);
-                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                priorityGroup.setVisibility(VISIBLE);
             }
         });
 

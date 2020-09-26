@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="350dp"
-    android:layout_height="100dp">
+    android:layout_height="100dp"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/email_verification_text"
-        android:layout_margin="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="    A verification email has been sent to the email address you provided. Please verify your account in order to be able to log in." />
+        android:layout_margin="5dp"
+        android:text="@string/verificationEmail" />
 
     <Button
         android:id="@+id/email_verification_btn"
-        android:layout_marginTop="5dp"
-        android:layout_gravity="center"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
-        android:textColor="#ffffff"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
         android:background="@drawable/rnd_btn"
-        android:text="Continue" />
+        android:text="@string/continuee"
+        android:textColor="#ffffff" />
 </LinearLayout>

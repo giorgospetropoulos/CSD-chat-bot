@@ -29,14 +29,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 public class AddUndergraduateCourseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private RadioGroup areaCodes;
-    private RadioButton core, E1, E2, E3, E4, E5, E6, E7, E8, E9, EE;
     private EditText nameET, codeET, descriptionET, ectsET, urlET;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseHelper myDB;
     private Course course;
     private Button save;
@@ -73,32 +72,19 @@ public class AddUndergraduateCourseActivity extends AppCompatActivity implements
          *      ectsET: The ECTS of the course
          *      urlET: The url of the course's page
          *      areaCodes: The RadioGroup of the area codes
-         *      core, E1, E2, E3, E4,
-         *      E5, E6, E7, E8, E9, EE: The RadioButton of each area of study
          *      save: The button to save the course
          */
-        nameET = (EditText) findViewById(R.id.addCourseName);
-        codeET = (EditText) findViewById(R.id.addCourseCode);
-        descriptionET = (EditText) findViewById(R.id.addCourseDesc);
-        ectsET = (EditText) findViewById(R.id.addCourseECTS);
-        urlET = (EditText) findViewById(R.id.addCourseUrl);
-        areaCodes = (RadioGroup) findViewById(R.id.addCourseArea);
-        core = (RadioButton) findViewById(R.id.addCourse_coreCourses);
-        E1 = (RadioButton) findViewById(R.id.addCourse_E1);
-        E2 = (RadioButton) findViewById(R.id.addCourse_E2);
-        E3 = (RadioButton) findViewById(R.id.addCourse_E3);
-        E4 = (RadioButton) findViewById(R.id.addCourse_E4);
-        E5 = (RadioButton) findViewById(R.id.addCourse_E5);
-        E6 = (RadioButton) findViewById(R.id.addCourse_E6);
-        E7 = (RadioButton) findViewById(R.id.addCourse_E7);
-        E8 = (RadioButton) findViewById(R.id.addCourse_E8);
-        E9 = (RadioButton) findViewById(R.id.addCourse_E9);
-        EE = (RadioButton) findViewById(R.id.addCourse_EE);
-        save = (Button) findViewById(R.id.saveBtn_addCourse);
+        nameET = findViewById(R.id.addCourseName);
+        codeET = findViewById(R.id.addCourseCode);
+        descriptionET = findViewById(R.id.addCourseDesc);
+        ectsET = findViewById(R.id.addCourseECTS);
+        urlET = findViewById(R.id.addCourseUrl);
+        areaCodes = findViewById(R.id.addCourseArea);
+        save = findViewById(R.id.saveBtn_addCourse);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
         // Connect to the database and get the Undergraduate Courses List
@@ -106,19 +92,17 @@ public class AddUndergraduateCourseActivity extends AppCompatActivity implements
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
-                courseList = myDB.getCourseList();
+                if (myDB != null) {
+                    courseList = myDB.getCourseList();
+                }
 
                 // Save course on the list and update database
                 save.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String areaCode  = "";
+                        String areaCode = "";
                         String areaName = "";
-                        String name = "";
-                        String code = "";
-                        String ects = "";
-                        String url = "";
-                        String desc = "";
+                        String name, code, ects, url, desc;
                         if (areaCodes.getCheckedRadioButtonId() == -1){
                             areaCode = "";
                             areaName = "";
@@ -171,21 +155,12 @@ public class AddUndergraduateCourseActivity extends AppCompatActivity implements
                             }
                         }
 
-                        if ( codeET.getText().toString() != null){
-                            code = codeET.getText().toString();
-                        }
-                        if ( nameET.getText().toString() != null){
-                            name = nameET.getText().toString();
-                        }
-                        if ( descriptionET.getText().toString() != null ){
-                            desc = descriptionET.getText().toString();
-                        }
-                        if ( ectsET.getText().toString() != null ){
-                            ects = ectsET.getText().toString();
-                        }
-                        if ( urlET.getText().toString() != null ){
-                            url = urlET.getText().toString();
-                        }
+                        code = codeET.getText().toString();
+                        name = nameET.getText().toString();
+                        desc = descriptionET.getText().toString();
+                        ects = ectsET.getText().toString();
+                        url = urlET.getText().toString();
+
 
                         // Create new Undergraduate Course
                         course = new Course(code,
@@ -226,8 +201,9 @@ public class AddUndergraduateCourseActivity extends AppCompatActivity implements
         findViewById(R.id.addCourseLL).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                v.performClick();
                 InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(), 0);
                 return true;
             }
         });

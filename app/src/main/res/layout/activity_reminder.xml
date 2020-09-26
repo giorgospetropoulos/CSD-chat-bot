@@ -21,132 +21,123 @@
     </com.google.android.material.navigation.NavigationView>
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".activities.AddContactActivity"
-        android:orientation="vertical">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#768591"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:navigationIcon="@drawable/ic_menu" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:context=".activities.AddContactActivity">
 
-        <ScrollView
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:background="#768591"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:navigationIcon="@drawable/ic_menu" />
 
-            <LinearLayout
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteY="20dp">
+
+            <TextView
+                android:id="@+id/reminderPageNameTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical"
-                tools:ignore="MissingConstraints"
-                tools:layout_editor_absoluteY="20dp">
+                android:layout_marginBottom="5dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="@string/courseName"
+                android:textColor="#768591" />
 
-                <TextView
-                    android:id="@+id/reminderPageNameTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:text="Name: "
-                    android:textColor="#768591" />
+            <TextView
+                android:id="@+id/reminderPageName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="" />
 
-                <TextView
-                    android:id="@+id/reminderPageName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:paddingLeft="20dp"
-                    android:text="TextView" />
+            <TextView
+                android:id="@+id/reminderPageDescTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="@string/courseDescription"
+                android:textColor="#768591" />
 
-                <TextView
-                    android:id="@+id/reminderPageDescTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:text="Description: "
-                    android:textColor="#768591" />
+            <TextView
+                android:id="@+id/reminderPageDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="" />
 
-                <TextView
-                    android:id="@+id/reminderPageDesc"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:paddingLeft="20dp"
-                    android:text="TextView" />
+            <TextView
+                android:id="@+id/reminderPagePriorityTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="@string/reminderPriority"
+                android:textColor="#768591" />
 
-                <TextView
-                    android:id="@+id/reminderPagePriorityTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:text="Priority:"
-                    android:textColor="#768591" />
+            <TextView
+                android:id="@+id/reminderPagePriority"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="" />
 
-                <TextView
-                    android:id="@+id/reminderPagePriority"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:paddingLeft="20dp"
-                    android:text="TextView" />
+            <TextView
+                android:id="@+id/reminderPageTimeTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="@string/reminderDateAndTime"
+                android:textColor="#768591" />
 
-                <TextView
-                    android:id="@+id/reminderPageTimeTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:text="Date And Time:"
-                    android:textColor="#768591" />
-
-                <TextView
-                    android:id="@+id/reminderPageTime"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:paddingLeft="20dp"
-                    android:text="TextView" />
-
+            <TextView
+                android:id="@+id/reminderPageTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="" />
 
 
-
-                <Button
-                    android:id="@+id/editReminderBtn"
-                    android:layout_width="207dp"
-                    android:layout_height="33dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="50dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/rnd_btn"
-                    android:text="Edit"
-                    android:textColor="#ffffff" />
-
+            <Button
+                android:id="@+id/editReminderBtn"
+                android:layout_width="207dp"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/rnd_btn"
+                android:text="@string/editBtn"
+                android:textColor="#ffffff" />
 
 
+        </LinearLayout>
 
-            </LinearLayout>
 
-
-        </ScrollView>
-
-    </LinearLayout>
     </LinearLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

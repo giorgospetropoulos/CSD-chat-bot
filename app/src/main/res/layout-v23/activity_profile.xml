@@ -56,6 +56,7 @@
                 android:layout_height="100dp"
                 android:layout_marginBottom="20dp"
                 android:contentDescription="@string/button"
+                android:foreground="@drawable/circle"
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/user"
                 tools:targetApi="m" />

@@ -29,12 +29,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
 public class EditPostCourseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private TextView code, description, area, ects, couseName;
+    private TextView couseName;
     private CheckBox A, B, C, D, E, F, G, O;
     private EditText codeET, descriptionET, ectsET;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private User profileUser;
     private PostGraduateCourse course;
     private DatabaseHelper myDB;
@@ -78,30 +79,26 @@ public class EditPostCourseActivity extends AppCompatActivity implements Navigat
          *      E, F, G, O: The RadioButton of each area of study
          *      save: The button to save the course
          */
-        couseName = (TextView) findViewById(R.id.editPostCoursePageTitle);
-        code = (TextView) findViewById(R.id.editPostCoursePageCodeTitle);
-        codeET = (EditText) findViewById(R.id.editPostCoursePageCode);
-        description = (TextView) findViewById(R.id.editPostCoursePageDescTitle);
-        descriptionET = (EditText) findViewById(R.id.editPostCoursePageDesc);
-        area = (TextView) findViewById(R.id.editPostCoursePageFieldTitle);
-        A = (CheckBox) findViewById(R.id.postA);
-        B = (CheckBox) findViewById(R.id.postB);
-        C = (CheckBox) findViewById(R.id.postC);
-        D = (CheckBox) findViewById(R.id.postD);
-        E = (CheckBox) findViewById(R.id.postE);
-        F = (CheckBox) findViewById(R.id.postF);
-        G = (CheckBox) findViewById(R.id.postG);
-        O = (CheckBox) findViewById(R.id.postO);
-        ects = (TextView) findViewById(R.id.editPostCoursePageECTSField);
-        ectsET = (EditText) findViewById(R.id.editPostCoursePageECTS);
-        save = (Button) findViewById(R.id.saveBtn_editPostCourse);
+        couseName = findViewById(R.id.editPostCoursePageTitle);
+        codeET = findViewById(R.id.editPostCoursePageCode);
+        descriptionET = findViewById(R.id.editPostCoursePageDesc);
+        A = findViewById(R.id.postA);
+        B = findViewById(R.id.postB);
+        C = findViewById(R.id.postC);
+        D = findViewById(R.id.postD);
+        E = findViewById(R.id.postE);
+        F = findViewById(R.id.postF);
+        G = findViewById(R.id.postG);
+        O = findViewById(R.id.postO);
+        ectsET = findViewById(R.id.editPostCoursePageECTS);
+        save = findViewById(R.id.saveBtn_editPostCourse);
 
         // Get and set the Course's name
         couseName.setText(getIntent().getStringExtra("Course Name"));
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
         // Connect to the database and retrieve the course's data
@@ -109,8 +106,10 @@ public class EditPostCourseActivity extends AppCompatActivity implements Navigat
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
-                profileUser = myDB.getUserByUID(firebaseAuth.getUid());
-                course = myDB.getPostGraduateCourseByName(getIntent().getStringExtra("Course Name"));
+                if (myDB != null) {
+                    profileUser = myDB.getUserByUID(firebaseAuth.getUid());
+                    course = myDB.getPostGraduateCourseByName(getIntent().getStringExtra("Course Name"));
+                }
                 codeET.setText(course.getCode_en());
                 descriptionET.setText(course.getDescription_en());
                 if ( course.getArea_codes_en().contains("A")){
@@ -302,8 +301,9 @@ public class EditPostCourseActivity extends AppCompatActivity implements Navigat
         findViewById(R.id.editPostCourseLL).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                v.performClick();
                 InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(), 0);
                 return true;
             }
         });

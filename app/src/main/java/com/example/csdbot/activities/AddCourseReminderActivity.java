@@ -35,6 +35,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.Collections;
+import java.util.Objects;
+
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
@@ -137,8 +139,9 @@ public class AddCourseReminderActivity extends AppCompatActivity implements Navi
                 findViewById(R.id.linearLayoutAddCourseReminder).setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
+                        v.performClick();
                         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                        imm.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(), 0);
                         return true;
                     }
                 });
@@ -199,9 +202,11 @@ public class AddCourseReminderActivity extends AppCompatActivity implements Navi
                         }
 
                         if (reminderHour >= 10 ){
-                            selectTime.setText( reminderHour + ":" );
+                            String hour = reminderHour + ":";
+                            selectTime.setText( hour );
                         } else {
-                            selectTime.setText( "0" + reminderHour + ":" );
+                            String hour = "0" + reminderHour + ":";
+                            selectTime.setText( hour );
                         }
 
                         if (reminderMin >= 10 ){

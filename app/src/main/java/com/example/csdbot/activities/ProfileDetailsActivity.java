@@ -35,11 +35,8 @@ public class ProfileDetailsActivity extends AppCompatActivity implements Navigat
 
     private TextView detailsName, detailsEmail;
     private ImageView detailsImage;
-    private Button edit_btn, changePassword;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseHelper myDB;
-    private FirebaseStorage firebaseStorage;
     private ProgressDialog loading;
 
     // ---------- Slide Menu --------------
@@ -75,18 +72,18 @@ public class ProfileDetailsActivity extends AppCompatActivity implements Navigat
          *      edit_btn: Edit Details button
          *      changePassword: Change Password button
          */
-        detailsName = (TextView) findViewById(R.id.detailsName);
-        detailsEmail = (TextView) findViewById(R.id.detailsEmail);
-        detailsImage = (ImageView) findViewById(R.id.detailsImage);
-        edit_btn = (Button) findViewById(R.id.edit);
-        changePassword = (Button) findViewById(R.id.changePassword);
+        detailsName = findViewById(R.id.detailsName);
+        detailsEmail = findViewById(R.id.detailsEmail);
+        detailsImage = findViewById(R.id.detailsImage);
+        Button edit_btn = findViewById(R.id.edit);
+        Button changePassword = findViewById(R.id.changePassword);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
-        firebaseStorage = FirebaseStorage.getInstance();
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageReference = firebaseStorage.getReference();
         storageReference.child(firebaseAuth.getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -101,9 +98,12 @@ public class ProfileDetailsActivity extends AppCompatActivity implements Navigat
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
-                User profileUser = myDB.getUserByUID(firebaseAuth.getUid());
-                detailsName.setText(profileUser.getName());
-                detailsEmail.setText(profileUser.getEmail());
+                if (myDB != null) {
+                    User profileUser = myDB.getUserByUID(firebaseAuth.getUid());
+                    detailsName.setText(profileUser.getName());
+                    detailsEmail.setText(profileUser.getEmail());
+                }
+
             }
 
             @Override

@@ -40,10 +40,16 @@ public class SpeechRecorder {
     private ArrayList<String> recording_table= new ArrayList<String>();
     private boolean my, add, new_, set, mathimata_, mathimata, ypenthimiseis, nea, neas, orismos, orise, dimiourgise, dimiourgia, search, go = false;
 
+    /**
+     *      Constructor
+     */
     public SpeechRecorder(Context context) {
         this.context = context;;
     }
 
+    /**
+     *      Getters and Setters
+     */
     public String getRecording() {
         return recording;
     }
@@ -52,7 +58,9 @@ public class SpeechRecorder {
         this.recording = recording;
     }
 
-
+    /**
+     *      Initialize Speech Recognizer
+     */
     public void initializeSpeechRecognizer(){
 
 
@@ -96,15 +104,10 @@ public class SpeechRecorder {
             @Override
             public void onResults(Bundle results) {
                 ArrayList<String> matchesFound = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-
                 if ( matchesFound != null ){
                     recording = matchesFound.get(0);
                     first_rec = recording;
-                    //searchForAction(recording);
-
-                    //recording_table = new ArrayList<String>(Arrays.asList(recording.split(" ")));
                     callAction(recording);
-                    //Toast.makeText(context, recording ,Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -120,16 +123,26 @@ public class SpeechRecorder {
         });
     }
 
+    /**
+     *      Start recording
+     */
     public void startRecording(){
         speechRecognizer.startListening(speechRecognizerIntent);
         recording = "";
     }
 
+    /**
+     *      Stop recording
+     */
     public void stopRecording(){
         speechRecognizer.stopListening();
         recording = "";
     }
 
+    /**
+     *      Check if user has given voice record
+     *      permission to the app
+     */
     public void checkVoiceRecodrPerimission(){
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ){
             if ( !(ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) ){
@@ -140,7 +153,10 @@ public class SpeechRecorder {
     }
 
 
-
+    /**
+     * Call action depending on the recorded string
+     * @param recording the recorded string
+     */
     public void callAction(String recording){
         recording_table = new ArrayList<String>(Arrays.asList(recording.split(" ",2)));
         switch (recording_table.get(0)){

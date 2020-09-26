@@ -40,8 +40,6 @@ public class CourseReminderListAdapter extends ArrayAdapter<Reminder> {
     private List<Reminder> courseReminders;
     private DatabaseHelper myDB;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference courseReference;
     private User profileUser;
     private Course course;
     private PostGraduateCourse post_course;
@@ -61,9 +59,9 @@ public class CourseReminderListAdapter extends ArrayAdapter<Reminder> {
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
-        CourseReminderViewHolder mainViewholder = null;
+        CourseReminderViewHolder mainViewholder;
         final CourseReminderViewHolder viewHolder = new CourseReminderViewHolder();
         final DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
@@ -72,7 +70,9 @@ public class CourseReminderListAdapter extends ArrayAdapter<Reminder> {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
-                profileUser = myDB.getUserByUID(firebaseAuth.getUid());
+                if (myDB != null) {
+                    profileUser = myDB.getUserByUID(firebaseAuth.getUid());
+                }
 
                 // Check if user is admin or teacher to the course
                 // and set the components' visibility accordingly
@@ -128,34 +128,47 @@ public class CourseReminderListAdapter extends ArrayAdapter<Reminder> {
             // Set the reminder's data
             viewHolder.title.setText(courseReminders.get(position).getName());
             viewHolder.description.setText(courseReminders.get(position).getDescription());
-            viewHolder.date.setText(courseReminders.get(position).getDay() + "/" +
+            String date = courseReminders.get(position).getDay() + "/" +
                     courseReminders.get(position).getMonth() + "/" +
-                    courseReminders.get(position).getYear() + " ");
+                    courseReminders.get(position).getYear() + " ";
+            viewHolder.date.setText(date);
             if ( courseReminders.get(position).getHour() < 10 ){
-                viewHolder.date.setText(viewHolder.date.getText().toString() + "0" + courseReminders.get(position).getHour() + ":");
+                String date2 = viewHolder.date.getText().toString() +
+                        "0" + courseReminders.get(position).getHour() + ":";
+                viewHolder.date.setText(date2);
             } else {
-                viewHolder.date.setText(viewHolder.date.getText().toString() + courseReminders.get(position).getHour() + ":");
+                String date2 = viewHolder.date.getText().toString() +
+                        courseReminders.get(position).getHour() + ":";
+                viewHolder.date.setText(date2);
             }
             if ( courseReminders.get(position).getMin() < 10 ){
-                viewHolder.date.setText(viewHolder.date.getText().toString() + "0" + courseReminders.get(position).getMin());
+                String date3 = viewHolder.date.getText().toString() +
+                        "0" + courseReminders.get(position).getMin();
+                viewHolder.date.setText(date3);
             } else {
-                viewHolder.date.setText(viewHolder.date.getText().toString() + courseReminders.get(position).getMin());
+                String date3 = viewHolder.date.getText().toString() +
+                        courseReminders.get(position).getMin();
+                viewHolder.date.setText(date3);
             }
             switch (courseReminders.get(position).getReminder_priority()) {
                 case low:
-                    viewHolder.priority.setText(" Low");
+                    String low = " Low";
+                    viewHolder.priority.setText(low);
                     viewHolder.priority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.low_priority, 0, 0, 0);
                     break;
                 case mid:
-                    viewHolder.priority.setText(" Medium");
+                    String mid = " Medium";
+                    viewHolder.priority.setText(mid);
                     viewHolder.priority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.medium_priority, 0, 0, 0);
                     break;
                 case high:
-                    viewHolder.priority.setText(" High");
+                    String high = " High";
+                    viewHolder.priority.setText(high);
                     viewHolder.priority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.high_priority, 0, 0, 0);
                     break;
                 default:
-                    viewHolder.priority.setText(" Low");
+                    String def = " Low";
+                    viewHolder.priority.setText(def);
                     viewHolder.priority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.low_priority, 0, 0, 0);
                     break;
             }
@@ -169,7 +182,9 @@ public class CourseReminderListAdapter extends ArrayAdapter<Reminder> {
                     cancelDialog = new Dialog(getContext());
                     cancelDialog.setContentView(R.layout.delete_reminder_confirmation);
                     deletePopUpTitle = (TextView) cancelDialog.findViewById(R.id.popUpDelTitle);
-                    deletePopUpTitle.setText("Are you sure you wish to delete reminder \"" + courseReminders.get(position).getName() + "\"?");
+                    String title = "Are you sure you wish to delete reminder \"" +
+                            courseReminders.get(position).getName() + "\"?";
+                    deletePopUpTitle.setText(title);
                     delete = (Button) cancelDialog.findViewById(R.id.delete_confirmation_btn);
                     delete.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -204,15 +219,17 @@ public class CourseReminderListAdapter extends ArrayAdapter<Reminder> {
                     editDialog.setContentView(R.layout.edit_reminder_confirmation);
                     editPopUpTitle = (TextView) editDialog.findViewById(R.id.popUpTitle);
                     if ( ( (Activity) mContext).getIntent().getStringExtra("Post").equals("true") ){
-                        editPopUpTitle.setText("Are you sure you wish to edit reminder \"" +
+                        String title = "Are you sure you wish to edit reminder \"" +
                                 courseReminders.get(position).getName() +
                                 "\" " + " of " +
-                                post_course.getName_en()+ "\"?");
+                                post_course.getName_en()+ "\"?";
+                        editPopUpTitle.setText(title);
                     } else {
-                        editPopUpTitle.setText("Are you sure you wish to edit reminder \"" +
+                        String title = "Are you sure you wish to edit reminder \"" +
                                 courseReminders.get(position).getName() +
                                 "\" " + " of " +
-                                course.getName_en()+ "\"?");
+                                course.getName_en()+ "\"?";
+                        editPopUpTitle.setText(title);
                     }
                     edit = (Button) editDialog.findViewById(R.id.edit_confirmation_btn);
                     edit.setOnClickListener(new View.OnClickListener() {
@@ -251,9 +268,10 @@ public class CourseReminderListAdapter extends ArrayAdapter<Reminder> {
                     addDialog = new Dialog(getContext());
                     addDialog.setContentView(R.layout.add_course_reminder_confirmation);
                     addPopUpTitle = (TextView) addDialog.findViewById(R.id.popUpAddTitle);
-                    addPopUpTitle.setText("Are you sure you wish to add reminder \"" +
+                    String title = "Are you sure you wish to add reminder \"" +
                             courseReminders.get(position).getName() +
-                            "\" to your reminders?");
+                            "\" to your reminders?";
+                    addPopUpTitle.setText(title);
                     add = (Button) addDialog.findViewById(R.id.add_confirmation_btn);
                     add.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -307,34 +325,47 @@ public class CourseReminderListAdapter extends ArrayAdapter<Reminder> {
             // Set the reminder's data
             mainViewholder.title.setText(courseReminders.get(position).getName());
             mainViewholder.description.setText(courseReminders.get(position).getDescription());
-            mainViewholder.date.setText(courseReminders.get(position).getDay() + "/" +
+            String date = courseReminders.get(position).getDay() + "/" +
                     courseReminders.get(position).getMonth() + "/" +
-                    courseReminders.get(position).getYear() + " ");
+                    courseReminders.get(position).getYear() + " ";
+            mainViewholder.date.setText(date);
             if ( courseReminders.get(position).getHour() < 10 ){
-                mainViewholder.date.setText(mainViewholder.date.getText().toString() + "0" + courseReminders.get(position).getHour() + ":");
+                String date2 = mainViewholder.date.getText().toString() +
+                        "0" + courseReminders.get(position).getHour() + ":";
+                mainViewholder.date.setText(date2);
             } else {
-                mainViewholder.date.setText(mainViewholder.date.getText().toString() + courseReminders.get(position).getHour() + ":");
+                String date2 = mainViewholder.date.getText().toString() +
+                        courseReminders.get(position).getHour() + ":";
+                mainViewholder.date.setText(date2);
             }
             if ( courseReminders.get(position).getMin() < 10 ){
-                mainViewholder.date.setText(mainViewholder.date.getText().toString() + "0" + courseReminders.get(position).getMin());
+                String date3 = mainViewholder.date.getText().toString() + "0"
+                        + courseReminders.get(position).getMin();
+                mainViewholder.date.setText(date3);
             } else {
-                mainViewholder.date.setText(mainViewholder.date.getText().toString() + courseReminders.get(position).getMin());
+                String date3 = mainViewholder.date.getText().toString() +
+                        courseReminders.get(position).getMin();
+                mainViewholder.date.setText(date3);
             }
             switch (courseReminders.get(position).getReminder_priority()) {
                 case low:
-                    mainViewholder.priority.setText(" Low");
+                    String low = " Low";
+                    mainViewholder.priority.setText(low);
                     mainViewholder.priority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.low_priority, 0, 0, 0);
                     break;
                 case mid:
-                    mainViewholder.priority.setText(" Medium");
+                    String mid = " Medium";
+                    mainViewholder.priority.setText(mid);
                     mainViewholder.priority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.medium_priority, 0, 0, 0);
                     break;
                 case high:
-                    mainViewholder.priority.setText(" High");
+                    String high = " High";
+                    mainViewholder.priority.setText(high);
                     mainViewholder.priority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.high_priority, 0, 0, 0);
                     break;
                 default:
-                    mainViewholder.priority.setText(" Low");
+                    String def = " Low";
+                    mainViewholder.priority.setText(def);
                     mainViewholder.priority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.low_priority, 0, 0, 0);
                     break;
             }
@@ -348,7 +379,9 @@ public class CourseReminderListAdapter extends ArrayAdapter<Reminder> {
                     cancelDialog = new Dialog(getContext());
                     cancelDialog.setContentView(R.layout.delete_reminder_confirmation);
                     deletePopUpTitle = (TextView) cancelDialog.findViewById(R.id.popUpDelTitle);
-                    deletePopUpTitle.setText("Are you sure you wish to delete reminder \"" + courseReminders.get(position).getName() + "\"?");
+                    String title = "Are you sure you wish to delete reminder \"" +
+                            courseReminders.get(position).getName() + "\"?";
+                    deletePopUpTitle.setText(title);
                     delete = (Button) cancelDialog.findViewById(R.id.delete_confirmation_btn);
                     delete.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -383,15 +416,17 @@ public class CourseReminderListAdapter extends ArrayAdapter<Reminder> {
                     editDialog.setContentView(R.layout.edit_reminder_confirmation);
                     editPopUpTitle = (TextView) editDialog.findViewById(R.id.popUpTitle);
                     if ( ( (Activity) mContext).getIntent().getStringExtra("Post").equals("true") ){
-                        editPopUpTitle.setText("Are you sure you wish to edit reminder \"" +
+                        String title = "Are you sure you wish to edit reminder \"" +
                                 courseReminders.get(position).getName() +
                                 "\" " + " of " +
-                                post_course.getName_en()+ "\"?");
+                                post_course.getName_en()+ "\"?";
+                        editPopUpTitle.setText(title);
                     } else {
-                        editPopUpTitle.setText("Are you sure you wish to edit reminder \"" +
+                        String title = "Are you sure you wish to edit reminder \"" +
                                 courseReminders.get(position).getName() +
                                 "\" " + " of " +
-                                course.getName_en()+ "\"?");
+                                course.getName_en()+ "\"?";
+                        editPopUpTitle.setText(title);
                     }
                     edit = (Button) editDialog.findViewById(R.id.edit_confirmation_btn);
                     edit.setOnClickListener(new View.OnClickListener() {
@@ -430,9 +465,10 @@ public class CourseReminderListAdapter extends ArrayAdapter<Reminder> {
                     addDialog = new Dialog(getContext());
                     addDialog.setContentView(R.layout.add_course_reminder_confirmation);
                     addPopUpTitle = (TextView) addDialog.findViewById(R.id.popUpAddTitle);
-                    addPopUpTitle.setText("Are you sure you wish to add reminder \"" +
+                    String title = "Are you sure you wish to add reminder \"" +
                             courseReminders.get(position).getName() +
-                            "\" to your reminders?");
+                            "\" to your reminders?";
+                    addPopUpTitle.setText(title);
                     add = (Button) addDialog.findViewById(R.id.add_confirmation_btn);
                     add.setOnClickListener(new View.OnClickListener() {
                         @Override

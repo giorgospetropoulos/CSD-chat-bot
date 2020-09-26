@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".activities.ProfileDetailsActivity"
+    tools:context=".activities.UpdateProfileActivity"
     tools:openDrawer="start">
 
     <com.google.android.material.navigation.NavigationView
@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".activities.ProfileDetailsActivity">
+        tools:context=".activities.UpdateProfileActivity">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -37,54 +37,41 @@
             app:navigationIcon="@drawable/ic_menu" />
 
         <LinearLayout
+            android:id="@+id/linearLayoutUpdateProfile"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/detailsName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-100dp"
-                android:layout_marginBottom="10dp"
-                android:gravity="center"
-                android:text="@string/nameHint" />
-
             <ImageView
-                android:id="@+id/detailsImage"
+                android:id="@+id/updateImage"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginBottom="20dp"
-                android:contentDescription="@string/button"
+                app:srcCompat="@drawable/user"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/user" />
+                android:foreground="@drawable/circle"
+                android:contentDescription="@string/button" />
 
-            <TextView
-                android:id="@+id/detailsEmail"
+            <EditText
+                android:id="@+id/updateName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:gravity="center"
-                android:text="@string/emailHint" />
+                android:layout_margin="20dp"
+                android:ems="10"
+                android:hint="@string/nameHint"
+                android:inputType="textPersonName"
+                android:autofillHints="@string/nameHint" />
 
             <Button
-                android:id="@+id/edit"
-                android:layout_width="113dp"
-                android:layout_height="35dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/rnd_btn"
-                android:text="@string/editDetails"
-                android:textColor="#ffffff" />
-
-            <Button
-                android:id="@+id/changePassword"
-                android:layout_width="150dp"
+                android:id="@+id/save_btn"
+                android:layout_width="70dp"
                 android:layout_height="35dp"
                 android:background="@drawable/rnd_btn"
-                android:text="@string/changePassword"
+                android:text="@string/saveBtn"
                 android:textColor="#ffffff" />
         </LinearLayout>
 
     </LinearLayout>
+
 </androidx.drawerlayout.widget.DrawerLayout>

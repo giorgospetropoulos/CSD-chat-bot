@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -16,6 +17,8 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -35,6 +38,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 public class EditCourseReminderActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private EditText selectName, selectDescription;
@@ -44,10 +52,8 @@ public class EditCourseReminderActivity extends AppCompatActivity implements Nav
     private ImageView checkBtn;
     private RadioGroup priorityGroup;
     private RadioButton selectedButton;
-    private Button save;
     private int priorityDay, priorityMonth, priorityYear, priorityHour, priorityMin, reminderNo;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private User profileUser;
     private Reminder tempRem;
     private DatabaseHelper myDB;
@@ -89,23 +95,35 @@ public class EditCourseReminderActivity extends AppCompatActivity implements Nav
          *      timePicker: The TimePicker for the selection of the reminder's time
          *      priorityGroup: The RadioGroup for the selection of the reminder's priority
          *      save: The Button to add the reminder
+         *      timeNumberPicker: The layout containing the number pickers for time
+         *      hourNumberPicker: The Reminder's Hour NumberPicker
+         *      minuteNumberPicker: The Reminder's Minute NumberPicker
          *      reminderNo: the position of the reminder inside the course's reminders list
          */
-        selectName = (EditText) findViewById(R.id.editCourseReminderName);
-        selectDescription = (EditText) findViewById(R.id.editCourseReminderDescription);
-        selectDate = (TextView) findViewById(R.id.editCourseReminderDate);
-        selectTime = (TextView) findViewById(R.id.editCourseReminderTime);
-        timePicker = (TimePicker) findViewById(R.id.edit_courseReminder_timePicker);
-        checkBtn = (ImageView) findViewById(R.id.edit_courseReminder_checkButton);
-        selectPriority = (TextView) findViewById(R.id.edit_courseReminder_priority);
-        calendar = (CalendarView) findViewById(R.id.calendarViewEditCourseReminder);
-        priorityGroup = (RadioGroup) findViewById(R.id.edit__courseReminder_priorityGroup);
-        save = (Button) findViewById(R.id.editCourseReminder__save);
+        selectName = findViewById(R.id.editCourseReminderName);
+        selectDescription = findViewById(R.id.editCourseReminderDescription);
+        selectDate = findViewById(R.id.editCourseReminderDate);
+        selectTime = findViewById(R.id.editCourseReminderTime);
+        timePicker = findViewById(R.id.edit_courseReminder_timePicker);
+        checkBtn = findViewById(R.id.edit_courseReminder_checkButton);
+        selectPriority = findViewById(R.id.edit_courseReminder_priority);
+        calendar = findViewById(R.id.calendarViewEditCourseReminder);
+        priorityGroup = findViewById(R.id.edit__courseReminder_priorityGroup);
+        Button save = findViewById(R.id.editCourseReminder__save);
+        final LinearLayout timeNumberPicker = findViewById(R.id.addReminderNumberPicker);
+        final NumberPicker hourNumberPicker = findViewById(R.id.addReminderHourPicker);
+        final NumberPicker minuteNumberPicker = findViewById(R.id.addReminderMinutesPicker);
         reminderNo = getIntent().getIntExtra("remPosition",0);
+
+        // Set minimum and maximum values for the number pickers
+        hourNumberPicker.setMaxValue(23);
+        hourNumberPicker.setMinValue(0);
+        minuteNumberPicker.setMaxValue(59);
+        minuteNumberPicker.setMinValue(0);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
         // Set the visibility of the (temporarily) not-needed components
@@ -129,16 +147,21 @@ public class EditCourseReminderActivity extends AppCompatActivity implements Nav
 
                 selectName.setText(tempRem.getName());
                 selectDescription.setText(tempRem.getDescription());
-                selectDate.setText(tempRem.getDay() + "/" + tempRem.getMonth() + "/" + tempRem.getYear());
+                String date = tempRem.getDay() + "/" + tempRem.getMonth() + "/" + tempRem.getYear();
+                selectDate.setText(date);
                 if ( tempRem.getHour() < 10 ){
-                    selectTime.setText("0" + tempRem.getHour() + ":");
+                    String hour = "0" + tempRem.getHour() + ":";
+                    selectTime.setText( hour );
                 } else {
-                    selectTime.setText( tempRem.getHour() + ":");
+                    String hour = tempRem.getHour() + ":";
+                    selectTime.setText( hour );
                 }
                 if ( tempRem.getMin() < 10 ){
-                    selectTime.setText(selectTime.getText().toString() + "0" + tempRem.getMin());
+                    String min = selectTime.getText().toString() + "0" + tempRem.getMin();
+                    selectTime.setText(min);
                 } else {
-                    selectTime.setText(selectTime.getText().toString() + tempRem.getMin());
+                    String min = selectTime.getText().toString() + tempRem.getMin();
+                    selectTime.setText(min);
                 }
                 priorityDay = tempRem.getDay();
                 priorityMonth = tempRem.getMonth();
@@ -147,16 +170,20 @@ public class EditCourseReminderActivity extends AppCompatActivity implements Nav
                 priorityMin = tempRem.getMin();
                 switch (tempRem.getReminder_priority()) {
                     case low:
-                        selectPriority.setText("Low");
+                        String low = "Low";
+                        selectPriority.setText(low);
                         break;
                     case mid:
-                        selectPriority.setText("Medium");
+                        String mid = "Medium";
+                        selectPriority.setText(mid);
                         break;
                     case high:
-                        selectPriority.setText("High");
+                        String high = "High";
+                        selectPriority.setText(high);
                         break;
                     default:
-                        selectPriority.setText("Low");
+                        String def = "Low";
+                        selectPriority.setText(def);
                         break;
                 }
                 if (getIntent().getStringExtra("Post").equals("true")){
@@ -180,8 +207,9 @@ public class EditCourseReminderActivity extends AppCompatActivity implements Nav
         findViewById(R.id.course_reminders_linear_layout).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                v.performClick();
                 InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(), 0);
                 return true;
             }
         });
@@ -193,7 +221,8 @@ public class EditCourseReminderActivity extends AppCompatActivity implements Nav
                 priorityDay = dayOfMonth;
                 priorityMonth = month + 1;
                 priorityYear = year;
-                selectDate.setText(String.valueOf(dayOfMonth) + "/" + String.valueOf(month + 1) + "/" + String.valueOf(year));
+                String date = dayOfMonth + "/" + (month + 1) + "/" + year;
+                selectDate.setText(date);
                 calendar.setVisibility(View.GONE);
             }
         });
@@ -202,8 +231,12 @@ public class EditCourseReminderActivity extends AppCompatActivity implements Nav
         selectDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calendar.setVisibility(View.VISIBLE);
-                timePicker.setVisibility(View.GONE);
+                calendar.setVisibility(VISIBLE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    timePicker.setVisibility(GONE);
+                } else {
+                    timeNumberPicker.setVisibility(GONE);
+                }
                 checkBtn.setVisibility(View.GONE);
                 priorityGroup.setVisibility(View.GONE);
             }
@@ -214,8 +247,12 @@ public class EditCourseReminderActivity extends AppCompatActivity implements Nav
             @Override
             public void onClick(View v) {
                 calendar.setVisibility(View.GONE);
-                timePicker.setVisibility(View.VISIBLE);
-                checkBtn.setVisibility(View.VISIBLE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    timePicker.setVisibility(VISIBLE);
+                } else {
+                    timeNumberPicker.setVisibility(VISIBLE);
+                }
+                checkBtn.setVisibility(VISIBLE);
                 priorityGroup.setVisibility(View.GONE);
             }
         });
@@ -224,19 +261,33 @@ public class EditCourseReminderActivity extends AppCompatActivity implements Nav
         checkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                priorityHour = timePicker.getHour();
-                priorityMin = timePicker.getMinute();
-                if (priorityHour >= 10 ){
-                    selectTime.setText( String.valueOf(priorityHour) + ":" );
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    priorityHour = timePicker.getHour();
+                    priorityMin = timePicker.getMinute();
                 } else {
-                    selectTime.setText( "0" + String.valueOf(priorityHour) + ":" );
+                    priorityHour = hourNumberPicker.getValue();
+                    priorityMin = minuteNumberPicker.getValue();
+                }
+                if (priorityHour >= 10 ){
+                    String hour = priorityHour + ":";
+                    selectTime.setText( hour );
+                } else {
+                    String hour = "0" + priorityHour + ":";
+                    selectTime.setText( hour );
                 }
                 if (priorityMin >= 10 ){
-                    selectTime.setText( selectTime.getText().toString() + String.valueOf(priorityMin));
+                    String time = selectTime.getText().toString()  + priorityMin;
+                    selectTime.setText(time);
                 } else {
-                    selectTime.setText( selectTime.getText().toString() + "0" + String.valueOf(priorityMin));
+                    String time = selectTime.getText().toString() + "0" + priorityMin;
+                    selectTime.setText(time);
                 }
-                timePicker.setVisibility(View.GONE);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    timePicker.setVisibility(GONE);
+                } else {
+                    timeNumberPicker.setVisibility(GONE);
+                }
                 checkBtn.setVisibility(View.GONE);
             }
         });
@@ -245,7 +296,7 @@ public class EditCourseReminderActivity extends AppCompatActivity implements Nav
         priorityGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                selectedButton = (RadioButton) findViewById(checkedId);
+                selectedButton = findViewById(checkedId);
                 selectPriority.setText(selectedButton.getText().toString());
                 priorityGroup.setVisibility(View.GONE);
             }
@@ -256,11 +307,13 @@ public class EditCourseReminderActivity extends AppCompatActivity implements Nav
             @Override
             public void onClick(View v) {
                 calendar.setVisibility(View.GONE);
-                timePicker.setVisibility(View.GONE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    timePicker.setVisibility(GONE);
+                } else {
+                    timeNumberPicker.setVisibility(GONE);
+                }
                 checkBtn.setVisibility(View.GONE);
-                priorityGroup.setVisibility(View.VISIBLE);
-                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                priorityGroup.setVisibility(VISIBLE);
             }
         });
 

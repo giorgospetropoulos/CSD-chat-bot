@@ -8,16 +8,16 @@ public class Reminder{
     private static int count = 0;
     private String name, description;
     private int day, month, year, hour, min, id;
-
-
-
-
     public enum priority {
         low,
         mid,
         high
     }
     private priority reminder_priority;
+
+    /**
+     *      Constructors
+     */
 
     public Reminder(){
         this.id = count++;
@@ -76,6 +76,69 @@ public class Reminder{
                 break;
         }
     }
+
+    /**
+     *      Sort Reminders by time
+     */
+    public static Comparator<Reminder> ReminderComparator = new Comparator<Reminder>() {
+        @Override
+        public int compare(Reminder r1, Reminder r2) {
+            String comp = Integer.toString(r1.getYear());
+
+            if(r1.getMonth() < 10) {
+                comp += "0" + r1.getMonth();
+            } else {
+                comp += Integer.toString(r1.getMonth());
+            }
+            if(r1.getDay() < 10) {
+                comp += "0" + r1.getDay();
+            } else {
+                comp += Integer.toString(r1.getDay());
+            }
+            if(r1.getHour() < 10) {
+                comp += "0" + r1.getHour();
+            } else {
+                comp += Integer.toString(r1.getHour());
+            }
+            if(r1.getMin() < 10) {
+                comp += "0" + r1.getMin();
+            } else {
+                comp += Integer.toString(r1.getMin());
+            }
+
+            String comp2 = Integer.toString(r2.getYear());
+
+            if(r2.getMonth() < 10) {
+                comp2 += "0" + r2.getMonth();
+            } else {
+                comp2 += Integer.toString(r2.getMonth());
+            }
+            if(r2.getDay() < 10) {
+                comp2 += "0" + r2.getDay();
+            } else {
+                comp2 += Integer.toString(r2.getDay());
+            }
+            if(r2.getHour() < 10) {
+                comp2 += "0" + r2.getHour();
+            } else {
+                comp2 += Integer.toString(r2.getHour());
+            }
+            if(r2.getMin() < 10) {
+                comp2 += "0" + r2.getMin();
+            } else {
+                comp2 += Integer.toString(r2.getMin());
+            }
+
+            long compareRem = Long.parseLong(comp);
+            long compareRem2 = Long.parseLong(comp2);
+
+            return (int) (compareRem - compareRem2);
+        }
+    };
+
+    /**
+     *      Getters and Setters
+     */
 
     public String getName() {
         return name;
@@ -141,61 +204,6 @@ public class Reminder{
         this.description = description;
     }
 
-    public static Comparator<Reminder> ReminderComparator = new Comparator<Reminder>() {
-        @Override
-        public int compare(Reminder r1, Reminder r2) {
-            String comp = Integer.toString(r1.getYear());
-
-            if(r1.getMonth() < 10) {
-                comp += "0" + Integer.toString(r1.getMonth());
-            } else {
-                comp += Integer.toString(r1.getMonth());
-            }
-            if(r1.getDay() < 10) {
-                comp += "0" + Integer.toString(r1.getDay());
-            } else {
-                comp += Integer.toString(r1.getDay());
-            }
-            if(r1.getHour() < 10) {
-                comp += "0" + Integer.toString(r1.getHour());
-            } else {
-                comp += Integer.toString(r1.getHour());
-            }
-            if(r1.getMin() < 10) {
-                comp += "0" + Integer.toString(r1.getMin());
-            } else {
-                comp += Integer.toString(r1.getMin());
-            }
-
-            String comp2 = Integer.toString(r2.getYear());
-
-            if(r2.getMonth() < 10) {
-                comp2 += "0" + Integer.toString(r2.getMonth());
-            } else {
-                comp2 += Integer.toString(r2.getMonth());
-            }
-            if(r2.getDay() < 10) {
-                comp2 += "0" + Integer.toString(r2.getDay());
-            } else {
-                comp2 += Integer.toString(r2.getDay());
-            }
-            if(r2.getHour() < 10) {
-                comp2 += "0" + Integer.toString(r2.getHour());
-            } else {
-                comp2 += Integer.toString(r2.getHour());
-            }
-            if(r2.getMin() < 10) {
-                comp2 += "0" + Integer.toString(r2.getMin());
-            } else {
-                comp2 += Integer.toString(r2.getMin());
-            }
-
-            long compareRem = Long.parseLong(comp);
-            long compareRem2 = Long.parseLong(comp2);
-
-            return (int) (compareRem - compareRem2);
-        }
-    };
 
     public int getId() {
         return id;

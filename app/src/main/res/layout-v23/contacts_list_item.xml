@@ -15,6 +15,7 @@
         android:layout_gravity="start"
         android:layout_marginBottom="5dp"
         android:contentDescription="@string/button"
+        android:foreground="@drawable/circle"
         android:scaleType="fitXY"
         app:srcCompat="@drawable/user" />
 

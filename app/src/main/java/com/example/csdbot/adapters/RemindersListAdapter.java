@@ -33,11 +33,10 @@ import static android.content.Context.ALARM_SERVICE;
 
 public class RemindersListAdapter extends ArrayAdapter<Reminder> {
 
-    private int layout, pos;
+    private int layout;
     private List<Reminder> myReminders;
     private DatabaseHelper myDB;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private User profileUser;
     private Context mContext;
     private Dialog editDialog, cancelDialog;
@@ -52,12 +51,11 @@ public class RemindersListAdapter extends ArrayAdapter<Reminder> {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent){
-        pos = position;
-        ReminderViewHolder mainViewholder = null;
+        ReminderViewHolder mainViewholder;
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
         // Connect to the database and retrieve the user's data
@@ -96,36 +94,50 @@ public class RemindersListAdapter extends ArrayAdapter<Reminder> {
 
             // Set the reminder's data
             viewHolder.title.setText(myReminders.get(position).getName());
-            viewHolder.description.setText("Description: " + myReminders.get(position).getDescription());
-            viewHolder.date.setText(myReminders.get(position).getDay() + "/" +
-                                    myReminders.get(position).getMonth() + "/" +
-                                    myReminders.get(position).getYear() + " ");
+            String desc = "Description: " + myReminders.get(position).getDescription();
+            viewHolder.description.setText(desc);
+            String date = myReminders.get(position).getDay() + "/" +
+                    myReminders.get(position).getMonth() + "/" +
+                    myReminders.get(position).getYear() + " ";
+            viewHolder.date.setText(date);
             if ( myReminders.get(position).getHour() < 10 ){
-                viewHolder.date.setText(viewHolder.date.getText().toString() + "0" + myReminders.get(position).getHour() + ":");
+                String date2 = viewHolder.date.getText().toString() + "0" +
+                        myReminders.get(position).getHour() + ":";
+                viewHolder.date.setText(date2);
             } else {
-                viewHolder.date.setText(viewHolder.date.getText().toString() + myReminders.get(position).getHour() + ":");
+                String date2 = viewHolder.date.getText().toString() +
+                        myReminders.get(position).getHour() + ":";
+                viewHolder.date.setText(date2);
             }
             if ( myReminders.get(position).getMin() < 10 ){
-                viewHolder.date.setText(viewHolder.date.getText().toString() + "0" + myReminders.get(position).getMin());
+                String date3 = viewHolder.date.getText().toString() + "0" +
+                        myReminders.get(position).getMin();
+                viewHolder.date.setText(date3);
             } else {
-                viewHolder.date.setText(viewHolder.date.getText().toString() + myReminders.get(position).getMin());
+                String date3 = viewHolder.date.getText().toString() +
+                        myReminders.get(position).getMin();
+                viewHolder.date.setText(date3);
             }
             switch (myReminders.get(position).getReminder_priority()) {
                 case low:
-                    viewHolder.priority.setText(" Low");
-                    viewHolder.priority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.low_priority,0, 0, 0);
+                    String low = " Low";
+                    viewHolder.priority.setText(low);
+                    viewHolder.priority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.low_priority, 0, 0, 0);
                     break;
                 case mid:
-                    viewHolder.priority.setText(" Medium");
-                    viewHolder.priority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.medium_priority,0, 0, 0);
+                    String mid = " Medium";
+                    viewHolder.priority.setText(mid);
+                    viewHolder.priority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.medium_priority, 0, 0, 0);
                     break;
                 case high:
-                    viewHolder.priority.setText(" High");
-                    viewHolder.priority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.high_priority,0, 0, 0);
+                    String high = " High";
+                    viewHolder.priority.setText(high);
+                    viewHolder.priority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.high_priority, 0, 0, 0);
                     break;
                 default:
-                    viewHolder.priority.setText(" Low");
-                    viewHolder.priority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.low_priority,0, 0, 0);
+                    String def = " Low";
+                    viewHolder.priority.setText(def);
+                    viewHolder.priority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.low_priority, 0, 0, 0);
                     break;
             }
 
@@ -138,7 +150,9 @@ public class RemindersListAdapter extends ArrayAdapter<Reminder> {
                     cancelDialog = new Dialog(getContext());
                     cancelDialog.setContentView(R.layout.delete_reminder_confirmation);
                     deletePopUpTitle = (TextView) cancelDialog.findViewById(R.id.popUpDelTitle);
-                    deletePopUpTitle.setText("Are you sure you wish to delete reminder \"" + profileUser.getReminderByID(getItem(position).getId()).getName() + "\"?");
+                    String title = "Are you sure you wish to delete reminder \"" +
+                            profileUser.getReminderByID(getItem(position).getId()).getName() + "\"?";
+                    deletePopUpTitle.setText(title);
                     delete = (Button) cancelDialog.findViewById(R.id.delete_confirmation_btn);
                     delete.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -168,7 +182,9 @@ public class RemindersListAdapter extends ArrayAdapter<Reminder> {
                     editDialog = new Dialog(getContext());
                     editDialog.setContentView(R.layout.edit_reminder_confirmation);
                     editPopUpTitle = (TextView) editDialog.findViewById(R.id.popUpTitle);
-                    editPopUpTitle.setText("Are you sure you wish to edit reminder \"" + profileUser.getUser_reminders().get(position).getName() + "\"?");
+                    String title = "Are you sure you wish to edit reminder \"" +
+                            profileUser.getUser_reminders().get(position).getName() + "\"?";
+                    editPopUpTitle.setText(title);
                     edit = (Button) editDialog.findViewById(R.id.edit_confirmation_btn);
                     edit.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -226,40 +242,54 @@ public class RemindersListAdapter extends ArrayAdapter<Reminder> {
 
             // Set the reminder's data
             mainViewholder.title.setText(myReminders.get(position).getName());
-            mainViewholder.description.setText("Description: " + myReminders.get(position).getDescription());
-            mainViewholder.date.setText(myReminders.get(position).getDay() + "/" +
+            String desc = "Description: " + myReminders.get(position).getDescription();
+            mainViewholder.description.setText(desc);
+            String date = myReminders.get(position).getDay() + "/" +
                     myReminders.get(position).getMonth() + "/" +
-                    myReminders.get(position).getYear() + " ");
+                    myReminders.get(position).getYear() + " ";
+            mainViewholder.date.setText(date);
             if ( myReminders.get(position).getHour() < 10 ){
-                mainViewholder.date.setText(mainViewholder.date.getText().toString() + "0" + myReminders.get(position).getHour() + ":");
+                String date2 = mainViewholder.date.getText().toString() + "0" +
+                        myReminders.get(position).getHour() + ":";
+                mainViewholder.date.setText(date2);
             } else {
-                mainViewholder.date.setText(mainViewholder.date.getText().toString() + myReminders.get(position).getHour() + ":");
+                String date2 = mainViewholder.date.getText().toString() +
+                        myReminders.get(position).getHour() + ":";
+                mainViewholder.date.setText(date2);
             }
             if ( myReminders.get(position).getMin() < 10 ){
-                mainViewholder.date.setText(mainViewholder.date.getText().toString() + "0" + myReminders.get(position).getMin());
+                String date3 = mainViewholder.date.getText().toString() + "0" +
+                        myReminders.get(position).getMin();
+                mainViewholder.date.setText(date3);
             } else {
-                mainViewholder.date.setText(mainViewholder.date.getText().toString() + myReminders.get(position).getMin());
+                String date3 = mainViewholder.date.getText().toString() +
+                        myReminders.get(position).getMin();
+                mainViewholder.date.setText(date3);
             }
             switch (myReminders.get(position).getReminder_priority()) {
                 case low:
-                    mainViewholder.priority.setText(" Low");
-                    mainViewholder.priority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.low_priority,0, 0, 0);
+                    String low = " Low";
+                    mainViewholder.priority.setText(low);
+                    mainViewholder.priority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.low_priority, 0, 0, 0);
                     break;
                 case mid:
-                    mainViewholder.priority.setText(" Medium");
-                    mainViewholder.priority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.medium_priority,0, 0, 0);
+                    String mid = " Medium";
+                    mainViewholder.priority.setText(mid);
+                    mainViewholder.priority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.medium_priority, 0, 0, 0);
                     break;
                 case high:
-                    mainViewholder.priority.setText(" High");
-                    mainViewholder.priority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.high_priority,0, 0, 0);
+                    String high = " High";
+                    mainViewholder.priority.setText(high);
+                    mainViewholder.priority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.high_priority, 0, 0, 0);
                     break;
                 default:
-                    mainViewholder.priority.setText(" Low");
-                    mainViewholder.priority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.low_priority,0, 0, 0);
+                    String def = " Low";
+                    mainViewholder.priority.setText(def);
+                    mainViewholder.priority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.low_priority, 0, 0, 0);
                     break;
             }
 
-            // Delete reminder
+            // Delete Reminder
             mainViewholder.deleteThumbnail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -268,12 +298,14 @@ public class RemindersListAdapter extends ArrayAdapter<Reminder> {
                     cancelDialog = new Dialog(getContext());
                     cancelDialog.setContentView(R.layout.delete_reminder_confirmation);
                     deletePopUpTitle = (TextView) cancelDialog.findViewById(R.id.popUpDelTitle);
-                    deletePopUpTitle.setText("Are you sure you wish to delete reminder \"" + profileUser.getUser_reminders().get(position).getName() + "\"?");
+                    String title = "Are you sure you wish to delete reminder \"" +
+                            profileUser.getReminderByID(getItem(position).getId()).getName() + "\"?";
+                    deletePopUpTitle.setText(title);
                     delete = (Button) cancelDialog.findViewById(R.id.delete_confirmation_btn);
                     delete.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            cancelAlarm(profileUser.getReminderPosition(profileUser.getUser_reminders().get(position).getName()));
+                            cancelAlarm(profileUser.getReminderPosition(profileUser.getReminderByID(getItem(position).getId()).getName()) );
                             databaseReference.setValue(myDB);
                             cancelDialog.dismiss();
                         }
@@ -298,7 +330,9 @@ public class RemindersListAdapter extends ArrayAdapter<Reminder> {
                     editDialog = new Dialog(getContext());
                     editDialog.setContentView(R.layout.edit_reminder_confirmation);
                     editPopUpTitle = (TextView) editDialog.findViewById(R.id.popUpTitle);
-                    editPopUpTitle.setText("Are you sure you wish to edit reminder \"" + profileUser.getUser_reminders().get(position).getName() + "\"?");
+                    String title = "Are you sure you wish to edit reminder \"" +
+                            profileUser.getUser_reminders().get(position).getName() + "\"?";
+                    editPopUpTitle.setText(title);
                     edit = (Button) editDialog.findViewById(R.id.edit_confirmation_btn);
                     edit.setOnClickListener(new View.OnClickListener() {
                         @Override

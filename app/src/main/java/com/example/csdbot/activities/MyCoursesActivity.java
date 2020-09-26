@@ -35,7 +35,6 @@ public class MyCoursesActivity extends AppCompatActivity implements NavigationVi
 
     private TextView noCoursesText;
     private ImageView sad_face;
-    private TextView myCoursesTitle;
     private ListView lv;
     private ArrayList<Course> myCourses;
     private ArrayAdapter<Course> adapter;
@@ -76,9 +75,9 @@ public class MyCoursesActivity extends AppCompatActivity implements NavigationVi
          *      sad_face: ImageView if the user has no enrolled courses
          *      noCoursesText: TextView if the user has no enrolled courses
          */
-        lv = (ListView) findViewById(R.id.lv);
-        sad_face = (ImageView) findViewById(R.id.sad_face_myCourses);
-        noCoursesText = (TextView) findViewById(R.id.noCoursesText);
+        lv = findViewById(R.id.lv);
+        sad_face = findViewById(R.id.sad_face_myCourses);
+        noCoursesText = findViewById(R.id.noCoursesText);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
@@ -90,7 +89,9 @@ public class MyCoursesActivity extends AppCompatActivity implements NavigationVi
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
-                profileUser = myDB.getUserByUID(firebaseAuth.getUid());
+                if (myDB != null) {
+                    profileUser = myDB.getUserByUID(firebaseAuth.getUid());
+                }
                 myCourses = profileUser.getUser_courses();
                 adapter = new CourseListAdapter(MyCoursesActivity.this, R.layout.courses_list_item, profileUser.getUser_courses());
 
@@ -111,7 +112,10 @@ public class MyCoursesActivity extends AppCompatActivity implements NavigationVi
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Course temp = adapter.getItem(position);
-                        String tempName = temp.getName_en();
+                        String tempName = null;
+                        if (temp != null) {
+                            tempName = temp.getName_en();
+                        }
                         if ( Integer.parseInt(temp.getCode_en().substring(temp.getCode_en().length() - 3)) >= 500 ){
                             Intent intent = new Intent(MyCoursesActivity.this, PostGraduateCourseActivity.class);
                             intent.putExtra("Course Name", tempName);

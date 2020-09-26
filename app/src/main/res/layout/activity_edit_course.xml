@@ -8,6 +8,7 @@
     android:fitsSystemWindows="true"
     tools:context=".activities.EditCourseActivity"
     tools:openDrawer="start">
+
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
@@ -20,208 +21,218 @@
     </com.google.android.material.navigation.NavigationView>
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activities.AddContactActivity"
-        android:orientation="vertical">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#768591"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:navigationIcon="@drawable/ic_menu" />
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    <LinearLayout
-        android:id="@+id/editCourseLL"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="vertical"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="20dp">
+        tools:context=".activities.AddContactActivity">
 
-    <TextView
-        android:id="@+id/editCoursePageTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="TextView"
-        android:textColor="#768591"
-        android:textSize="25dp"
-        android:textStyle="bold"
-        android:paddingBottom="10dp"/>
-
-
-    <TextView
-        android:id="@+id/editCoursePageCodeTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:paddingLeft="10dp"
-        android:text="Code: "
-        android:textColor="#768591" />
-
-    <EditText
-        android:id="@+id/editCoursePageCode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:paddingLeft="20dp"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/editCoursePageDescTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:paddingLeft="10dp"
-        android:text="Description:"
-        android:textColor="#768591" />
-
-    <EditText
-        android:id="@+id/editCoursePageDesc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:paddingLeft="20dp"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/editCoursePageFieldTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:paddingLeft="10dp"
-        android:text="Area:"
-        android:textColor="#768591" />
-
-        <RadioGroup
-            android:id="@+id/courseAreas"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <RadioButton
-                android:id="@+id/coreCourses"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Core Courses" />
-
-            <RadioButton
-                android:id="@+id/E1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="E1 - Elective Courses from Mathematics and Physics" />
-
-
-            <RadioButton
-                android:id="@+id/E2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="E2 - Elective Courses from Other Sciences" />
-
-            <RadioButton
-                android:id="@+id/E3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="E3 - Networks and Telecommunications" />
-
-            <RadioButton
-                android:id="@+id/E4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="E4 - Hardware and Computer Systems" />
-
-            <RadioButton
-                android:id="@+id/E5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="E5 - Software Systems and Applications" />
-
-            <RadioButton
-                android:id="@+id/E6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="E6 - Information Systems" />
-
-            <RadioButton
-                android:id="@+id/E7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="E7 - Computer Vision and Robotics" />
-
-            <RadioButton
-                android:id="@+id/E8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="E8 - Algorithms and Computation Theory" />
-
-            <RadioButton
-                android:id="@+id/E9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="E9 - Society and Informatics" />
-
-            <RadioButton
-                android:id="@+id/EE"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Free Elective Courses" />
-        </RadioGroup>
-
-
-
-
-
-    <TextView
-        android:id="@+id/editCoursePageECTSField"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:paddingLeft="10dp"
-        android:text="ECTS:"
-        android:textColor="#768591" />
-
-        <EditText
-            android:id="@+id/editCoursePageECTS"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:paddingLeft="20dp"
-            android:text="TextView" />
+            android:background="#768591"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:navigationIcon="@drawable/ic_menu" />
 
-        <Button
-            android:id="@+id/saveBtn_editCourse"
-            android:layout_width="207dp"
-            android:layout_height="33dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="50dp"
-            android:layout_marginBottom="20dp"
-            android:layout_weight="1"
-            android:background="@drawable/rnd_btn"
-            android:text="Save"
-            android:textColor="#ffffff" />
-    </LinearLayout>
-    </ScrollView>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/editCourseLL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:layout_editor_absoluteY="20dp">
+
+                <TextView
+                    android:id="@+id/editCoursePageTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:text=""
+                    android:textColor="#768591"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+
+                <TextView
+                    android:id="@+id/editCoursePageCodeTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="@string/courseCode"
+                    android:textColor="#768591" />
+
+                <EditText
+                    android:id="@+id/editCoursePageCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:autofillHints=""
+                    android:hint="@string/enterCourseCodeHint"
+                    android:inputType="text"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="" />
+
+                <TextView
+                    android:id="@+id/editCoursePageDescTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="@string/courseDescription"
+                    android:textColor="#768591" />
+
+                <EditText
+                    android:id="@+id/editCoursePageDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:autofillHints=""
+                    android:hint="@string/descriptionHint"
+                    android:inputType="text"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="" />
+
+                <TextView
+                    android:id="@+id/editCoursePageFieldTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="@string/courseArea"
+                    android:textColor="#768591" />
+
+                <RadioGroup
+                    android:id="@+id/courseAreas"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <RadioButton
+                        android:id="@+id/coreCourses"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/coreCourses" />
+
+                    <RadioButton
+                        android:id="@+id/E1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/E1" />
+
+
+                    <RadioButton
+                        android:id="@+id/E2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/E2" />
+
+                    <RadioButton
+                        android:id="@+id/E3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/E3" />
+
+                    <RadioButton
+                        android:id="@+id/E4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/E4" />
+
+                    <RadioButton
+                        android:id="@+id/E5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/E5" />
+
+                    <RadioButton
+                        android:id="@+id/E6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/E6" />
+
+                    <RadioButton
+                        android:id="@+id/E7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/E7" />
+
+                    <RadioButton
+                        android:id="@+id/E8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/E8" />
+
+                    <RadioButton
+                        android:id="@+id/E9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/E9" />
+
+                    <RadioButton
+                        android:id="@+id/EE"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/enterCourseECTSHint" />
+                </RadioGroup>
+
+
+                <TextView
+                    android:id="@+id/editCoursePageECTSField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="@string/courseECTS"
+                    android:textColor="#768591" />
+
+                <EditText
+                    android:id="@+id/editCoursePageECTS"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:autofillHints=""
+                    android:hint="@string/enterCourseECTSHint"
+                    android:inputType="textPassword"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="" />
+
+                <Button
+                    android:id="@+id/saveBtn_editCourse"
+                    android:layout_width="207dp"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rnd_btn"
+                    android:text="@string/saveBtn"
+                    android:textColor="#ffffff" />
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>

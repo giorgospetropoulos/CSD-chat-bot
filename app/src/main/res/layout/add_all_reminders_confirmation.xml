@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="300dp"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/addAllConfirmationTitle"
-        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_margin="10dp"
+        android:text="" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="10dp"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:layout_marginBottom="10dp">
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/addAllBtn"
             android:layout_width="100dp"
-            android:layout_marginRight="10dp"
             android:layout_height="wrap_content"
-            android:textColor="#ffffff"
+            android:layout_marginEnd="10dp"
             android:background="@drawable/rnd_btn"
-            android:text="Add All" />
+            android:text="@string/addAll"
+            android:textColor="#ffffff" />
 
         <Button
             android:id="@+id/cancelAddAll"
             android:layout_width="100dp"
-            android:layout_marginLeft="10dp"
             android:layout_height="wrap_content"
-            android:text="Cancel" />
+            android:layout_marginStart="10dp"
+            android:text="@string/cancel" />
     </LinearLayout>
 </LinearLayout>

@@ -45,14 +45,13 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
     private TextView profileName;
     private ImageView profileImage;
-    private Button profileCourses, profileReminders, profileDetails, profileContacts, updateCourses, setAdmin, addNewCourse;
+    private Button updateCourses;
+    private Button setAdmin;
+    private Button addNewCourse;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseHelper myDB;
-    private FirebaseStorage firebaseStorage;
     private ArrayList<Course> courseList = new ArrayList<Course>();
     private ArrayList<PostGraduateCourse> postGraduateCourseList = new ArrayList<PostGraduateCourse>();
-    private DatabaseReference courseDBReference;
     private DatabaseReference databaseReference;
     private ProgressDialog loading;
     private Dialog chooseCourseType;
@@ -92,20 +91,20 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
          *      setAdmin: Set Admin Button
          *      addNewCourse: Add New Course Button
          */
-        profileName = (TextView) findViewById(R.id.profileName);
-        profileImage = (ImageView) findViewById(R.id.profileImage);
-        profileCourses = (Button) findViewById(R.id.profileCourses);
-        profileReminders = (Button) findViewById(R.id.profileReminders);
-        profileDetails = (Button) findViewById(R.id.profileDetails);
-        profileContacts = (Button) findViewById(R.id.profileContacts);
-        updateCourses = (Button) findViewById(R.id.populate);
-        setAdmin = (Button) findViewById(R.id.setAdmin);
-        addNewCourse = (Button) findViewById(R.id.addNewCourse);
+        profileName = findViewById(R.id.profileName);
+        profileImage = findViewById(R.id.profileImage);
+        Button profileCourses = findViewById(R.id.profileCourses);
+        Button profileReminders = findViewById(R.id.profileReminders);
+        Button profileDetails = findViewById(R.id.profileDetails);
+        Button profileContacts = findViewById(R.id.profileContacts);
+        updateCourses = findViewById(R.id.populate);
+        setAdmin = findViewById(R.id.setAdmin);
+        addNewCourse = findViewById(R.id.addNewCourse);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        firebaseStorage = FirebaseStorage.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         databaseReference = firebaseDatabase.getReference("Database");
         StorageReference storageReference = firebaseStorage.getReference();
         loading = ProgressDialog.show(ProfileActivity.this, "",
@@ -123,8 +122,11 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
-                User profileUser = myDB.getUserByUID(firebaseAuth.getUid());
-                profileName.setText(profileUser.getName());
+                User profileUser = null;
+                if (myDB != null) {
+                    profileUser = myDB.getUserByUID(firebaseAuth.getUid());
+                    profileName.setText(profileUser.getName());
+                }
                 loading.dismiss();
                 courseList = myDB.getCourseList();
                 if ( profileUser.isAdmin() || profileUser.getName().equals("admin")){
@@ -200,12 +202,15 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 Button undergraduate, postgarduate;
                 chooseCourseType = new Dialog(ProfileActivity.this);
                 chooseCourseType.setContentView(R.layout.add_all_reminders_confirmation);
-                addAllTitle = (TextView) chooseCourseType.findViewById(R.id.addAllConfirmationTitle);
-                addAllTitle.setText("Do you wish to add a new undergraduate or postgraduate course? ");
-                undergraduate = (Button) chooseCourseType.findViewById(R.id.addAllBtn);
-                undergraduate.setText("Undergraduate");
-                postgarduate = (Button) chooseCourseType.findViewById(R.id.cancelAddAll);
-                postgarduate.setText("Postgraduate");
+                addAllTitle = chooseCourseType.findViewById(R.id.addAllConfirmationTitle);
+                String title = "Do you wish to add a new undergraduate or postgraduate course? ";
+                addAllTitle.setText(title);
+                undergraduate = chooseCourseType.findViewById(R.id.addAllBtn);
+                String under = "Undergraduate";
+                undergraduate.setText(under);
+                postgarduate = chooseCourseType.findViewById(R.id.cancelAddAll);
+                String post = "Postgraduate";
+                postgarduate.setText(post);
                 undergraduate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

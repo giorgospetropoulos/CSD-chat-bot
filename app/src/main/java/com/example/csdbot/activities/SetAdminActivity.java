@@ -35,7 +35,6 @@ public class SetAdminActivity extends AppCompatActivity implements NavigationVie
     private ArrayList<User> teacherList = new ArrayList<User>();
     private ArrayAdapter<User> adapter;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseHelper myDB;
     private Dialog setDialog;
 
@@ -70,7 +69,7 @@ public class SetAdminActivity extends AppCompatActivity implements NavigationVie
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
         // Connect to the database and retrieve the users list
@@ -78,7 +77,9 @@ public class SetAdminActivity extends AppCompatActivity implements NavigationVie
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
-                teacherList = myDB.getUserList();
+                if (myDB != null) {
+                    teacherList = myDB.getUserList();
+                }
                 adapter = new UserListAdapter(SetAdminActivity.this, R.layout.user_list_item, teacherList);
                 admins_lv.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
@@ -93,20 +94,23 @@ public class SetAdminActivity extends AppCompatActivity implements NavigationVie
                         setDialog.setContentView(R.layout.teacher_confirmation);
                         setTeacherTitle = setDialog.findViewById(R.id.teacherConfirmation);
                         if ( teacherList.get(position).isAdmin() ){
-                            setTeacherTitle.setText("Are you sure you wish to remove user \""
+                            String title = "Are you sure you wish to remove user \""
                                     + teacherList.get(position).getName()
-                                    + "\" the role of admin?");
+                                    + "\" the role of admin?";
+                            setTeacherTitle.setText(title);
                         } else {
-                            setTeacherTitle.setText("Are you sure you wish to assign user \""
+                            String title = "Are you sure you wish to assign user \""
                                     + teacherList.get(position).getName()
-                                    + "\" the role of admin?");
+                                    + "\" the role of admin?";
+                            setTeacherTitle.setText(title);
                         }
 
                         setTeacherBtn = (Button) setDialog.findViewById(R.id.teacherConfirmationBtn);
                         cancelBtn = (Button) setDialog.findViewById(R.id.teacherCancelationBtn);
 
                         if ( teacherList.get(position).isAdmin() ){
-                            setTeacherBtn.setText("Remove");
+                            String remove = "Remove";
+                            setTeacherBtn.setText(remove);
                         }
                         setTeacherBtn.setOnClickListener(new View.OnClickListener() {
                             @Override

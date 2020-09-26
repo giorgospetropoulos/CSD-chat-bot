@@ -8,6 +8,9 @@ public class PostGraduateCourse extends Course{
     private ArrayList<String> area_names_gr = new ArrayList<String>();
     private ArrayList<String> area_names_en = new ArrayList<String>();
 
+    /**
+     *      Constructors
+     */
     public PostGraduateCourse(){
 
     }
@@ -43,6 +46,10 @@ public class PostGraduateCourse extends Course{
         this.setTeacherUID("0");
         this.setTeacher("");
     }
+
+    /**
+     *      Getters and Setters
+     */
 
     public ArrayList<String> getArea_codes_gr() {
         return area_codes_gr;

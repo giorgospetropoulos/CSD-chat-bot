@@ -28,12 +28,10 @@ import com.google.firebase.database.ValueEventListener;
 
 public class ReminderActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private TextView reminderName, reminderDesc, reminderPriority, reminderTime;
-    private Button editReminder;
-    private Dialog editDialog, cancelDialog;
+    private TextView reminderTime;
+    private Dialog editDialog;
     private DatabaseHelper myDB;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private User profileUser;
 
     // ---------- Slide Menu --------------
@@ -67,15 +65,15 @@ public class ReminderActivity extends AppCompatActivity implements NavigationVie
          *      reminderPriority: The reminder's priority
          *      editReminder: Edit Reminder Button
          */
-        reminderName = (TextView) findViewById(R.id.reminderPageName);
-        reminderDesc = (TextView) findViewById(R.id.reminderPageDesc);
-        reminderPriority = (TextView) findViewById(R.id.reminderPagePriority);
-        reminderTime = (TextView) findViewById(R.id.reminderPageTime);
-        editReminder = (Button) findViewById(R.id.editReminderBtn);
+        TextView reminderName = findViewById(R.id.reminderPageName);
+        TextView reminderDesc = findViewById(R.id.reminderPageDesc);
+        TextView reminderPriority = findViewById(R.id.reminderPagePriority);
+        reminderTime = findViewById(R.id.reminderPageTime);
+        Button editReminder = findViewById(R.id.editReminderBtn);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
         // Set the data of the reminder
@@ -83,19 +81,23 @@ public class ReminderActivity extends AppCompatActivity implements NavigationVie
         reminderDesc.setText(getIntent().getStringExtra("Reminder Desc"));
         switch (getIntent().getStringExtra("Reminder Priority")) {
             case "low":
-                reminderPriority.setText(" Low");
+                String low = " Low";
+                reminderPriority.setText(low);
                 reminderPriority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.low_priority,0, 0, 0);
                 break;
             case "mid":
-                reminderPriority.setText(" Medium");
+                String mid = " Medium";
+                reminderPriority.setText(mid);
                 reminderPriority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.medium_priority,0, 0, 0);
                 break;
             case "high":
-                reminderPriority.setText(" High");
+                String high = " High";
+                reminderPriority.setText(high);
                 reminderPriority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.high_priority,0, 0, 0);
                 break;
             default:
-                reminderPriority.setText(" Low");
+                String def = " Low";
+                reminderPriority.setText(def);
                 reminderPriority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.low_priority,0, 0, 0);
                 break;
         }
@@ -107,18 +109,23 @@ public class ReminderActivity extends AppCompatActivity implements NavigationVie
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
                 profileUser = myDB.getUserByUID(firebaseAuth.getUid());
                 Reminder tempRem = profileUser.getReminderByID(getIntent().getIntExtra("remID",0));
-                reminderTime.setText(tempRem.getDay() + "/" +
+                String time = tempRem.getDay() + "/" +
                         tempRem.getMonth() + "/" +
-                        tempRem.getYear() + " - ");
+                        tempRem.getYear() + " - ";
+                reminderTime.setText(time);
                 if ( tempRem.getHour() < 10 ){
-                    reminderTime.setText(reminderTime.getText().toString() + "0" + tempRem.getHour() + ":");
+                    time = time  + "0" + tempRem.getHour() + ":";
+                    reminderTime.setText(time);
                 } else {
-                    reminderTime.setText(reminderTime.getText().toString() + tempRem.getHour() + ":");
+                    time = time + tempRem.getHour() + ":";
+                    reminderTime.setText(time);
                 }
                 if ( tempRem.getMin() < 10 ){
-                    reminderTime.setText(reminderTime.getText().toString() + "0" + tempRem.getMin());
+                    time = time + "0" + tempRem.getMin();
+                    reminderTime.setText(time);
                 } else {
-                    reminderTime.setText(reminderTime.getText().toString() + tempRem.getMin());
+                    time = time + tempRem.getMin();
+                    reminderTime.setText(time);
                 }
             }
 
@@ -137,9 +144,11 @@ public class ReminderActivity extends AppCompatActivity implements NavigationVie
                 editDialog = new Dialog(ReminderActivity.this);
                 editDialog.setContentView(R.layout.edit_reminder_confirmation);
 
-                editPopUpTitle = (TextView) editDialog.findViewById(R.id.popUpTitle);
-                editPopUpTitle.setText("Are you sure you wish to edit reminder \"" + getIntent().getStringExtra("Reminder Name") + "\"?");
-                edit = (Button) editDialog.findViewById(R.id.edit_confirmation_btn);
+                editPopUpTitle = editDialog.findViewById(R.id.popUpTitle);
+                String title = "Are you sure you wish to edit reminder \"" +
+                        getIntent().getStringExtra("Reminder Name") + "\"?";
+                editPopUpTitle.setText(title);
+                edit = editDialog.findViewById(R.id.edit_confirmation_btn);
                 edit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -149,7 +158,7 @@ public class ReminderActivity extends AppCompatActivity implements NavigationVie
                         editDialog.dismiss();
                     }
                 });
-                cancel = (Button) editDialog.findViewById(R.id.cancel_edit);
+                cancel = editDialog.findViewById(R.id.cancel_edit);
                 cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

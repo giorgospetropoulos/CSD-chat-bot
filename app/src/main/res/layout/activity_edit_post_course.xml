@@ -8,6 +8,7 @@
     android:fitsSystemWindows="true"
     tools:context=".activities.EditPostCourseActivity"
     tools:openDrawer="start">
+
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
@@ -20,188 +21,197 @@
     </com.google.android.material.navigation.NavigationView>
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activities.AddContactActivity"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:context=".activities.AddContactActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#768591"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:navigationIcon="@drawable/ic_menu" />
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:id="@+id/editPostCourseLL"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteY="20dp">
+            android:background="#768591"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:navigationIcon="@drawable/ic_menu" />
 
-            <TextView
-                android:id="@+id/editPostCoursePageTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="TextView"
-                android:textColor="#768591"
-                android:textSize="25dp"
-                android:textStyle="bold"
-                android:paddingBottom="10dp"/>
-
-
-            <TextView
-                android:id="@+id/editPostCoursePageCodeTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:paddingLeft="10dp"
-                android:text="Code: "
-                android:textColor="#768591" />
-
-            <EditText
-                android:id="@+id/editPostCoursePageCode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:paddingLeft="20dp"
-                android:text="TextView" />
-
-            <TextView
-                android:id="@+id/editPostCoursePageDescTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:paddingLeft="10dp"
-                android:text="Description:"
-                android:textColor="#768591" />
-
-            <EditText
-                android:id="@+id/editPostCoursePageDesc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:paddingLeft="20dp"
-                android:text="TextView" />
-
-            <TextView
-                android:id="@+id/editPostCoursePageFieldTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:paddingLeft="10dp"
-                android:text="Area:"
-                android:textColor="#768591" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/editPostCourseLL"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteY="20dp">
 
-                <CheckBox
-                    android:id="@+id/postA"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/editPostCoursePageTitle"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="A - Micro-electronic Systems Architecture" />
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:text=""
+                    android:textColor="#768591"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
 
-                <CheckBox
-                    android:id="@+id/postB"
-                    android:layout_width="wrap_content"
+
+                <TextView
+                    android:id="@+id/editPostCoursePageCodeTitle"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="B - Computer Networks and Telecommunications" />
+                    android:layout_marginBottom="5dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="@string/courseCode"
+                    android:textColor="#768591" />
 
-
-                <CheckBox
-                    android:id="@+id/postC"
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/editPostCoursePageCode"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="C - Parallel and Distributed Systems" />
+                    android:layout_marginBottom="10dp"
+                    android:autofillHints="@string/enterCourseCodeHint"
+                    android:hint="@string/enterCourseCodeHint"
+                    android:inputType="text"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp" />
 
-                <CheckBox
-                    android:id="@+id/postD"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/editPostCoursePageDescTitle"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="D - Information Systems and Human-Computer Interaction" />
+                    android:layout_marginBottom="5dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="@string/descriptionHint"
+                    android:textColor="#768591" />
 
-                <CheckBox
-                    android:id="@+id/postE"
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/editPostCoursePageDesc"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="E - Computational and Cognitive Vision and Robotics" />
+                    android:layout_marginBottom="5dp"
+                    android:autofillHints="@string/enterCourseDescriptionHint"
+                    android:hint="@string/enterCourseDescriptionHint"
+                    android:inputType="text"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp" />
 
-                <CheckBox
-                    android:id="@+id/postF"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/editPostCoursePageFieldTitle"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="F - Algorithms and Systems Analysis" />
+                    android:layout_marginBottom="5dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="@string/courseArea"
+                    android:textColor="#768591" />
 
-                <CheckBox
-                    android:id="@+id/postG"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <CheckBox
+                        android:id="@+id/postA"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/postCourseAreaA" />
+
+                    <CheckBox
+                        android:id="@+id/postB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/postCourseAreaB" />
+
+
+                    <CheckBox
+                        android:id="@+id/postC"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/postCourseAreaC" />
+
+                    <CheckBox
+                        android:id="@+id/postD"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/postCourseAreaD" />
+
+                    <CheckBox
+                        android:id="@+id/postE"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/postCourseAreaE" />
+
+                    <CheckBox
+                        android:id="@+id/postF"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/postCourseAreaF" />
+
+                    <CheckBox
+                        android:id="@+id/postG"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/postCourseAreaG" />
+
+                    <CheckBox
+                        android:id="@+id/postO"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/postCourseAreaO" />
+
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/editPostCoursePageECTSField"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="G - Biomedical Informatics and Technology" />
+                    android:layout_marginBottom="5dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="@string/courseECTS"
+                    android:textColor="#768591" />
 
-                <CheckBox
-                    android:id="@+id/postO"
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/editPostCoursePageECTS"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:autofillHints="@string/enterCourseECTSHint"
+                    android:hint="@string/enterCourseECTSHint"
+                    android:inputType="text"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp" />
+
+                <Button
+                    android:id="@+id/saveBtn_editPostCourse"
+                    android:layout_width="207dp"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginBottom="20dp"
                     android:layout_weight="1"
-                    android:text="Θ - Multimedia Technology" />
-
-
+                    android:background="@drawable/rnd_btn"
+                    android:text="@string/saveBtn"
+                    android:textColor="#ffffff" />
             </LinearLayout>
-
-
-
-
-            <TextView
-                android:id="@+id/editPostCoursePageECTSField"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:paddingLeft="10dp"
-                android:text="ECTS:"
-                android:textColor="#768591" />
-
-            <EditText
-                android:id="@+id/editPostCoursePageECTS"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:paddingLeft="20dp"
-                android:text="TextView" />
-
-            <Button
-                android:id="@+id/saveBtn_editPostCourse"
-                android:layout_width="207dp"
-                android:layout_height="33dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="50dp"
-                android:layout_marginBottom="20dp"
-                android:layout_weight="1"
-                android:background="@drawable/rnd_btn"
-                android:text="Save"
-                android:textColor="#ffffff" />
-        </LinearLayout>
-    </ScrollView>
+        </ScrollView>
     </LinearLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>

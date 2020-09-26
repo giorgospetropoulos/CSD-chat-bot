@@ -49,10 +49,13 @@
                 android:layout_height="40dp"
                 android:layout_marginTop="-20dp"
                 android:layout_marginBottom="20dp"
+                android:autofillHints="@string/searchBtn"
                 android:background="@drawable/credentials_btn"
-                android:drawableRight="@drawable/search"
-                android:hint="Search"
-                android:paddingLeft="5dp" />
+                android:drawableEnd="@drawable/search"
+                android:hint="@string/searchBtn"
+                android:inputType="text"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -64,6 +67,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_weight="1"
+                    android:contentDescription="@string/button"
                     app:srcCompat="@drawable/courses" />
 
                 <ImageView
@@ -71,6 +75,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_weight="1"
+                    android:contentDescription="@string/button"
                     app:srcCompat="@drawable/mycourses" />
             </LinearLayout>
 
@@ -87,7 +92,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:singleLine="true"
-                    android:text="Courses" />
+                    android:text="@string/courses" />
 
                 <TextView
                     android:id="@+id/myCoursesHomeTitle"
@@ -95,7 +100,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="My Courses" />
+                    android:text="@string/myCourses" />
 
             </LinearLayout>
 
@@ -109,6 +114,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_weight="1"
+                    android:contentDescription="@string/button"
                     app:srcCompat="@drawable/reminders" />
 
                 <ImageView
@@ -116,6 +122,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_weight="1"
+                    android:contentDescription="@string/button"
                     app:srcCompat="@drawable/calendar" />
 
 
@@ -132,7 +139,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Reminders" />
+                    android:text="@string/reminders" />
 
                 <TextView
                     android:id="@+id/calendarTitle"
@@ -140,13 +147,14 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Calendar" />
+                    android:text="@string/calendar" />
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/mic"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                android:contentDescription="@string/button"
                 android:paddingTop="20dp"
                 app:srcCompat="@drawable/mic_up" />
 

@@ -16,7 +16,6 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class RemindersActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private Button addRem, calendarRem, showAll;
     private FirebaseAuth firebaseAuth;
 
     // ---------- Slide Menu --------------
@@ -48,9 +47,9 @@ public class RemindersActivity extends AppCompatActivity implements NavigationVi
          *      calendarRem: Go to Calendar Button
          *      showAll: Show Reminders List Button
          */
-        addRem = (Button) findViewById(R.id.addRem);
-        calendarRem = (Button) findViewById(R.id.calendar_rem);
-        showAll = (Button) findViewById(R.id.showAll);
+        Button addRem = (Button) findViewById(R.id.addRem);
+        Button calendarRem = (Button) findViewById(R.id.calendar_rem);
+        Button showAll = (Button) findViewById(R.id.showAll);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();

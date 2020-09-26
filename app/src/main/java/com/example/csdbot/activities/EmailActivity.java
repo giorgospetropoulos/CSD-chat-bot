@@ -22,7 +22,6 @@ import com.google.firebase.auth.FirebaseAuth;
 public class EmailActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private EditText subject,body;
-    private Button send;
     private FirebaseAuth firebaseAuth;
 
     // ---------- Slide Menu --------------
@@ -57,9 +56,9 @@ public class EmailActivity extends AppCompatActivity implements NavigationView.O
          *      body: The body of the email
          *      send: Send Email Button
          */
-        subject = (EditText) findViewById(R.id.email_subject);
-        body = (EditText) findViewById(R.id.email_body);
-        send = (Button) findViewById(R.id.email_send);
+        subject = findViewById(R.id.email_subject);
+        body = findViewById(R.id.email_body);
+        Button send = findViewById(R.id.email_send);
 
         // Start activity to choose from which client the email should be sent
         send.setOnClickListener(new View.OnClickListener() {

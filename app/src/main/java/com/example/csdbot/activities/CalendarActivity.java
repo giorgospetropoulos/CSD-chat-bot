@@ -42,11 +42,9 @@ import sun.bob.mcalendarview.vo.DateData;
 public class CalendarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private ListView lv;
     private ArrayAdapter<Reminder> adapter;
-    private ImageView add;
     private MCalendarView calendar;
     private TextView  calendarTitle;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private User profileUser;
     private ArrayList<Reminder> reminderList;
     private DatabaseHelper myDB;
@@ -85,18 +83,20 @@ public class CalendarActivity extends AppCompatActivity implements NavigationVie
          *      calendar: The CalendarView
          *      calendarTitle: The Calendar Title (Month and Year)
          */
-        add = (ImageView) findViewById(R.id.addReminder);
-        lv = (ListView) findViewById(R.id.calendarReminderListView);
-        calendar = (MCalendarView) findViewById(R.id.calendarView);
-        calendarTitle = (TextView) findViewById(R.id.calendarTitle);
+        ImageView add = findViewById(R.id.addReminder);
+        lv = findViewById(R.id.calendarReminderListView);
+        calendar = findViewById(R.id.calendarView);
+        calendarTitle = findViewById(R.id.calendarTitle);
 
         // Set CalendarView Title
         calendar.hasTitle(false);
-        calendarTitle.setText(Calendar.getInstance().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()) + " " + Calendar.getInstance().get(Calendar.YEAR));
+        String calendar_title = Calendar.getInstance().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
+                + " " + Calendar.getInstance().get(Calendar.YEAR);
+        calendarTitle.setText(calendar_title);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
         /*
@@ -109,22 +109,25 @@ public class CalendarActivity extends AppCompatActivity implements NavigationVie
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Reminder temp = adapter.getItem(position);
                 Intent intent = new Intent(CalendarActivity.this, ReminderActivity.class);
-                intent.putExtra("Reminder Name", temp.getName());
-                intent.putExtra("Reminder Desc", temp.getDescription());
-                intent.putExtra("remID", temp.getId());
-                switch (temp.getReminder_priority()){
-                    case low:
-                        intent.putExtra("Reminder Priority", "low");
-                        break;
-                    case mid:
-                        intent.putExtra("Reminder Priority", "mid");
-                        break;
-                    case high:
-                        intent.putExtra("Reminder Priority", "high");
-                        break;
-                    default:
-                        intent.putExtra("Reminder Priority", "none");
-                        break;
+                if (temp != null) {
+                    intent.putExtra("Reminder Name", temp.getName());
+                    intent.putExtra("Reminder Desc", temp.getDescription());
+                    intent.putExtra("remID", temp.getId());
+
+                    switch (temp.getReminder_priority()){
+                        case low:
+                            intent.putExtra("Reminder Priority", "low");
+                            break;
+                        case mid:
+                            intent.putExtra("Reminder Priority", "mid");
+                            break;
+                        case high:
+                            intent.putExtra("Reminder Priority", "high");
+                            break;
+                        default:
+                            intent.putExtra("Reminder Priority", "none");
+                            break;
+                    }
                 }
                 startActivity(intent);
             }
@@ -144,40 +147,52 @@ public class CalendarActivity extends AppCompatActivity implements NavigationVie
             public void onMonthChange(int year, int month) {
                 switch (month){
                     case 1:
-                        calendarTitle.setText("January " + year);
+                        String January = "January " + year;
+                        calendarTitle.setText(January);
                         break;
                     case 2:
-                        calendarTitle.setText("February " + year);
+                        String February = "February " + year;
+                        calendarTitle.setText(February);
                         break;
                     case 3:
-                        calendarTitle.setText("March " + year);
+                        String March = "March " + year;
+                        calendarTitle.setText(March);
                         break;
                     case 4:
-                        calendarTitle.setText("April " + year);
+                        String April = "April " + year;
+                        calendarTitle.setText(April);
                         break;
                     case 5:
-                        calendarTitle.setText("May " + year);
+                        String May = "May " + year;
+                        calendarTitle.setText(May);
                         break;
                     case 6:
-                        calendarTitle.setText("June " + year);
+                        String June = "June " + year;
+                        calendarTitle.setText(June);
                         break;
                     case 7:
-                        calendarTitle.setText("July " + year);
+                        String July = "July " + year;
+                        calendarTitle.setText(July);
                         break;
                     case 8:
-                        calendarTitle.setText("August " + year);
+                        String August = "August " + year;
+                        calendarTitle.setText(August);
                         break;
                     case 9:
-                        calendarTitle.setText("September " + year);
+                        String September = "September " + year;
+                        calendarTitle.setText(September);
                         break;
                     case 10:
-                        calendarTitle.setText("October " + year);
+                        String October = "October " + year;
+                        calendarTitle.setText(October);
                         break;
                     case 11:
-                        calendarTitle.setText("November " + year);
+                        String November = "November " + year;
+                        calendarTitle.setText(November);
                         break;
                     case 12:
-                        calendarTitle.setText("December " + year);
+                        String December = "December " + year;
+                        calendarTitle.setText(December);
                         break;
                     default:
                         break;
@@ -191,12 +206,12 @@ public class CalendarActivity extends AppCompatActivity implements NavigationVie
             public void onDateClick(View view, DateData date) {
                 ArrayList<Reminder> dateReminders = new ArrayList<Reminder>();
                 String clickedDate = Integer.toString(date.getYear()) +
-                        Integer.toString(date.getMonth()) +
-                        Integer.toString(date.getDay());
+                        date.getMonth() +
+                        date.getDay();
                 for(int i = 0 ; i < reminderList.size() ; i++){
                     String tempDate = Integer.toString(reminderList.get(i).getYear()) +
-                            Integer.toString(reminderList.get(i).getMonth()) +
-                            Integer.toString(reminderList.get(i).getDay());
+                            reminderList.get(i).getMonth() +
+                            reminderList.get(i).getDay();
                     if ( tempDate.equals(clickedDate) ) {
                         dateReminders.add(reminderList.get(i));
                     }
@@ -214,7 +229,9 @@ public class CalendarActivity extends AppCompatActivity implements NavigationVie
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
-                profileUser = myDB.getUserByUID(firebaseAuth.getUid());
+                if (myDB != null) {
+                    profileUser = myDB.getUserByUID(firebaseAuth.getUid());
+                }
                 reminderList = profileUser.getUser_reminders();
 
                 for ( int i = 0 ; i < profileUser.getUser_reminders().size() ; i++) {

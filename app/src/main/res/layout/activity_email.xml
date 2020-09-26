@@ -21,9 +21,7 @@
     </com.google.android.material.navigation.NavigationView>
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -50,19 +48,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:autofillHints="@string/emailSubject"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Subject" />
+                android:hint="@string/emailSubject"
+                android:inputType="textEmailSubject" />
 
             <EditText
                 android:id="@+id/email_body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:autofillHints="@string/emailBody"
                 android:ems="10"
                 android:gravity="start|top"
-                android:inputType="textMultiLine"
-                android:text="Body" />
+                android:hint="@string/emailBody"
+                android:inputType="text" />
 
             <Button
                 android:id="@+id/email_send"
@@ -71,7 +71,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:background="@drawable/rnd_btn"
-                android:text="Send"
+                android:text="@string/sendBtn"
                 android:textColor="#FFFFFF" />
         </LinearLayout>
     </LinearLayout>

@@ -1,38 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="300dp"
     android:layout_height="100dp"
-    android:layout_margin="10dp">
+    android:layout_margin="10dp"
+    android:orientation="vertical">
+
     <TextView
         android:id="@+id/contactConfirmation"
-        android:paddingTop="5dp"
-        android:paddingLeft="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:paddingStart="5dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="5dp"
+        android:text="" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp">
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/addContactConfirmationBtn"
             android:layout_width="75dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
             android:background="@drawable/rnd_btn"
-            android:layout_marginRight="10dp"
-            android:textColor="#ffffff"
-            android:text="Add" />
+            android:text="@string/add"
+            android:textColor="#ffffff" />
 
         <Button
             android:id="@+id/addContactCancelationBtn"
             android:layout_width="85dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="Cancel" />
+            android:layout_marginStart="10dp"
+            android:text="@string/cancel" />
     </LinearLayout>
 </LinearLayout>

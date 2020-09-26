@@ -21,9 +21,7 @@
     </com.google.android.material.navigation.NavigationView>
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -50,7 +48,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:gravity="center"
-                android:text="This course has no reminders set yet."
+                android:text="@string/noCourseReminders"
                 android:visibility="gone" />
 
             <ImageView
@@ -59,7 +57,8 @@
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:visibility="gone"
-                app:srcCompat="@drawable/reminders" />
+                app:srcCompat="@drawable/reminders"
+                android:contentDescription="@string/button" />
 
             <ListView
                 android:id="@+id/courseRemindersLV"
@@ -78,9 +77,9 @@
                     android:layout_width="150dp"
                     android:layout_height="35dp"
                     android:layout_gravity="center"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginEnd="15dp"
                     android:background="@drawable/rnd_btn"
-                    android:text="Disenroll"
+                    android:text="@string/disenroll"
                     android:textColor="#ffffff"
                     android:visibility="gone" />
 
@@ -89,9 +88,9 @@
                     android:layout_width="150dp"
                     android:layout_height="35dp"
                     android:layout_gravity="center"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginEnd="15dp"
                     android:background="@drawable/rnd_btn"
-                    android:text="Enroll"
+                    android:text="@string/enroll"
                     android:textColor="#ffffff" />
 
                 <Button
@@ -99,9 +98,9 @@
                     android:layout_width="150dp"
                     android:layout_height="35dp"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
                     android:background="@drawable/rnd_btn"
-                    android:text="Add All to Calendar"
+                    android:text="@string/addAllToCalendar"
                     android:textColor="#ffffff" />
 
             </LinearLayout>
@@ -111,10 +110,10 @@
                 android:layout_width="150dp"
                 android:layout_height="35dp"
                 android:layout_gravity="center"
-                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/rnd_btn"
-                android:text="Add New Reminder"
+                android:text="@string/addNewReminder"
                 android:textColor="#ffffff"
                 android:visibility="gone" />
 
@@ -123,10 +122,10 @@
                 android:layout_width="150dp"
                 android:layout_height="35dp"
                 android:layout_gravity="center"
-                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/rnd_btn"
-                android:text="Set Teacher"
+                android:text="@string/setTeacher"
                 android:textColor="#ffffff"
                 android:visibility="gone" />
 
@@ -135,10 +134,10 @@
                 android:layout_width="150dp"
                 android:layout_height="35dp"
                 android:layout_gravity="center"
-                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/rnd_btn"
-                android:text="Edit Course"
+                android:text="@string/editCourse"
                 android:textColor="#ffffff"
                 android:visibility="gone"/>
 

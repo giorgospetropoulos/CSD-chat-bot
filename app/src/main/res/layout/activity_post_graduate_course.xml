@@ -21,9 +21,7 @@
     </com.google.android.material.navigation.NavigationView>
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -54,9 +52,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="TextView"
+                    android:hint="@string/courseName"
                     android:textColor="#768591"
-                    android:textSize="25dp"
+                    android:textSize="25sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -64,8 +62,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:text="Code: "
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="@string/courseCode"
                     android:textColor="#768591" />
 
                 <TextView
@@ -73,16 +72,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:paddingLeft="20dp"
-                    android:text="TextView" />
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="" />
 
                 <TextView
                     android:id="@+id/postCoursePageTeacherTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:text="Teacher: "
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="@string/courseTeacher"
                     android:textColor="#768591" />
 
                 <TextView
@@ -90,16 +91,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:paddingLeft="20dp"
-                    android:text="TextView" />
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="" />
 
                 <TextView
                     android:id="@+id/postCoursePageDescTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:text="Description:"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="@string/descriptionHint"
                     android:textColor="#768591" />
 
                 <TextView
@@ -107,16 +110,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:paddingLeft="20dp"
-                    android:text="TextView" />
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="" />
 
                 <TextView
                     android:id="@+id/postCoursePageFieldTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:text="Area:"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="@string/courseArea"
                     android:textColor="#768591" />
 
                 <TextView
@@ -124,16 +129,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:paddingLeft="20dp"
-                    android:text="TextView" />
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="" />
 
                 <TextView
                     android:id="@+id/postCoursePageECTSField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:text="ECTS:"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="@string/courseECTS"
                     android:textColor="#768591" />
 
                 <TextView
@@ -141,16 +148,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:paddingLeft="20dp"
-                    android:text="TextView" />
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="" />
 
                 <TextView
                     android:id="@+id/postCoursePageURLField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:text="Url:"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="@string/courseUrl"
                     android:textColor="#768591" />
 
                 <TextView
@@ -158,8 +167,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:paddingLeft="20dp"
-                    android:text="TextView" />
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="" />
 
                 <Button
                     android:id="@+id/postCourseMainPageButton"
@@ -170,7 +180,7 @@
                     android:layout_marginBottom="20dp"
                     android:layout_weight="1"
                     android:background="@drawable/rnd_btn"
-                    android:text="Go To Course Reminders"
+                    android:text="@string/goToCourseRemindersBtn"
                     android:textColor="#ffffff" />
 
                 <Button
@@ -182,9 +192,9 @@
                     android:layout_marginBottom="20dp"
                     android:layout_weight="1"
                     android:background="@drawable/rnd_btn"
-                    android:text="Delete Course"
+                    android:text="@string/deleteCourse"
                     android:textColor="#ffffff"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
             </LinearLayout>
 

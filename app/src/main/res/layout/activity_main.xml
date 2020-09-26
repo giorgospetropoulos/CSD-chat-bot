@@ -9,8 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
 
 
         <ImageView
@@ -19,49 +19,52 @@
             android:layout_height="100dp"
             android:layout_marginTop="-150dp"
             android:layout_marginBottom="50dp"
+            android:contentDescription="@string/button"
             app:srcCompat="@drawable/logo" />
 
         <EditText
             android:id="@+id/username"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:autofillHints="@string/emailHint"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="Email"
-            android:layout_marginBottom="20dp"/>
+            android:hint="@string/emailHint"
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/password"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:autofillHints="@string/password"
             android:ems="10"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:layout_marginBottom="20dp"/>
+            android:hint="@string/password"
+            android:inputType="textPassword" />
 
 
         <Button
             android:id="@+id/login"
             android:layout_width="114dp"
             android:layout_height="35dp"
-            android:text="Log In"
-            android:textColor="#ffffff"
             android:layout_marginBottom="30dp"
-            android:background="@drawable/login_btn"/>
+            android:background="@drawable/login_btn"
+            android:text="@string/logInBtn"
+            android:textColor="#ffffff" />
 
         <TextView
             android:id="@+id/signUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_marginBottom="10dp"
-            android:text="Sign Up" />
+            android:gravity="center"
+            android:text="@string/signUpBtn" />
 
         <TextView
             android:id="@+id/forgotPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Forgot Password?" />
+            android:text="@string/forgotPassword" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

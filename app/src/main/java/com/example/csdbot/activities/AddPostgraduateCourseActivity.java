@@ -15,13 +15,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 import com.example.csdbot.components.Course;
 import com.example.csdbot.components.DatabaseHelper;
 import com.example.csdbot.components.PostGraduateCourse;
 import com.example.csdbot.R;
-import com.example.csdbot.components.User;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -31,13 +29,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 public class AddPostgraduateCourseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private CheckBox A, B, C, D, E, F, G, O;
     private EditText nameET, codeET, descriptionET, ectsET, urlET;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseHelper myDB;
     private PostGraduateCourse course;
     private Button save;
@@ -77,24 +75,24 @@ public class AddPostgraduateCourseActivity extends AppCompatActivity implements 
          *      E, F, G, O: The checkbox of each area of study
          *      save: The button to save the course
          */
-        nameET = (EditText) findViewById(R.id.addPostCourseName);
-        codeET = (EditText) findViewById(R.id.addPostCourseCode);
-        descriptionET = (EditText) findViewById(R.id.addPostCourseDesc);
-        ectsET = (EditText) findViewById(R.id.addPostCourseECTS);
-        urlET = (EditText) findViewById(R.id.addPostCourseUrl);
-        A = (CheckBox) findViewById(R.id.addPostA);
-        B = (CheckBox) findViewById(R.id.addPostB);
-        C = (CheckBox) findViewById(R.id.addPostC);
-        D = (CheckBox) findViewById(R.id.addPostD);
-        E = (CheckBox) findViewById(R.id.addPostE);
-        F = (CheckBox) findViewById(R.id.addPostF);
-        G = (CheckBox) findViewById(R.id.addPostG);
-        O = (CheckBox) findViewById(R.id.addPostO);
-        save = (Button) findViewById(R.id.saveBtn_addPostCourse);
+        nameET = findViewById(R.id.addPostCourseName);
+        codeET = findViewById(R.id.addPostCourseCode);
+        descriptionET = findViewById(R.id.addPostCourseDesc);
+        ectsET = findViewById(R.id.addPostCourseECTS);
+        urlET = findViewById(R.id.addPostCourseUrl);
+        A = findViewById(R.id.addPostA);
+        B = findViewById(R.id.addPostB);
+        C = findViewById(R.id.addPostC);
+        D = findViewById(R.id.addPostD);
+        E = findViewById(R.id.addPostE);
+        F = findViewById(R.id.addPostF);
+        G = findViewById(R.id.addPostG);
+        O = findViewById(R.id.addPostO);
+        save = findViewById(R.id.saveBtn_addPostCourse);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
         // Connect to the database and get the Postgraduate Courses List
@@ -102,7 +100,9 @@ public class AddPostgraduateCourseActivity extends AppCompatActivity implements 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
-                courseList = myDB.getPostGraduateCourseList();
+                if (myDB != null) {
+                    courseList = myDB.getPostGraduateCourseList();
+                }
 
                 // Save course on the list and update database
                 save.setOnClickListener(new View.OnClickListener() {
@@ -110,11 +110,7 @@ public class AddPostgraduateCourseActivity extends AppCompatActivity implements 
                     public void onClick(View v) {
                         ArrayList<String> area_codes_en = new ArrayList<String>();
                         ArrayList<String> area_names_en = new ArrayList<String>();
-                        String name = "";
-                        String code = "";
-                        String desc = "";
-                        String ects = "";
-                        String url = "";
+                        String name, code, desc, ects, url;
 
                         if ( A.isChecked() ){
                             area_codes_en.add("A");
@@ -149,21 +145,12 @@ public class AddPostgraduateCourseActivity extends AppCompatActivity implements 
                             area_names_en.add("Multimedia Technology");
                         }
 
-                        if ( nameET.getText().toString() != null){
-                            name = nameET.getText().toString();
-                        }
-                        if ( codeET.getText().toString() != null){
-                            code = codeET.getText().toString();
-                        }
-                        if ( descriptionET.getText().toString() != null ){
-                            desc = descriptionET.getText().toString();
-                        }
-                        if ( ectsET.getText().toString() != null ){
-                            ects = ectsET.getText().toString();
-                        }
-                        if ( urlET.getText().toString() != null ){
-                            url = urlET.getText().toString();
-                        }
+                        name = nameET.getText().toString();
+                        code = codeET.getText().toString();
+                        desc = descriptionET.getText().toString();
+                        ects = ectsET.getText().toString();
+                        url = urlET.getText().toString();
+
 
                         // Create new Postgraduate Course
                         course = new PostGraduateCourse( name,
@@ -203,8 +190,9 @@ public class AddPostgraduateCourseActivity extends AppCompatActivity implements 
         findViewById(R.id.addPostCourseLL).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                v.performClick();
                 InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(), 0);
                 return true;
             }
         });
