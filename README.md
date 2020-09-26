@@ -147,3 +147,4 @@ The SpeechRecorder class is designed to implement the voice controls for the app
     * void stopRecording(): Stop recording the user
     * void checkVoiceRecodrPerimission(): Check if user has given voice record permission to the app
     * void callAction(String recording): Recursive function to determine the action that needs to be taken
+    * Getters and Setters
