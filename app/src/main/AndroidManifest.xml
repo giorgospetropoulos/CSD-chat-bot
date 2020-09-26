@@ -13,13 +13,13 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.AddPostgraduateCourseActivity"></activity>
-        <activity android:name=".activities.AddUndergraduateCourseActivity" />
-        <activity android:name=".activities.EditPostCourseActivity" />
-        <activity android:name=".activities.EditCourseActivity" />
-        <activity android:name=".activities.SetAdminActivity" />
-        <activity android:name=".activities.CourseReminderActivity" />
-        <activity android:name=".activities.ReminderActivity" />
+        <activity android:name=".activities.AddPostgraduateCourseActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".activities.AddUndergraduateCourseActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.EditPostCourseActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.EditCourseActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.SetAdminActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.CourseReminderActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.ReminderActivity" android:screenOrientation="portrait"/>
         <activity
             android:name=".activities.EmailActivity"
             android:screenOrientation="portrait" />
