@@ -43,7 +43,7 @@ The User has the ability to:
 
 ### Teacher
 The Teacher has all of the User's abilities plus the ability to:
-<br>(i) Create, edit and remove reminders for the courses he has been assigne to as a teacher
+<br>(i) Create, edit and remove reminders for the courses he has been assigned to as a teacher
 
 ### Admin
 The Admin has all of the above mentioned abilities plus the ability to:
