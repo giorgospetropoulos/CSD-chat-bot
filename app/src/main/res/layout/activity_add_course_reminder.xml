@@ -15,15 +15,14 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/header"
+        android:visibility="gone"
         app:menu="@menu/slide_menu">
 
 
     </com.google.android.material.navigation.NavigationView>
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -51,8 +50,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:ems="10"
-                android:hint="Name"
-                android:inputType="textPersonName" />
+                android:hint="@string/nameHint"
+                android:inputType="textPersonName"
+                android:autofillHints="@string/nameHint" />
 
 
             <EditText
@@ -62,8 +62,9 @@
                 android:layout_marginBottom="10dp"
                 android:ems="10"
                 android:gravity="start|top"
-                android:hint="Description"
-                android:inputType="textMultiLine" />
+                android:hint="@string/descriptionHint"
+                android:inputType="textMultiLine"
+                android:autofillHints="@string/descriptionHint" />
 
             <TextView
                 android:id="@+id/courseReminderDate"
@@ -72,15 +73,14 @@
                 android:layout_marginBottom="10dp"
                 android:background="?attr/editTextBackground"
                 android:ems="10"
-                android:hint="Date"
-                android:inputType="textPersonName"
+                android:hint="@string/dateHint"
                 android:textAppearance="?android:attr/textAppearanceMediumInverse"
                 android:textColor="?attr/editTextColor" />
 
             <CalendarView
                 android:id="@+id/calendarViewAddCourseReminder"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
 
             <TextView
                 android:id="@+id/selectCourseReminderTime"
@@ -89,20 +89,44 @@
                 android:layout_marginBottom="20dp"
                 android:background="?attr/editTextBackground"
                 android:ems="10"
-                android:hint="Time"
-                android:inputType="textPersonName"
+                android:hint="@string/timeHint"
                 android:textAppearance="?android:attr/textAppearanceMediumInverse"
                 android:textColor="?attr/editTextColor" />
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <LinearLayout
+                    android:id="@+id/addCourseReminderNumberPicker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <NumberPicker
+                        android:id="@+id/addCourseReminderHourPicker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"/>
+
+                    <NumberPicker
+                        android:id="@+id/addCourseReminderMinutesPicker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1" />
+                </LinearLayout>
+
                 <TimePicker
                     android:id="@+id/courseReminderTimePicker"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"/>
 
                 <ImageView
                     android:id="@+id/courseReminderCheckButton"
@@ -110,7 +134,9 @@
                     android:layout_height="25dp"
                     android:layout_gravity="center"
                     android:layout_marginBottom="10dp"
-                    app:srcCompat="@drawable/check" />
+                    app:srcCompat="@drawable/check"
+                    android:visibility="gone"
+                    android:contentDescription="@string/button" />
 
 
             </LinearLayout>
@@ -122,33 +148,33 @@
                 android:layout_marginBottom="20dp"
                 android:background="?attr/editTextBackground"
                 android:ems="10"
-                android:hint="Priority"
-                android:inputType="textPersonName"
+                android:hint="@string/priorityHint"
                 android:textAppearance="?android:attr/textAppearanceMediumInverse"
                 android:textColor="?attr/editTextColor" />
 
             <RadioGroup
                 android:id="@+id/courseReminderPriorityGroup"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <RadioButton
                     android:id="@+id/courseReminder_low"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Low" />
+                    android:text="@string/low" />
 
                 <RadioButton
                     android:id="@+id/courseReminder_mid"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Medium" />
+                    android:text="@string/mid" />
 
                 <RadioButton
                     android:id="@+id/courseReminder_high"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="High" />
+                    android:text="@string/high" />
             </RadioGroup>
 
             <Button
@@ -156,7 +182,7 @@
                 android:layout_width="110dp"
                 android:layout_height="32dp"
                 android:background="@drawable/rnd_btn"
-                android:text="Add"
+                android:text="@string/add"
                 android:textColor="#ffffff" />
 
         </LinearLayout>

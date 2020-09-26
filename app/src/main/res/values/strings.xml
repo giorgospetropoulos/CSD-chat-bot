@@ -2,4 +2,14 @@
     <string name="app_name">CSD Chat Bot</string>
     <string name="Open">CSD Chat Bot</string>
     <string name="Close">CSD Chat Bot</string>
+    <string name="nameHint">Name</string>
+    <string name="descriptionHint">Description</string>
+    <string name="dateHint">Date</string>
+    <string name="timeHint">Time</string>
+    <string name="priorityHint">Priority</string>
+    <string name="low">Low</string>
+    <string name="mid">Medium</string>
+    <string name="high">High</string>
+    <string name="add">Add</string>
+    <string name="button">Button</string>
 </resources>

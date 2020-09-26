@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -16,6 +17,8 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -33,6 +36,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.Collections;
 import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 public class AddCourseReminderActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -46,7 +50,6 @@ public class AddCourseReminderActivity extends AppCompatActivity implements Navi
     private Button addRem;
     private int reminderDay, reminderMonth, reminderYear, reminderHour, reminderMin;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private Course course;
     private DatabaseHelper myDB;
 
@@ -85,21 +88,34 @@ public class AddCourseReminderActivity extends AppCompatActivity implements Navi
          *      timePicker: The TimePicker for the selection of the reminder's time
          *      priorityGroup: The RadioGroup for the selection of the reminder's priority
          *      addRem: The Button to add the reminder
+         *      timeNumberPicker: The layout containing the number pickers for time
+         *      hourNumberPicker: The Reminder's Hour NumberPicker
+         *      minuteNumberPicker: The Reminder's Minute NumberPicker
+         *
          */
-        selectName = (EditText) findViewById(R.id.courseReminderName);
-        selectDescription = (EditText) findViewById(R.id.courseReminderDescription);
-        selectDate = (TextView) findViewById(R.id.courseReminderDate);
-        selectTime = (TextView) findViewById(R.id.selectCourseReminderTime);
-        checkBtn = (ImageView) findViewById(R.id.courseReminderCheckButton);
-        selectPriority = (TextView) findViewById(R.id.CourseReminderPriority);
-        calendar = (CalendarView) findViewById(R.id.calendarViewAddCourseReminder);
-        timePicker = (TimePicker) findViewById(R.id.courseReminderTimePicker);
-        priorityGroup = (RadioGroup) findViewById(R.id.courseReminderPriorityGroup);
-        addRem = (Button) findViewById(R.id.addNewCourseRem);
+        selectName = findViewById(R.id.courseReminderName);
+        selectDescription = findViewById(R.id.courseReminderDescription);
+        selectDate = findViewById(R.id.courseReminderDate);
+        selectTime = findViewById(R.id.selectCourseReminderTime);
+        checkBtn = findViewById(R.id.courseReminderCheckButton);
+        selectPriority = findViewById(R.id.CourseReminderPriority);
+        calendar = findViewById(R.id.calendarViewAddCourseReminder);
+        timePicker =  findViewById(R.id.courseReminderTimePicker);
+        priorityGroup = findViewById(R.id.courseReminderPriorityGroup);
+        addRem = findViewById(R.id.addNewCourseRem);
+        final LinearLayout timeNumberPicker = findViewById(R.id.addCourseReminderNumberPicker);
+        final NumberPicker hourNumberPicker = findViewById(R.id.addCourseReminderHourPicker);
+        final NumberPicker minuteNumberPicker = findViewById(R.id.addCourseReminderMinutesPicker);
+
+        // Set minimum and maximum values for the number pickers
+        hourNumberPicker.setMaxValue(23);
+        hourNumberPicker.setMinValue(0);
+        minuteNumberPicker.setMaxValue(59);
+        minuteNumberPicker.setMinValue(0);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
         // Set the visibility of the (temporarily) not-needed components
@@ -109,11 +125,13 @@ public class AddCourseReminderActivity extends AppCompatActivity implements Navi
         checkBtn.setVisibility(GONE);
 
         // Connect to the database and get the course that the remindes is being set
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
-                course = myDB.getCourseByName(getIntent().getStringExtra("Course Name"));
+                if (myDB != null) {
+                    course = myDB.getCourseByName(getIntent().getStringExtra("Course Name"));
+                }
 
                 // Hide keyboard if the user taps out of it
                 findViewById(R.id.linearLayoutAddCourseReminder).setOnTouchListener(new View.OnTouchListener() {
@@ -132,7 +150,8 @@ public class AddCourseReminderActivity extends AppCompatActivity implements Navi
                         reminderDay = dayOfMonth;
                         reminderMonth = month + 1;
                         reminderYear = year;
-                        selectDate.setText(String.valueOf(dayOfMonth) + "/" + String.valueOf(month + 1) + "/" + String.valueOf(year));
+                        String date = dayOfMonth + "/" + (month + 1) + "/" + year;
+                        selectDate.setText(date);
                         calendar.setVisibility(GONE);
                     }
                 });
@@ -141,10 +160,12 @@ public class AddCourseReminderActivity extends AppCompatActivity implements Navi
                 selectDate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                        calendar.setVisibility(View.VISIBLE);
-                        timePicker.setVisibility(GONE);
+                        calendar.setVisibility(VISIBLE);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            timePicker.setVisibility(GONE);
+                        } else {
+                            timeNumberPicker.setVisibility(GONE);
+                        }
                         checkBtn.setVisibility(GONE);
                         priorityGroup.setVisibility(GONE);
                     }
@@ -154,11 +175,13 @@ public class AddCourseReminderActivity extends AppCompatActivity implements Navi
                 selectTime.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                         calendar.setVisibility(GONE);
-                        timePicker.setVisibility(View.VISIBLE);
-                        checkBtn.setVisibility(View.VISIBLE);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            timePicker.setVisibility(VISIBLE);
+                        } else {
+                            timeNumberPicker.setVisibility(VISIBLE);
+                        }
+                        checkBtn.setVisibility(VISIBLE);
                         priorityGroup.setVisibility(GONE);
                     }
                 });
@@ -167,19 +190,32 @@ public class AddCourseReminderActivity extends AppCompatActivity implements Navi
                 checkBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        reminderHour = timePicker.getHour();
-                        reminderMin = timePicker.getMinute();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            reminderHour = timePicker.getHour();
+                            reminderMin = timePicker.getMinute();
+                        } else {
+                            reminderHour = hourNumberPicker.getValue();
+                            reminderMin = minuteNumberPicker.getValue();
+                        }
+
                         if (reminderHour >= 10 ){
-                            selectTime.setText( String.valueOf(reminderHour) + ":" );
+                            selectTime.setText( reminderHour + ":" );
                         } else {
-                            selectTime.setText( "0" + String.valueOf(reminderHour) + ":" );
+                            selectTime.setText( "0" + reminderHour + ":" );
                         }
+
                         if (reminderMin >= 10 ){
-                            selectTime.setText( selectTime.getText().toString() + String.valueOf(reminderMin));
+                            String time = selectTime.getText().toString()  + reminderMin;
+                            selectTime.setText(time);
                         } else {
-                            selectTime.setText( selectTime.getText().toString() + "0" + String.valueOf(reminderMin));
+                            String time = selectTime.getText().toString() + "0" + reminderMin;
+                            selectTime.setText(time);
                         }
-                        timePicker.setVisibility(GONE);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            timePicker.setVisibility(GONE);
+                        } else {
+                            timeNumberPicker.setVisibility(GONE);
+                        }
                         checkBtn.setVisibility(GONE);
                     }
                 });
@@ -188,7 +224,7 @@ public class AddCourseReminderActivity extends AppCompatActivity implements Navi
                 priorityGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(RadioGroup group, int checkedId) {
-                        selectedButton = (RadioButton) findViewById(checkedId);
+                        selectedButton = findViewById(checkedId);
                         selectPriority.setText(selectedButton.getText().toString());
                         priorityGroup.setVisibility(GONE);
                     }
@@ -200,8 +236,12 @@ public class AddCourseReminderActivity extends AppCompatActivity implements Navi
                     public void onClick(View v) {
                         calendar.setVisibility(GONE);
                         timePicker.setVisibility(GONE);
-                        checkBtn.setVisibility(GONE);
-                        priorityGroup.setVisibility(View.VISIBLE);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            timePicker.setVisibility(GONE);
+                        } else {
+                            timeNumberPicker.setVisibility(GONE);
+                        }
+                        priorityGroup.setVisibility(VISIBLE);
                     }
                 });
 
@@ -237,6 +277,11 @@ public class AddCourseReminderActivity extends AppCompatActivity implements Navi
 
                         //Update Database and finish the activity
                         databaseReference.setValue(myDB);
+                        Intent intent = new Intent(AddCourseReminderActivity.this, CourseMainPageActivity.class);
+                        intent.putExtra("Course Name",getIntent().getStringExtra("Course Name"));
+                        intent.putExtra("Post",getIntent().getStringExtra("Post"));
+                        startActivity(intent);
+
                         finish();
                     }
                 });

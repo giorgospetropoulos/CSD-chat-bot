@@ -258,11 +258,15 @@ public class CourseMainPageActivity extends AppCompatActivity implements Navigat
                         if ( getIntent().getStringExtra("Post").equals("false") ){
                             Intent intent = new Intent(CourseMainPageActivity.this, AddCourseReminderActivity.class);
                             intent.putExtra("Course Name", courseName);
+                            intent.putExtra("Post",getIntent().getStringExtra("Post"));
                             startActivity(intent);
+                            finish();
                         } else {
                             Intent intent = new Intent(CourseMainPageActivity.this, AddPostGraduateCourseReminderActivity.class);
                             intent.putExtra("Course Name", courseName);
+                            intent.putExtra("Post",getIntent().getStringExtra("Post"));
                             startActivity(intent);
+                            finish();
                         }
 
                     }

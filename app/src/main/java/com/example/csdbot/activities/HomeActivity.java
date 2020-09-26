@@ -25,7 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
-    private ImageView courses, myCourses, reminders, calendar, mic;
+    private ImageView mic;
     private EditText search;
     private FirebaseAuth firebaseAuth;
     private SpeechRecorder speechRecorder;
@@ -56,7 +56,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         // ------------------------------------
 
         // ---------- speech ------------
-        mic = (ImageView) findViewById(R.id.mic);
+        mic = findViewById(R.id.mic);
         speechRecorder = new SpeechRecorder(HomeActivity.this);
         speechRecorder.initializeSpeechRecognizer();
         speechRecorder.checkVoiceRecodrPerimission();
@@ -88,11 +88,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
          *      reminders: The Reminders Button
          *      calendar: The Calendar Button
          */
-        search = (EditText) findViewById(R.id.search);
-        courses = (ImageView) findViewById(R.id.courses);
-        myCourses = (ImageView) findViewById(R.id.mycourses);
-        reminders = (ImageView) findViewById(R.id.reminders);
-        calendar = (ImageView) findViewById(R.id.calendar);
+        search = findViewById(R.id.search);
+        ImageView courses = findViewById(R.id.courses);
+        ImageView myCourses = findViewById(R.id.mycourses);
+        ImageView reminders = findViewById(R.id.reminders);
+        ImageView calendar = findViewById(R.id.calendar);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();

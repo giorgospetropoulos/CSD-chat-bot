@@ -33,11 +33,9 @@ public class AddContactActivity extends AppCompatActivity implements NavigationV
 
     private ListView contacts_lv;
     private EditText query;
-    private Button search;
     private ArrayList<User> contacts;
     private ArrayAdapter<User> adapter;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseHelper myDB;
 
     // ---------- Slide Menu --------------
@@ -59,13 +57,13 @@ public class AddContactActivity extends AppCompatActivity implements NavigationV
          *      contacts_lv: The contacts list
          *
          */
-        query = (EditText) findViewById(R.id.searchContacts);
-        search = (Button) findViewById(R.id.contactsSearchBtn);
-        contacts_lv = (ListView) findViewById(R.id.contactsSearchResult_lv);
+        query = findViewById(R.id.searchContacts);
+        Button search = findViewById(R.id.contactsSearchBtn);
+        contacts_lv = findViewById(R.id.contactsSearchResult_lv);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
         // ---------- Slide Menu --------------
