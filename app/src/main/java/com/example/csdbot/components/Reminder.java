@@ -5,7 +5,6 @@ import android.os.SystemClock;
 import java.util.Comparator;
 
 public class Reminder{
-    private static int count = 0;
     private String name, description;
     private int day, month, year, hour, min, id;
     public enum priority {
@@ -20,7 +19,7 @@ public class Reminder{
      */
 
     public Reminder(){
-        this.id = count++;
+
     }
 
     public Reminder(String name, int day, int month, int year) {
@@ -203,7 +202,6 @@ public class Reminder{
     public void setDescription(String description) {
         this.description = description;
     }
-
 
     public int getId() {
         return id;

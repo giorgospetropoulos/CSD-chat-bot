@@ -38,7 +38,7 @@ public class DatabaseHelper {
     }
 
     /**
-     * Add user to the user's list
+     * Add user to the database's user list
      * @param user user to be added to the list
      */
     public void addToUserList(User user){
@@ -46,7 +46,7 @@ public class DatabaseHelper {
     }
 
     /**
-     * Get user from user list, given his/her UID
+     * Get user from the database's users list, given his/her UID
      *
      * @param UID the user's unique ID number
      * @return the user with thw given UID
@@ -61,7 +61,7 @@ public class DatabaseHelper {
     }
 
     /**
-     * Get the user's position in the list
+     * Get the user's position in the database's users list
      *
      * @param user the user given
      * @return the user's position
@@ -77,7 +77,7 @@ public class DatabaseHelper {
     }
 
     /**
-     * Get the course given its name
+     * Get the coursefrom the database, given its name
      * @param name the course's name
      * @return the undergraduate course requested
      */
@@ -91,7 +91,7 @@ public class DatabaseHelper {
     }
 
     /**
-     * Get the course given its name
+     * Get the postgraduate course from the database, given its name
      * @param name the course's name
      * @return the postgraduate course requested
      */
@@ -135,7 +135,7 @@ public class DatabaseHelper {
     }
 
     /**
-     * Get the course's position in the course list
+     * Get the course's position in the database's courses list
      *
      * @param course the course given
      * @return the course's position in the list
@@ -206,7 +206,7 @@ public class DatabaseHelper {
     }
 
     /**
-     * Searcg for query in Users list
+     * Search for query in Users list
      * @param query query
      * @return the users list containing the query
      */

@@ -37,7 +37,7 @@ public class SpeechRecorder {
     private SpeechRecognizer speechRecognizer;
     private Intent speechRecognizerIntent;
     private String recording, first_rec = "";
-    private ArrayList<String> recording_table= new ArrayList<String>();
+    private ArrayList<String> recording_table = new ArrayList<String>();
     private boolean my, add, new_, set, mathimata_, mathimata, ypenthimiseis, nea, neas, orismos, orise, dimiourgise, dimiourgia, search, go = false;
 
     /**

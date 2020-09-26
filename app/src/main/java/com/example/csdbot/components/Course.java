@@ -82,8 +82,21 @@ public class Course {
         return i;
     }
 
+    /**
+     * remove user from enrolled users list
+     * @param UID the user's UID
+     */
+    public void removeUserFromCourseUserList(String UID) {
+        for( int i = 0 ; i < userList.size() ; i++ ){
+            if (UID.equals(userList.get(i))) {
+                userList.remove(i);
+                return;
+            }
+        }
+    }
 
-    /*
+
+    /**
      *      Getters and Setters
      */
 
@@ -167,15 +180,6 @@ public class Course {
         this.userList.add(UID);
     }
 
-    public void removeUserFromCourseUserList(String UID) {
-        for( int i = 0 ; i < userList.size() ; i++ ){
-            if (UID.equals(userList.get(i))) {
-                userList.remove(i);
-                return;
-            }
-        }
-    }
-
     public String getCode_en() {
         return code_en;
     }
@@ -183,8 +187,6 @@ public class Course {
     public void setCode_en(String code_en) {
         this.code_en = code_en;
     }
-
-
 
     public String getUrl() {
         return url;
@@ -241,7 +243,6 @@ public class Course {
     public void setArea_name_gr(String area_name_gr) {
         this.area_name_gr = area_name_gr;
     }
-
 
 
     @Override
