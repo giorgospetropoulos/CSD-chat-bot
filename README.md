@@ -3,14 +3,22 @@
 
 # Description
 CSD chat-bot is an application implemented for the Computer Science Department, University of Crete.
-CSD chat-bot is an application that implements a system, which provides the users with information about the department's courses. The application supports partial voice controls such as:
-    - Navigating through the application's UI
-    - Querying the system's search engine
+CSD chat-bot is an application that implements a system, which provides the users with information about the department's courses. The application supports partial voice controls such as navigating through the application's UI and querying the system's search engine
     
 # Components
 ## User
-The User 
-
+The System separates the Users in three categories:
+    (1) User
+    (2) Teacher
+    (3) Admin
+    
+### User    
+The User has the ability to:
+(i)   Enroll and disenroll from any lesson in the database
+(ii)  Create, edit and remove new reminders
+(iii) Add and remove course's reminders to/from his reminder's list
+(iv)  Add and remove Users to/from his contacts list
+(v)   Update his profile's details (username & profile picture)
 
     - String UID: The user's unique ID
     - String name: The user's username
