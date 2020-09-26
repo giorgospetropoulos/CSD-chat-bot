@@ -7,7 +7,7 @@ CSD chat-bot is an application that implements a system, which provides the user
     
 # Components
 ## DatabaseHelper Class
-The DatabaseHelper class is a class for handling the system's database. It contains three lists: one User list, one Course list and one PostgraduateCourselist.
+The DatabaseHelper class is a class for handling the system's database. It contains three lists: one User list, one Course list and one PostgraduateCourse list.
 
     - ArrayList<User> userList: The database's users list
     - ArrayList<Course> courseList: The database's undergraduate courses list
