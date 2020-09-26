@@ -140,7 +140,6 @@ public class AddContactsListAdapter extends ArrayAdapter<User> {
                             profileUser.addToUserFriendList(contacts.get(position));
                             loading.dismiss();
                             databaseReference.setValue(myDB);
-                            ((Activity) mContext).finish();
                         }
                     });
 
@@ -197,7 +196,6 @@ public class AddContactsListAdapter extends ArrayAdapter<User> {
                             profileUser.addToUserFriendList(contacts.get(position));
                             addConfirmatonDialog.dismiss();
                             databaseReference.setValue(myDB);
-                            ((Activity) mContext).finish();
                         }
                     });
 

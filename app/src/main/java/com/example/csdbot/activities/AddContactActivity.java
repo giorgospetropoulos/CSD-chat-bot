@@ -91,7 +91,7 @@ public class AddContactActivity extends AppCompatActivity implements NavigationV
                         "Loading. Please wait...", true);
 
                 // Connect to firebase database and get the users list according to the query string
-                databaseReference.addValueEventListener(new ValueEventListener() {
+                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         myDB = dataSnapshot.getValue(DatabaseHelper.class);
