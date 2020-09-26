@@ -1,2 +1,2 @@
 # CSD-chat-bot
- CSD chat bot App
+ Course Data Delivery System implemented with voice controls
