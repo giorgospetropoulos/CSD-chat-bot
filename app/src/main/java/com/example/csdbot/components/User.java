@@ -10,7 +10,6 @@ public class User {
     private ArrayList<PostGraduateCourse> user_postgraduate_courses = new ArrayList<PostGraduateCourse>();
     private ArrayList<User> user_friendlist = new ArrayList<User>();
     private boolean isAdmin = false;
-    private int friendListInit = 0;
 
     /**
      *      Constructors
@@ -24,13 +23,11 @@ public class User {
         this.email = email;
         this.user_reminders.add(reminder);
         this.user_courses.add(course);
-        this.friendListInit = 0;
     }
 
     public User(String name, String email) {
         this.name = name;
         this.email = email;
-        this.friendListInit = 0;
     }
 
     /**
@@ -39,7 +36,6 @@ public class User {
      */
     public void addToUserFriendList(User user) {
         if ( !user.getUID().equals(this.getUID()) ){
-            this.friendListInit = 1;
             this.user_friendlist.add(user);
         }
     }
@@ -75,7 +71,7 @@ public class User {
     }
 
     /**
-     * Renove course from user's course list
+     * Remove course from user's course list
      * @param course course to be removed
      */
     public void removeCourse(Course course) {
@@ -237,7 +233,6 @@ public class User {
         } else {
             return false;
         }
-        //return (user_reminders == null ? true : false);
     }
 
     public ArrayList<Course> getUser_courses() {
