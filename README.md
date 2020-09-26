@@ -9,4 +9,12 @@ CSD chat-bot is an application that implements a system, which provides the user
     
 # Components
 ## User
+    - UID: The user's unique ID
+    - name: The user's username
+    - email: The user's email
+    - user_reminders: The user's reminders list
+    - user_courses: The user's undergraduate course list
+    - user_postgraduate_courses: The user's postgraduate course list
+    - user_friendlist: The user's contact list
+    - isAdmin: Boolean about the user's system role
     
