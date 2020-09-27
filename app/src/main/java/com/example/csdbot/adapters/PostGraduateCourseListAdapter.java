@@ -44,11 +44,11 @@ public class PostGraduateCourseListAdapter extends ArrayAdapter<PostGraduateCour
              *      description: Course's description
              *      ects: Course's ECTS
              */
-            viewHolder.name = (TextView) convertView.findViewById(R.id.courseTitle);
-            viewHolder.area = (TextView) convertView.findViewById(R.id.courseArea);
-            viewHolder.teacher = (TextView) convertView.findViewById(R.id.courseTeacher);
-            viewHolder.description = (TextView) convertView.findViewById(R.id.courseDesc);
-            viewHolder.ects = (TextView) convertView.findViewById(R.id.courseECTS);
+            viewHolder.name = convertView.findViewById(R.id.courseTitle);
+            viewHolder.area = convertView.findViewById(R.id.courseArea);
+            viewHolder.teacher = convertView.findViewById(R.id.courseTeacher);
+            viewHolder.description = convertView.findViewById(R.id.courseDesc);
+            viewHolder.ects = convertView.findViewById(R.id.courseECTS);
 
             // Set the course's data
             String name = courseList.get(position).getCode_en() + " "

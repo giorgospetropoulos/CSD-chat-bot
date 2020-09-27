@@ -266,13 +266,13 @@ public class CourseMainPageActivity extends AppCompatActivity implements Navigat
                     public void onClick(View v) {
                         if ( getIntent().getStringExtra("Post").equals("false") ){
                             Intent intent = new Intent(CourseMainPageActivity.this, AddCourseReminderActivity.class);
-                            intent.putExtra("Course Name", courseName);
+                            intent.putExtra("Course Name", getIntent().getStringExtra("Course Name"));
                             intent.putExtra("Post",getIntent().getStringExtra("Post"));
                             startActivity(intent);
                             finish();
                         } else {
                             Intent intent = new Intent(CourseMainPageActivity.this, AddPostGraduateCourseReminderActivity.class);
-                            intent.putExtra("Course Name", courseName);
+                            intent.putExtra("Course Name", getIntent().getStringExtra("Course Name"));
                             intent.putExtra("Post",getIntent().getStringExtra("Post"));
                             startActivity(intent);
                             finish();
@@ -286,7 +286,7 @@ public class CourseMainPageActivity extends AppCompatActivity implements Navigat
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(CourseMainPageActivity.this, SetTeacherActivity.class);
-                        intent.putExtra("Course Name", courseName);
+                        intent.putExtra("Course Name", getIntent().getStringExtra("Course Name"));
                         intent.putExtra("Post", getIntent().getStringExtra("Post"));
                         startActivity(intent);
                     }

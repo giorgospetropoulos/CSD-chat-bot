@@ -1,6 +1,8 @@
 package com.example.csdbot.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.csdbot.components.Course;
 import com.example.csdbot.components.DatabaseHelper;
 import com.example.csdbot.R;
+import com.example.csdbot.components.PostGraduateCourse;
 import com.example.csdbot.components.User;
 import com.example.csdbot.viewholders.UserViewHolder;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,16 +35,21 @@ public class UserListAdapter extends ArrayAdapter<User> {
     private int layout;
     private List<User> userList;
     private DatabaseHelper myDB;
+    private Course undergraduateCourse;
+    private PostGraduateCourse postGraduateCourse;
+    private Context mContext;
+    private boolean isTeacher = false;
 
     public UserListAdapter(@NonNull Context context, int resource, @NonNull List<User> objects) {
         super(context, resource, objects);
         layout = resource;
         userList = objects;
+        mContext = context;
     }
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         // Initialize firebase components
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -47,6 +57,8 @@ public class UserListAdapter extends ArrayAdapter<User> {
         StorageReference storageReference = firebaseStorage.getReference();
         final DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
+        final String courseName = ((Activity) mContext).getIntent().getStringExtra("Course Name");
+        final String post = ((Activity) mContext).getIntent().getStringExtra("Post");
         // Connect to the database and get users list
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -54,6 +66,23 @@ public class UserListAdapter extends ArrayAdapter<User> {
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
                 if (myDB != null) {
                     userList = myDB.getUserList();
+                    if ( post != null){
+                        if ( post.equals("false")){
+                            undergraduateCourse = myDB.getCourseByName(courseName);
+                            if ( undergraduateCourse.getTeacherUID().equals(userList.get(position).getUID()) ){
+                                userList.get(position).setTeachingCourse(courseName);
+                                databaseReference.setValue(myDB);
+                            }
+                        } else {
+                            postGraduateCourse = myDB.getPostGraduateCourseByName(courseName);
+                            if ( postGraduateCourse.getTeacherUID().equals(userList.get(position).getUID()) ){
+                                userList.get(position).setTeachingCourse(courseName);
+                                databaseReference.setValue(myDB);
+                            }
+                        }
+                    }
+
+
                 }
             }
 
@@ -72,14 +101,17 @@ public class UserListAdapter extends ArrayAdapter<User> {
              *      userImage: User's profile picture
              *      userEmail: User's email
              */
-            viewHolder.userName = (TextView) convertView.findViewById(R.id.teacherName);
-            viewHolder.userEmail = (TextView) convertView.findViewById(R.id.teacherEmail);
-            viewHolder.userImage = (ImageView) convertView.findViewById(R.id.userListItemPicture);
+            viewHolder.userName = convertView.findViewById(R.id.teacherName);
+            viewHolder.userEmail = convertView.findViewById(R.id.teacherEmail);
+            viewHolder.userImage = convertView.findViewById(R.id.userListItemPicture);
 
             // Set user's data
             viewHolder.userName.setText(userList.get(position).getName());
             if ( userList.get(position).isAdmin() ){
                 String name = viewHolder.userName.getText().toString() + " (admin)";
+                if ( userList.get(position).getTeachingCourse().equals(courseName) ){
+                    name = name + " (Teacher)";
+                }
                 viewHolder.userName.setText(name);
             }
             String email = "Email: " + userList.get(position).getEmail();

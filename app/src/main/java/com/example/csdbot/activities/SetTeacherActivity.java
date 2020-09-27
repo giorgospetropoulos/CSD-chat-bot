@@ -138,26 +138,54 @@ public class SetTeacherActivity extends AppCompatActivity implements NavigationV
                                     setDialog = new Dialog(SetTeacherActivity.this);
                                     setDialog.setContentView(R.layout.teacher_confirmation);
                                     setTeacherTitle = setDialog.findViewById(R.id.teacherConfirmation);
-                                    String title = "Are you sure you wish to assign user \""
-                                            + teacherList.get(position).getName()
-                                            + "\" as the teacher of "
-                                            + undergraduateCourse.getName_en()
-                                            + "?";
-                                    setTeacherTitle.setText(title);
-                                    setTeacherBtn = setDialog.findViewById(R.id.teacherConfirmationBtn);
+                                    if ( undergraduateCourse.getTeacherUID().equals(teacherList.get(position).getUID()) ){
+                                        String title = "Are you sure you wish to remove user \""
+                                                + teacherList.get(position).getName()
+                                                + "\" as the teacher of "
+                                                + undergraduateCourse.getName_en()
+                                                + "?";
+                                        setTeacherTitle.setText(title);
+                                        setTeacherBtn = setDialog.findViewById(R.id.teacherConfirmationBtn);
+                                        setTeacherBtn.setText("Remove");
+                                        setTeacherBtn.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                undergraduateCourse.setTeacher("");
+                                                undergraduateCourse.setTeacherUID(String.valueOf(0));
+                                               
+                                               // REMOVE TEACHINGCOURSE STRING
+
+
+                                                teacherList.get(position).getUndergraduate_teaching_courses().remove(undergraduateCourse);
+                                                databaseReference.setValue(myDB);
+                                                setDialog.dismiss();
+                                                finish();
+                                            }
+                                        });
+                                    } else {
+                                        String title = "Are you sure you wish to assign user \""
+                                                + teacherList.get(position).getName()
+                                                + "\" as the teacher of "
+                                                + undergraduateCourse.getName_en()
+                                                + "?";
+                                        setTeacherTitle.setText(title);
+                                        setTeacherBtn = setDialog.findViewById(R.id.teacherConfirmationBtn);
+                                        setTeacherBtn.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                undergraduateCourse.setTeacher(teacherList.get(position).getName());
+                                                undergraduateCourse.setTeacherUID(teacherList.get(position).getUID());
+                                                teacherList.get(position).getUndergraduate_teaching_courses().add(undergraduateCourse);
+                                                databaseReference.setValue(myDB);
+                                                setDialog.dismiss();
+                                                finish();
+                                            }
+                                        });
+                                    }
+
                                     cancelBtn = setDialog.findViewById(R.id.teacherCancelationBtn);
 
-                                    setTeacherBtn.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            undergraduateCourse.setTeacher(teacherList.get(position).getName());
-                                            undergraduateCourse.setTeacherUID(teacherList.get(position).getUID());
-                                            teacherList.get(position).getUndergraduate_teaching_courses().add(undergraduateCourse);
-                                            databaseReference.setValue(myDB);
-                                            setDialog.dismiss();
-                                            finish();
-                                        }
-                                    });
+
 
                                     cancelBtn.setOnClickListener(new View.OnClickListener() {
                                         @Override

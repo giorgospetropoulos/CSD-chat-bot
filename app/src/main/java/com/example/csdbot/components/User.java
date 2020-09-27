@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class User {
-    private String name, email, UID;
+    private String name, email, UID, teachingCourse;
     private ArrayList<Reminder> user_reminders = new ArrayList<Reminder>();
     private ArrayList<Course> user_courses = new ArrayList<Course>();
     private ArrayList<PostGraduateCourse> user_postgraduate_courses = new ArrayList<PostGraduateCourse>();
@@ -182,9 +182,19 @@ public class User {
         return remindersQueryList;
     }
 
+    public String getTeachingCourse() {
+        return teachingCourse;
+    }
+
+    public void setTeachingCourse(String teachingCourse) {
+        this.teachingCourse = teachingCourse;
+    }
+
     /**
      *      Getters and Setters
      */
+
+
 
     public ArrayList<Course> getUndergraduate_teaching_courses() {
         return undergraduate_teaching_courses;
