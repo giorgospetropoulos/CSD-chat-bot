@@ -78,7 +78,7 @@ public class TeachingCoursesActivity extends AppCompatActivity {
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
                 if ( myDB != null){
                     user = myDB.getUserByUID(firebaseAuth.getUid());
-                    undergraduateCoursesList = user.getUndergraduate_teaching_courses();
+                    undergraduateCoursesList = user.getTeaching_courses();
                     postgraduateCoursesList = user.getPostgraduate_teaching_courses();
 
                     undergraduateCoursesAdapter = new CourseListAdapter(TeachingCoursesActivity.this, R.layout.courses_list_item, undergraduateCoursesList);

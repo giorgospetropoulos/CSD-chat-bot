@@ -111,7 +111,8 @@ public class SetTeacherActivity extends AppCompatActivity implements NavigationV
                                                 postGraduateCourse.setTeacher("");
                                                 postGraduateCourse.setTeacherUID(String.valueOf(0));
                                                 teacherList.get(position).setTeachingCourse("");
-                                                teacherList.get(position).getUndergraduate_teaching_courses().remove(postGraduateCourse);
+                                                teacherList.get(position).getTeaching_courses().remove(postGraduateCourse.getName_en());
+                                                //Set user and course databaseReference
                                                 databaseReference.setValue(myDB);
                                                 setDialog.dismiss();
                                                 finish();
@@ -130,7 +131,7 @@ public class SetTeacherActivity extends AppCompatActivity implements NavigationV
                                             public void onClick(View v) {
                                                 postGraduateCourse.setTeacher(teacherList.get(position).getName());
                                                 postGraduateCourse.setTeacherUID(teacherList.get(position).getUID());
-                                                teacherList.get(position).getUndergraduate_teaching_courses().add(postGraduateCourse);
+                                                teacherList.get(position).getTeaching_courses().add(postGraduateCourse.getName_en());
                                                 databaseReference.setValue(myDB);
                                                 setDialog.dismiss();
                                                 finish();
@@ -174,11 +175,8 @@ public class SetTeacherActivity extends AppCompatActivity implements NavigationV
                                             public void onClick(View v) {
                                                 undergraduateCourse.setTeacher("");
                                                 undergraduateCourse.setTeacherUID(String.valueOf(0));
-                                               
-                                               // REMOVE TEACHINGCOURSE STRING
-
                                                 teacherList.get(position).setTeachingCourse("");
-                                                teacherList.get(position).getUndergraduate_teaching_courses().remove(undergraduateCourse);
+                                                teacherList.get(position).getTeaching_courses().remove(undergraduateCourse.getName_en());
                                                 databaseReference.setValue(myDB);
                                                 setDialog.dismiss();
                                                 finish();
@@ -197,7 +195,7 @@ public class SetTeacherActivity extends AppCompatActivity implements NavigationV
                                             public void onClick(View v) {
                                                 undergraduateCourse.setTeacher(teacherList.get(position).getName());
                                                 undergraduateCourse.setTeacherUID(teacherList.get(position).getUID());
-                                                teacherList.get(position).getUndergraduate_teaching_courses().add(undergraduateCourse);
+                                                teacherList.get(position).getTeaching_courses().add(undergraduateCourse.getName_en());
                                                 databaseReference.setValue(myDB);
                                                 setDialog.dismiss();
                                                 finish();

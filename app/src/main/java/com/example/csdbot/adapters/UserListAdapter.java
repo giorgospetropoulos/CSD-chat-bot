@@ -59,7 +59,7 @@ public class UserListAdapter extends ArrayAdapter<User> {
         final String courseName = ((Activity) mContext).getIntent().getStringExtra("Course Name");
         final String post = ((Activity) mContext).getIntent().getStringExtra("Post");
         // Connect to the database and get users list
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
