@@ -114,12 +114,12 @@ public class SearchResultsActivity extends AppCompatActivity implements Navigati
          *      mainTitle: Search Result Title
          *
          */
-        Button courses_btn = (Button) findViewById(R.id.search_courses_btn);
-        Button reminders_btn = (Button) findViewById(R.id.search_reminders_btn);
-        itemsFound = (TextView) findViewById(R.id.itemsFound);
-        course_lv = (ListView) findViewById(R.id.course_list);
-        reminder_lv = (ListView) findViewById(R.id.reminder_list);
-        mainTitle = (TextView) findViewById(R.id.searchedFor);
+        Button courses_btn = findViewById(R.id.search_courses_btn);
+        Button reminders_btn = findViewById(R.id.search_reminders_btn);
+        itemsFound = findViewById(R.id.itemsFound);
+        course_lv = findViewById(R.id.course_list);
+        reminder_lv = findViewById(R.id.reminder_list);
+        mainTitle = findViewById(R.id.searchedFor);
 
         // Get Search Query
         query = getIntent().getStringExtra("Query");

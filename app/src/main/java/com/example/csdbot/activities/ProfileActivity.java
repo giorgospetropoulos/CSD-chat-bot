@@ -45,16 +45,17 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
     private TextView profileName;
     private ImageView profileImage;
-    private Button updateCourses;
-    private Button setAdmin;
-    private Button addNewCourse;
+    private Button updateCourses, setAdmin, addNewCourse;
     private FirebaseAuth firebaseAuth;
     private DatabaseHelper myDB;
     private ArrayList<Course> courseList = new ArrayList<Course>();
     private ArrayList<PostGraduateCourse> postGraduateCourseList = new ArrayList<PostGraduateCourse>();
+    private ArrayList<Course> teachingCourseList = new ArrayList<Course>();
+    private ArrayList<PostGraduateCourse> teachingPostGraduateCourseList = new ArrayList<PostGraduateCourse>();
     private DatabaseReference databaseReference;
     private ProgressDialog loading;
     private Dialog chooseCourseType;
+    private User profileUser;
 
     // ---------- Slide Menu --------------
     private DrawerLayout drawerLayout;
@@ -97,6 +98,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         Button profileReminders = findViewById(R.id.profileReminders);
         Button profileDetails = findViewById(R.id.profileDetails);
         Button profileContacts = findViewById(R.id.profileContacts);
+        final Button teachingCourses = findViewById(R.id.viewTeachingCoursesBtn);
         updateCourses = findViewById(R.id.populate);
         setAdmin = findViewById(R.id.setAdmin);
         addNewCourse = findViewById(R.id.addNewCourse);
@@ -122,18 +124,25 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
-                User profileUser = null;
                 if (myDB != null) {
                     profileUser = myDB.getUserByUID(firebaseAuth.getUid());
                     profileName.setText(profileUser.getName());
+                    courseList = myDB.getCourseList();
+                    teachingCourseList = profileUser.getUndergraduate_teaching_courses();
+                    teachingPostGraduateCourseList = profileUser.getPostgraduate_teaching_courses();
                 }
                 loading.dismiss();
-                courseList = myDB.getCourseList();
                 if ( profileUser.isAdmin() || profileUser.getName().equals("admin")){
                     updateCourses.setVisibility(View.VISIBLE);
                     setAdmin.setVisibility(View.VISIBLE);
                     addNewCourse.setVisibility(View.VISIBLE);
                 }
+
+                if ( !teachingCourseList.isEmpty() || !teachingPostGraduateCourseList.isEmpty()){
+                    teachingCourses.setVisibility(View.VISIBLE);
+                }
+
+
                 updateCourses.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -185,6 +194,15 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             }
         });
 
+        // Go to user's teaching courses
+        teachingCourses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, TeachingCoursesActivity.class);
+                startActivity(intent);
+            }
+        });
+
         // Go to Set Admin Activity
         setAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -230,6 +248,9 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 chooseCourseType.show();
             }
         });
+
+
+
     }
 
     /**

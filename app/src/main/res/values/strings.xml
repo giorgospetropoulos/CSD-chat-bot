@@ -65,7 +65,7 @@
     <string name="deleteCourse">Delete Course</string>
     <string name="reminderPriority">Priority:</string>
     <string name="reminderDateAndTime">Date And Time:</string>
-    <string name="mainCourses">DMain Courses</string>
+    <string name="mainCourses">Main Courses</string>
     <string name="electiCourses">Electic Courses</string>
     <string name="otherDeptCourses">Courses from other Departments</string>
     <string name="emailSubject">Subject</string>
@@ -98,5 +98,6 @@
     <string name="delete">Delete</string>
     <string name="continuee">Continue</string>
     <string name="assign">Assign</string>
+    <string name="viewTeachingCoursesBtn">View Teaching Courses</string>
     <string name="verificationEmail">A verification email has been sent to the email address you provided. Please verify your account in order to be able to log in.</string>
 </resources>

@@ -42,7 +42,7 @@ public class CourseMainPageActivity extends AppCompatActivity implements Navigat
     private ListView lv;
     private ArrayAdapter<Reminder> adapter;
     private FirebaseAuth firebaseAuth;
-    private DatabaseReference databaseReference, userCourseListReference, courseReference;
+    private DatabaseReference databaseReference;
     private User user;
     private DatabaseHelper myDB;
     private Course courseToAdd;
@@ -287,6 +287,7 @@ public class CourseMainPageActivity extends AppCompatActivity implements Navigat
                     public void onClick(View v) {
                         Intent intent = new Intent(CourseMainPageActivity.this, SetTeacherActivity.class);
                         intent.putExtra("Course Name", courseName);
+                        intent.putExtra("Post", getIntent().getStringExtra("Post"));
                         startActivity(intent);
                     }
                 });
@@ -314,8 +315,6 @@ public class CourseMainPageActivity extends AppCompatActivity implements Navigat
                             public void onClick(View v) {
                                 loading = ProgressDialog.show(CourseMainPageActivity.this, "",
                                         "Loading. Please wait...", true);
-                                userCourseListReference = databaseReference.child("userList").child(Integer.toString(myDB.getUserPosition(myDB.getUserByUID(firebaseAuth.getUid()))));
-                                courseReference = databaseReference.child("courseList").child(Integer.toString(myDB.getCoursePosition(courseToAdd)));
                                 if ( getIntent().getStringExtra("Post").equals("false") ){
                                     courseToAdd.addUserToCourseUserList(firebaseAuth.getUid());
                                     user.getUser_courses().add(courseToAdd);
@@ -342,9 +341,7 @@ public class CourseMainPageActivity extends AppCompatActivity implements Navigat
                                     }
                                 }
 
-                                userCourseListReference.setValue(user);
-                                courseReference.setValue(courseToAdd);
-
+                                databaseReference.setValue(myDB);
                                 loading.dismiss();
                                 enrollDialog.dismiss();
                             }
@@ -385,7 +382,6 @@ public class CourseMainPageActivity extends AppCompatActivity implements Navigat
                             public void onClick(View v) {
                                 loading = ProgressDialog.show(CourseMainPageActivity.this, "",
                                         "Loading. Please wait...", true);
-                                userCourseListReference = databaseReference.child("userList").child(Integer.toString(myDB.getUserPosition(myDB.getUserByUID(firebaseAuth.getUid()))));
                                 //user = myDB.getUserByUID(firebaseAuth.getUid());
                                 if ( getIntent().getStringExtra("Post").equals("false") ){
                                     Course courseToRemove = myDB.getCourseByName(getIntent().getStringExtra("Course Name"));
@@ -398,8 +394,6 @@ public class CourseMainPageActivity extends AppCompatActivity implements Navigat
                                 }
 
                                 Collections.sort(user.getUser_courses(),Course.CourseComparator);
-
-
 
                                 databaseReference.setValue(myDB);
                                 loading.dismiss();

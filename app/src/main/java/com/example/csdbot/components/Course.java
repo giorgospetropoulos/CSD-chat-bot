@@ -95,6 +95,14 @@ public class Course {
         }
     }
 
+    /**
+     * Add User to the course's users list
+     * @param UID the user's UID
+     */
+    public void addUserToCourseUserList(String UID) {
+        this.userList.add(UID);
+    }
+
 
     /**
      *      Getters and Setters
@@ -174,10 +182,6 @@ public class Course {
 
     public void setUserList(ArrayList<String> userList) {
         this.userList = userList;
-    }
-
-    public void addUserToCourseUserList(String UID) {
-        this.userList.add(UID);
     }
 
     public String getCode_en() {

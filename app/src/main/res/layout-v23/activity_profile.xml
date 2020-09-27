@@ -126,6 +126,16 @@
                 android:text="@string/addNewCourse"
                 android:textColor="#ffffff"
                 android:visibility="gone" />
+
+            <Button
+                android:id="@+id/viewTeachingCoursesBtn"
+                android:layout_width="150dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/rnd_btn"
+                android:text="@string/viewTeachingCoursesBtn"
+                android:textColor="#ffffff"
+                android:visibility="gone" />
         </LinearLayout>
     </RelativeLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

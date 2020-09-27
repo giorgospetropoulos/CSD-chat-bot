@@ -13,13 +13,30 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.AddPostgraduateCourseActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".activities.AddUndergraduateCourseActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activities.EditPostCourseActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activities.EditCourseActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activities.SetAdminActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activities.CourseReminderActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activities.ReminderActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activities.TeachingCoursesActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activities.AddPostgraduateCourseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.AddUndergraduateCourseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.EditPostCourseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.EditCourseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.SetAdminActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.CourseReminderActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.ReminderActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.EmailActivity"
             android:screenOrientation="portrait" />

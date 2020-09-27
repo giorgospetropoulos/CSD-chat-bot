@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.example.csdbot.components.Course;
 import com.example.csdbot.components.DatabaseHelper;
 import com.example.csdbot.R;
+import com.example.csdbot.components.PostGraduateCourse;
 import com.example.csdbot.components.User;
 import com.example.csdbot.adapters.UserListAdapter;
 import com.google.android.material.navigation.NavigationView;
@@ -66,7 +67,7 @@ public class SetTeacherActivity extends AppCompatActivity implements NavigationV
         /* Find the activity's views
          *      teachers_lv: Users ListView
          */
-        teachers_lv = (ListView) findViewById(R.id.setTeacherList);
+        teachers_lv = findViewById(R.id.setTeacherList);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
@@ -79,51 +80,106 @@ public class SetTeacherActivity extends AppCompatActivity implements NavigationV
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 myDB = dataSnapshot.getValue(DatabaseHelper.class);
-                final Course course = myDB.getCourseByName(getIntent().getStringExtra("Course Name"));
+                final Course undergraduateCourse;
+                final PostGraduateCourse postGraduateCourse;
+                if (myDB != null) {
+                    String post = getIntent().getStringExtra("Post");
+                    if ( post != null ){
+                        // if course is a postgraduate course
+                        if ( post.equals("true") ) {
+                            postGraduateCourse = myDB.getPostGraduateCourseByName(getIntent().getStringExtra("Course Name"));
+                            teachers_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                                    TextView setTeacherTitle;
+                                    final Button setTeacherBtn, cancelBtn;
+                                    setDialog = new Dialog(SetTeacherActivity.this);
+                                    setDialog.setContentView(R.layout.teacher_confirmation);
+                                    setTeacherTitle = setDialog.findViewById(R.id.teacherConfirmation);
+                                    String title = "Are you sure you wish to assign user \""
+                                            + teacherList.get(position).getName()
+                                            + "\" as the teacher of "
+                                            + postGraduateCourse.getName_en()
+                                            + "?";
+                                    setTeacherTitle.setText(title);
+                                    setTeacherBtn = setDialog.findViewById(R.id.teacherConfirmationBtn);
+                                    cancelBtn = setDialog.findViewById(R.id.teacherCancelationBtn);
 
-                teacherList = myDB.getUserList();
-                adapter = new UserListAdapter(SetTeacherActivity.this, R.layout.user_list_item, teacherList);
-                teachers_lv.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
+                                    setTeacherBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            postGraduateCourse.setTeacher(teacherList.get(position).getName());
+                                            postGraduateCourse.setTeacherUID(teacherList.get(position).getUID());
+                                            teacherList.get(position).getPostgraduate_teaching_courses().add(postGraduateCourse);
+                                            databaseReference.setValue(myDB);
+                                            setDialog.dismiss();
+                                            finish();
+                                        }
+                                    });
 
-                // Set clicked item as teacher of course
-                teachers_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                        TextView setTeacherTitle;
-                        final Button setTeacherBtn, cancelBtn;
-                        setDialog = new Dialog(SetTeacherActivity.this);
-                        setDialog.setContentView(R.layout.teacher_confirmation);
-                        setTeacherTitle = setDialog.findViewById(R.id.teacherConfirmation);
-                        String title = "Are you sure you wish to assign user \""
-                                + teacherList.get(position).getName()
-                                + "\" as the teacher of "
-                                + course.getName_en()
-                                + "?";
-                        setTeacherTitle.setText(title);
-                        setTeacherBtn = (Button) setDialog.findViewById(R.id.teacherConfirmationBtn);
-                        cancelBtn = (Button) setDialog.findViewById(R.id.teacherCancelationBtn);
+                                    cancelBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            setDialog.dismiss();
+                                        }
+                                    });
+                                    setDialog.show();
+                                }
+                            });
+                        } else {
+                            // if course is a undergraduate course
+                            undergraduateCourse = myDB.getCourseByName(getIntent().getStringExtra("Course Name"));
+                            // Set clicked item as teacher of course
+                            teachers_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                                    TextView setTeacherTitle;
+                                    final Button setTeacherBtn, cancelBtn;
+                                    setDialog = new Dialog(SetTeacherActivity.this);
+                                    setDialog.setContentView(R.layout.teacher_confirmation);
+                                    setTeacherTitle = setDialog.findViewById(R.id.teacherConfirmation);
+                                    String title = "Are you sure you wish to assign user \""
+                                            + teacherList.get(position).getName()
+                                            + "\" as the teacher of "
+                                            + undergraduateCourse.getName_en()
+                                            + "?";
+                                    setTeacherTitle.setText(title);
+                                    setTeacherBtn = setDialog.findViewById(R.id.teacherConfirmationBtn);
+                                    cancelBtn = setDialog.findViewById(R.id.teacherCancelationBtn);
 
-                        setTeacherBtn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                course.setTeacher(teacherList.get(position).getName());
-                                course.setTeacherUID(teacherList.get(position).getUID());
-                                databaseReference.setValue(myDB);
-                                setDialog.dismiss();
-                                finish();
-                            }
-                        });
+                                    setTeacherBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            undergraduateCourse.setTeacher(teacherList.get(position).getName());
+                                            undergraduateCourse.setTeacherUID(teacherList.get(position).getUID());
+                                            teacherList.get(position).getUndergraduate_teaching_courses().add(undergraduateCourse);
+                                            databaseReference.setValue(myDB);
+                                            setDialog.dismiss();
+                                            finish();
+                                        }
+                                    });
 
-                        cancelBtn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                setDialog.dismiss();
-                            }
-                        });
-                        setDialog.show();
+                                    cancelBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            setDialog.dismiss();
+                                        }
+                                    });
+                                    setDialog.show();
+                                }
+                            });
+                        }
                     }
-                });
+
+                    teacherList = myDB.getUserList();
+                    adapter = new UserListAdapter(SetTeacherActivity.this, R.layout.user_list_item, teacherList);
+                    teachers_lv.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+
+
+                }
+
+
 
             }
 
