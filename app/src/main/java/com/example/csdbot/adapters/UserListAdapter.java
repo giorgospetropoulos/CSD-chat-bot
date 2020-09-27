@@ -38,7 +38,6 @@ public class UserListAdapter extends ArrayAdapter<User> {
     private Course undergraduateCourse;
     private PostGraduateCourse postGraduateCourse;
     private Context mContext;
-    private boolean isTeacher = false;
 
     public UserListAdapter(@NonNull Context context, int resource, @NonNull List<User> objects) {
         super(context, resource, objects);
