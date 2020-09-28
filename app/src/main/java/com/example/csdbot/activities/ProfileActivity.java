@@ -128,7 +128,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                     profileUser = myDB.getUserByUID(firebaseAuth.getUid());
                     profileName.setText(profileUser.getName());
                     courseList = myDB.getCourseList();
-                    teachingCourseList = profileUser.getTeaching_courses();
+                    teachingCourseList = profileUser.getUndergraduate_teaching_courses();
                     teachingPostGraduateCourseList = profileUser.getPostgraduate_teaching_courses();
                 }
                 loading.dismiss();

@@ -8,7 +8,8 @@ public class User {
     private ArrayList<Reminder> user_reminders = new ArrayList<Reminder>();
     private ArrayList<Course> user_courses = new ArrayList<Course>();
     private ArrayList<PostGraduateCourse> user_postgraduate_courses = new ArrayList<PostGraduateCourse>();
-    private ArrayList<String> teaching_courses = new ArrayList<String>();
+    private ArrayList<Course> undergraduate_teaching_courses = new ArrayList<Course>();
+    private ArrayList<PostGraduateCourse> postgraduate_teaching_courses = new ArrayList<PostGraduateCourse>();
     private ArrayList<User> user_friendlist = new ArrayList<User>();
     private boolean isAdmin = false;
 
@@ -195,12 +196,20 @@ public class User {
         this.teachingCourse = teachingCourse;
     }
 
-    public ArrayList<String> getTeaching_courses() {
-        return teaching_courses;
+    public ArrayList<Course> getUndergraduate_teaching_courses() {
+        return undergraduate_teaching_courses;
     }
 
-    public void setTeaching_courses(ArrayList<String> teaching_courses) {
-        this.teaching_courses = teaching_courses;
+    public void setUndergraduate_teaching_courses(ArrayList<Course> undergraduate_teaching_courses) {
+        this.undergraduate_teaching_courses = undergraduate_teaching_courses;
+    }
+
+    public ArrayList<PostGraduateCourse> getPostgraduate_teaching_courses() {
+        return postgraduate_teaching_courses;
+    }
+
+    public void setPostgraduate_teaching_courses(ArrayList<PostGraduateCourse> postgraduate_teaching_courses) {
+        this.postgraduate_teaching_courses = postgraduate_teaching_courses;
     }
 
     public boolean isAdmin() {
