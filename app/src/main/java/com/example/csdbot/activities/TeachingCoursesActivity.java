@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -98,12 +100,32 @@ public class TeachingCoursesActivity extends AppCompatActivity {
                     postgraduateCoursesLV.setAdapter(postgraduateCoursesAdapter);
                     postgraduateCoursesAdapter.notifyDataSetChanged();
                     loading.dismiss();
+
+
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+
+        undergraduateCoursesLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(TeachingCoursesActivity.this, CoursePageActivity.class);
+                intent.putExtra("Course Name", undergraduateCoursesList.get(position).getName_en());
+                startActivity(intent);
+            }
+        });
+
+        postgraduateCoursesLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(TeachingCoursesActivity.this, CoursePageActivity.class);
+                intent.putExtra("Course Name", postgraduateCoursesList.get(position).getName_en());
+                startActivity(intent);
             }
         });
     }
