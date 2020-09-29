@@ -32,7 +32,6 @@ public class GiveRecPermissionActivity extends AppCompatActivity {
         editor = myPref.edit();
 
         goToSettings = findViewById(R.id.goToPermissions);
-        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ){
             goToSettings.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -47,16 +46,7 @@ public class GiveRecPermissionActivity extends AppCompatActivity {
                     }
                 }
             });
-        } else {
-            goToSettings.setText("Go to Home Page");
-            goToSettings.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(GiveRecPermissionActivity.this, HomeActivity.class);
-                    startActivity(intent);
-                }
-            });
-        }
+
     }
 
 

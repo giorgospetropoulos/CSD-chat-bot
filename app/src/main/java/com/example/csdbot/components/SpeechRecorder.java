@@ -144,12 +144,11 @@ public class SpeechRecorder {
      *      permission to the app
      */
     public void checkVoiceRecodrPerimission(){
-        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ){
-            if ( !(ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) ){
-                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:com.example.csdbot"));
-                context.startActivity(intent);
-            }
+        if ( !(ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) ){
+            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:com.example.csdbot"));
+            context.startActivity(intent);
         }
+
     }
 
 
