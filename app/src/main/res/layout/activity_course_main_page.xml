@@ -141,6 +141,18 @@
                 android:textColor="#ffffff"
                 android:visibility="gone"/>
 
+            <Button
+                android:id="@+id/removeSelfFromTeacher"
+                android:layout_width="150dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/rnd_btn"
+                android:text="@string/removeSelfFromTeacher"
+                android:textColor="#ffffff"
+                android:visibility="gone"/>
+
         </LinearLayout>
 
 

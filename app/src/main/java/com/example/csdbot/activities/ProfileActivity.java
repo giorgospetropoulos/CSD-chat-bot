@@ -91,6 +91,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
          *      updateCourses: Update Courses Button
          *      setAdmin: Set Admin Button
          *      addNewCourse: Add New Course Button
+         *      teachingCourses: Go to teaching courses
          */
         profileName = findViewById(R.id.profileName);
         profileImage = findViewById(R.id.profileImage);

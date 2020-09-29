@@ -38,7 +38,7 @@ public class CourseMainPageActivity extends AppCompatActivity implements Navigat
 
     private TextView noRemindersText;
     private ImageView noReminders;
-    private Button enroll, disenroll, add, setTeacher, addAll, editCourse;
+    private Button enroll, disenroll, add, setTeacher, addAll, editCourse, remove;
     private ListView lv;
     private ArrayAdapter<Reminder> adapter;
     private FirebaseAuth firebaseAuth;
@@ -85,6 +85,7 @@ public class CourseMainPageActivity extends AppCompatActivity implements Navigat
          *      setTeacher: Set Course Teacher Button
          *      addAll: Add All Course Reminders to My Reminders Button
          *      editCourse: Edit Course Button
+         *      remove: Remove self from teacher
          */
         noReminders = findViewById(R.id.noCourseReminders);
         noRemindersText = findViewById(R.id.noCourseRemindersText);
@@ -95,6 +96,7 @@ public class CourseMainPageActivity extends AppCompatActivity implements Navigat
         setTeacher = findViewById(R.id.setTeacher);
         addAll = findViewById(R.id.courseMainPageAddAll);
         editCourse = findViewById(R.id.editCourseBtn);
+        remove = findViewById(R.id.removeSelfFromTeacher);
 
         // Initialize firebase components
         firebaseAuth = FirebaseAuth.getInstance();
@@ -184,16 +186,24 @@ public class CourseMainPageActivity extends AppCompatActivity implements Navigat
                         add.setVisibility(View.VISIBLE);
                         editCourse.setVisibility(View.VISIBLE);
                     }
+                    if ( user.getUID().equals(courseToAdd.getTeacherUID()) ){
+                        remove.setVisibility(View.VISIBLE);
+                    }
                 } else {
                     if (user.getUID().equals(postCourseToAdd.getTeacherUID()) || user.getName().equals("admin") || user.isAdmin()) {
                         add.setVisibility(View.VISIBLE);
                         editCourse.setVisibility(View.VISIBLE);
+                    }
+                    if ( user.getUID().equals(postCourseToAdd.getTeacherUID()) ){
+                        remove.setVisibility(View.VISIBLE);
                     }
                 }
 
                 if ( user.isAdmin() || user.getName().equals("admin") ){
                     setTeacher.setVisibility(View.VISIBLE);
                 }
+
+
 
                 // Check if the user is enrolled to the course and display
                 // enroll or disenroll button accordingly
@@ -426,6 +436,37 @@ public class CourseMainPageActivity extends AppCompatActivity implements Navigat
                             intent.putExtra("Course Name", getIntent().getStringExtra("Course Name"));
                             startActivity(intent);
                         }
+                    }
+                });
+
+                remove.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if ( getIntent().hasExtra("Post")){
+                            if ( getIntent().getStringExtra("Post").equals("false") ){
+                                Course courseToRemove = myDB.getCourseByName(getIntent().getStringExtra("Course Name"));
+                                for( int i = 0 ; i < user.getUndergraduate_teaching_courses().size() ; i++ ){
+                                    if ( user.getUndergraduate_teaching_courses().get(i).getName_en().equals(courseToRemove.getName_en()) ){
+                                        user.getUndergraduate_teaching_courses().remove(i);
+                                        break;
+                                    }
+                                }
+                                courseToRemove.setTeacher("");
+                                courseToRemove.setTeacherUID(String.valueOf(0));
+                            } else {
+                                PostGraduateCourse courseToRemove = myDB.getPostGraduateCourseByName(getIntent().getStringExtra("Course Name"));
+                                for( int i = 0 ; i < user.getPostgraduate_teaching_courses().size() ; i++ ){
+                                    if ( user.getPostgraduate_teaching_courses().get(i).getName_en().equals(courseToRemove.getName_en()) ){
+                                        user.getPostgraduate_teaching_courses().remove(i);
+                                        break;
+                                    }
+                                }
+                                courseToRemove.setTeacher("");
+                                courseToRemove.setTeacherUID(String.valueOf(0));
+                            }
+                        }
+                        databaseReference.setValue(myDB);
+                        finish();
                     }
                 });
             }
