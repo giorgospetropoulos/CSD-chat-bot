@@ -9,6 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.MenuItem;
@@ -29,6 +30,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private EditText search;
     private FirebaseAuth firebaseAuth;
     private SpeechRecorder speechRecorder;
+    private SharedPreferences myPref;
+    private String PermissionGranted;
 
     // ---------- Slide Menu --------------
     private DrawerLayout drawerLayout;
@@ -41,6 +44,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+
 
         // ---------- Slide Menu --------------
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -80,6 +85,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         });
         //----------------------
+
+
+        // Check if User has given Mic Recording Permission
+        myPref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        PermissionGranted = myPref.getString("PermissionGranted","false");
+        if ( !PermissionGranted.equals("true") ){
+            Intent intent = new Intent(HomeActivity.this, GiveRecPermissionActivity.class);
+            startActivity(intent);
+        }
 
         /* Find the activity's views
          *      search: The search box's text

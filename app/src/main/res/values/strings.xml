@@ -83,6 +83,12 @@
     <string name="password">Password</string>
     <string name="logInBtn">Log In</string>
     <string name="signUpBtn">Sign Up</string>
+    <string name="goToSettings">Continue</string>
+    <string name="givePermission">
+        In order to user this app you have to give permission for recording when the mic is pressed.
+        This permission is required in order for the voice controls to be enabled.\n\n
+        This feature is available only for smartphones with Android 6 or greater.
+    </string>
     <string name="remove">Remove</string>
     <string name="removeSelfFromTeacher">Remove course from teaching courses</string>
     <string name="forgotPassword">Forgot Password</string>
