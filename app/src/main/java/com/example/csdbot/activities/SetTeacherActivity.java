@@ -108,9 +108,17 @@ public class SetTeacherActivity extends AppCompatActivity implements NavigationV
                                         setTeacherBtn.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
+                                                String UID = postGraduateCourse.getTeacherUID();
+                                                if ( UID != null && !UID.equals("0") ){
+                                                    for( int i = 0 ; i < myDB.getUserByUID(UID).getPostgraduate_teaching_courses().size() ; i++ ){
+                                                        if ( myDB.getUserByUID(UID).getPostgraduate_teaching_courses().get(i).getName_en().equals(postGraduateCourse.getName_en()) ){
+                                                            myDB.getUserByUID(UID).getPostgraduate_teaching_courses().remove(i);
+                                                            break;
+                                                        }
+                                                    }
+                                                }
                                                 postGraduateCourse.setTeacher("");
                                                 postGraduateCourse.setTeacherUID(String.valueOf(0));
-                                                teacherList.get(position).setTeachingCourse("");
                                                 teacherList.get(position).getPostgraduate_teaching_courses().remove(postGraduateCourse);
                                                 //Set user and course databaseReference
                                                 databaseReference.setValue(myDB);
@@ -129,6 +137,15 @@ public class SetTeacherActivity extends AppCompatActivity implements NavigationV
                                         setTeacherBtn.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
+                                                String UID = postGraduateCourse.getTeacherUID();
+                                                if ( UID != null && !UID.equals("0") ){
+                                                    for( int i = 0 ; i < myDB.getUserByUID(UID).getPostgraduate_teaching_courses().size() ; i++ ){
+                                                        if ( myDB.getUserByUID(UID).getPostgraduate_teaching_courses().get(i).getName_en().equals(postGraduateCourse.getName_en()) ){
+                                                            myDB.getUserByUID(UID).getPostgraduate_teaching_courses().remove(i);
+                                                            break;
+                                                        }
+                                                    }
+                                                }
                                                 postGraduateCourse.setTeacher(teacherList.get(position).getName());
                                                 postGraduateCourse.setTeacherUID(teacherList.get(position).getUID());
                                                 teacherList.get(position).getPostgraduate_teaching_courses().add(postGraduateCourse);
@@ -173,10 +190,17 @@ public class SetTeacherActivity extends AppCompatActivity implements NavigationV
                                         setTeacherBtn.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
+                                                String UID = undergraduateCourse.getTeacherUID();
+                                                if ( UID != null && !UID.equals("0") ){
+                                                    for( int i = 0 ; i < myDB.getUserByUID(UID).getUndergraduate_teaching_courses().size() ; i++ ){
+                                                        if ( myDB.getUserByUID(UID).getUndergraduate_teaching_courses().get(i).getName_en().equals(undergraduateCourse.getName_en()) ){
+                                                            myDB.getUserByUID(UID).getUndergraduate_teaching_courses().remove(i);
+                                                            break;
+                                                        }
+                                                    }
+                                                }
                                                 undergraduateCourse.setTeacher("");
                                                 undergraduateCourse.setTeacherUID(String.valueOf(0));
-                                                teacherList.get(position).setTeachingCourse("");
-                                                teacherList.get(position).getUndergraduate_teaching_courses().remove(undergraduateCourse);
                                                 databaseReference.setValue(myDB);
                                                 setDialog.dismiss();
                                                 finish();
@@ -193,6 +217,15 @@ public class SetTeacherActivity extends AppCompatActivity implements NavigationV
                                         setTeacherBtn.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
+                                                String UID = undergraduateCourse.getTeacherUID();
+                                                if ( UID != null && !UID.equals("0") ){
+                                                    for( int i = 0 ; i < myDB.getUserByUID(UID).getUndergraduate_teaching_courses().size() ; i++ ){
+                                                        if ( myDB.getUserByUID(UID).getUndergraduate_teaching_courses().get(i).getName_en().equals(undergraduateCourse.getName_en()) ){
+                                                            myDB.getUserByUID(UID).getUndergraduate_teaching_courses().remove(i);
+                                                            break;
+                                                        }
+                                                    }
+                                                }
                                                 undergraduateCourse.setTeacher(teacherList.get(position).getName());
                                                 undergraduateCourse.setTeacherUID(teacherList.get(position).getUID());
                                                 teacherList.get(position).getUndergraduate_teaching_courses().add(undergraduateCourse);

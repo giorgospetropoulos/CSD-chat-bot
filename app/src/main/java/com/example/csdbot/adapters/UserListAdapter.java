@@ -35,9 +35,10 @@ public class UserListAdapter extends ArrayAdapter<User> {
     private int layout;
     private List<User> userList;
     private DatabaseHelper myDB;
-    private Course undergraduateCourse;
-    private PostGraduateCourse postGraduateCourse;
     private Context mContext;
+    private String courseName;
+    private String post;
+    private boolean isTeacher = false;
 
     public UserListAdapter(@NonNull Context context, int resource, @NonNull List<User> objects) {
         super(context, resource, objects);
@@ -51,45 +52,12 @@ public class UserListAdapter extends ArrayAdapter<User> {
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         // Initialize firebase components
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageReference = firebaseStorage.getReference();
-        final DatabaseReference databaseReference = firebaseDatabase.getReference("Database");
 
-        final String courseName = ((Activity) mContext).getIntent().getStringExtra("Course Name");
-        final String post = ((Activity) mContext).getIntent().getStringExtra("Post");
-        // Connect to the database and get users list
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                myDB = dataSnapshot.getValue(DatabaseHelper.class);
-                if (myDB != null) {
-                    userList = myDB.getUserList();
-                    if ( post != null){
-                        if ( post.equals("false")){
-                            undergraduateCourse = myDB.getCourseByName(courseName);
-                            if ( undergraduateCourse.getTeacherUID().equals(userList.get(position).getUID()) ){
-                                userList.get(position).setTeachingCourse(courseName);
-                                databaseReference.setValue(myDB);
-                            }
-                        } else {
-                            postGraduateCourse = myDB.getPostGraduateCourseByName(courseName);
-                            if ( postGraduateCourse.getTeacherUID().equals(userList.get(position).getUID()) ){
-                                userList.get(position).setTeachingCourse(courseName);
-                                databaseReference.setValue(myDB);
-                            }
-                        }
-                    }
+        courseName = ((Activity) mContext).getIntent().getStringExtra("Course Name");
+        post = ((Activity) mContext).getIntent().getStringExtra("Post");
 
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getContext() , databaseError.getCode(), Toast.LENGTH_SHORT).show();
-            }
-        });
 
         if ( convertView == null ) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
@@ -106,13 +74,36 @@ public class UserListAdapter extends ArrayAdapter<User> {
 
             // Set user's data
             viewHolder.userName.setText(userList.get(position).getName());
+            String name = viewHolder.userName.getText().toString();
             if ( userList.get(position).isAdmin() ){
-                String name = viewHolder.userName.getText().toString() + " (admin)";
-                if ( userList.get(position).getTeachingCourse().equals(courseName) ){
-                    name = name + " (Teacher)";
-                }
+                name = name + " (admin)";
                 viewHolder.userName.setText(name);
             }
+            if ( post.equals("false")){
+                isTeacher = false;
+                for( Course temp : userList.get(position).getUndergraduate_teaching_courses() ){
+                    if ( temp.getName_en().equals(courseName) ){
+                        isTeacher = true;
+                        break;
+                    }
+                }
+            } else {
+                isTeacher = false;
+                for( PostGraduateCourse temp : userList.get(position).getPostgraduate_teaching_courses() ){
+                    if ( temp.getName_en().equals(courseName) ){
+                        isTeacher = true;
+                        break;
+                    }
+                }
+            }
+            if ( isTeacher ){
+                name = name + " (Teacher)";
+                viewHolder.userName.setText(name);
+            }
+
+
+
+
             String email = "Email: " + userList.get(position).getEmail();
             viewHolder.userEmail.setText(email);
             storageReference.child(userList.get(position).getUID()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
