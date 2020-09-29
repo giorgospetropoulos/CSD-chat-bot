@@ -442,31 +442,63 @@ public class CourseMainPageActivity extends AppCompatActivity implements Navigat
                 remove.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if ( getIntent().hasExtra("Post")){
-                            if ( getIntent().getStringExtra("Post").equals("false") ){
-                                Course courseToRemove = myDB.getCourseByName(getIntent().getStringExtra("Course Name"));
-                                for( int i = 0 ; i < user.getUndergraduate_teaching_courses().size() ; i++ ){
-                                    if ( user.getUndergraduate_teaching_courses().get(i).getName_en().equals(courseToRemove.getName_en()) ){
-                                        user.getUndergraduate_teaching_courses().remove(i);
-                                        break;
+                        TextView disenrollPopUpTitle;
+                        Button disenroll_btn, cancel_disenroll;
+                        final Dialog removeDialog = new Dialog(CourseMainPageActivity.this);
+                        removeDialog.setContentView(R.layout.disenroll_confirmation);
+
+                        disenrollPopUpTitle = removeDialog.findViewById(R.id.disenrollPopUpTitle);
+                        String title = "Are you sure you wish to be removed fro the Teacher role of \""
+                                + getIntent().getStringExtra("Course Name")
+                                +"\"?";
+                        disenrollPopUpTitle.setText(title);
+                        disenroll_btn = removeDialog.findViewById(R.id.disenroll_confirmation_btn);
+                        disenroll_btn.setText(R.string.remove);
+                        disenroll_btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                loading = ProgressDialog.show(CourseMainPageActivity.this, "",
+                                        "Loading. Please wait...", true);
+                                //user = myDB.getUserByUID(firebaseAuth.getUid());
+                                if ( getIntent().hasExtra("Post")){
+                                    if ( getIntent().getStringExtra("Post").equals("false") ){
+                                        Course courseToRemove = myDB.getCourseByName(getIntent().getStringExtra("Course Name"));
+                                        for( int i = 0 ; i < user.getUndergraduate_teaching_courses().size() ; i++ ){
+                                            if ( user.getUndergraduate_teaching_courses().get(i).getName_en().equals(courseToRemove.getName_en()) ){
+                                                user.getUndergraduate_teaching_courses().remove(i);
+                                                break;
+                                            }
+                                        }
+                                        courseToRemove.setTeacher("");
+                                        courseToRemove.setTeacherUID(String.valueOf(0));
+                                    } else {
+                                        PostGraduateCourse courseToRemove = myDB.getPostGraduateCourseByName(getIntent().getStringExtra("Course Name"));
+                                        for( int i = 0 ; i < user.getPostgraduate_teaching_courses().size() ; i++ ){
+                                            if ( user.getPostgraduate_teaching_courses().get(i).getName_en().equals(courseToRemove.getName_en()) ){
+                                                user.getPostgraduate_teaching_courses().remove(i);
+                                                break;
+                                            }
+                                        }
+                                        courseToRemove.setTeacher("");
+                                        courseToRemove.setTeacherUID(String.valueOf(0));
                                     }
                                 }
-                                courseToRemove.setTeacher("");
-                                courseToRemove.setTeacherUID(String.valueOf(0));
-                            } else {
-                                PostGraduateCourse courseToRemove = myDB.getPostGraduateCourseByName(getIntent().getStringExtra("Course Name"));
-                                for( int i = 0 ; i < user.getPostgraduate_teaching_courses().size() ; i++ ){
-                                    if ( user.getPostgraduate_teaching_courses().get(i).getName_en().equals(courseToRemove.getName_en()) ){
-                                        user.getPostgraduate_teaching_courses().remove(i);
-                                        break;
-                                    }
-                                }
-                                courseToRemove.setTeacher("");
-                                courseToRemove.setTeacherUID(String.valueOf(0));
+                                databaseReference.setValue(myDB);
+                                loading.dismiss();
+                                removeDialog.dismiss();
+                                finish();
                             }
-                        }
-                        databaseReference.setValue(myDB);
-                        finish();
+                        });
+
+                        cancel_disenroll = removeDialog.findViewById(R.id.cancel_disenroll);
+                        cancel_disenroll.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                removeDialog.dismiss();
+                            }
+                        });
+                        removeDialog.show();
+
                     }
                 });
             }

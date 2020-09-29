@@ -83,6 +83,7 @@
     <string name="password">Password</string>
     <string name="logInBtn">Log In</string>
     <string name="signUpBtn">Sign Up</string>
+    <string name="remove">Remove</string>
     <string name="removeSelfFromTeacher">Remove course from teaching courses</string>
     <string name="forgotPassword">Forgot Password</string>
     <string name="noEnrolledCourses">You have not enrolled in any courses yet</string>
