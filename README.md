@@ -44,6 +44,7 @@ The User has the ability to:
 ### Teacher
 The Teacher has all of the User's abilities plus the ability to:
 <br>(i) Create, edit and remove reminders for the courses he has been assigned to as a teacher
+<br>(ii) Remove the Teacher role from himself in any course he is teaching
 
 ### Admin
 The Admin has all of the above mentioned abilities plus the ability to:
@@ -58,6 +59,8 @@ The Admin has all of the above mentioned abilities plus the ability to:
     - ArrayList<Reminder> user_reminders: The user's reminders list
     - ArrayList<Course> user_courses: The user's undergraduate course list
     - ArrayList<PostGraduateCourse> user_postgraduate_courses: The user's postgraduate course list
+    - ArrayList<Course> undergraduate_teaching_courses: The undergraduate courses the user has been assigned to as a teacher
+    - ArrayList<PostGraduateCourse> postgraduate_teaching_courses: The undergraduate courses the user has been assigned to as a teacher
     - ArrayList<User> user_friendlist: The user's contact list
     - boolean isAdmin: Boolean about the user's system role
     
