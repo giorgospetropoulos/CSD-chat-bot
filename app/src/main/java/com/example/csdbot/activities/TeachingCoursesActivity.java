@@ -45,12 +45,18 @@ public class TeachingCoursesActivity extends AppCompatActivity {
         loading = ProgressDialog.show(TeachingCoursesActivity.this, "",
                 "Loading. Please wait...", true);
 
-
+        /* Find the activity's views
+         *      undergraduateCoursesBtn: Undergraduate Courses Button
+         *      postgraduateCoursesBtn: Postgraduate Courses Button
+         *      undergraduateCoursesLV: Undergraduate Courses List View
+         *      postgraduateCoursesLV: Postgraduate Courses List View
+         */
         Button undergraduateCoursesBtn = findViewById(R.id.undergraduateTeachingCourses);
         final Button postgraduateCoursesBtn = findViewById(R.id.postgraduateTeachingCourses);
         final ListView undergraduateCoursesLV = findViewById(R.id.undergraduateTeachingCourses_list);
         final ListView postgraduateCoursesLV = findViewById(R.id.postgraduateTeachingCourses_list);
 
+        // Show undergraduate courses list
         undergraduateCoursesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,6 +65,7 @@ public class TeachingCoursesActivity extends AppCompatActivity {
             }
         });
 
+        // Show postgraduate courses list
         postgraduateCoursesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,6 +79,8 @@ public class TeachingCoursesActivity extends AppCompatActivity {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference myRef = firebaseDatabase.getReference("Database");
 
+        // Connect to the database and retrieve the undergraduate
+        // and postgraduate teaching courses of the user
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
